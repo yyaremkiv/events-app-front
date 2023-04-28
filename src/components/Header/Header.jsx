@@ -6,7 +6,13 @@ import css from "./Header.module.scss";
 export const Header = () => {
   return (
     <header className={css.header}>
-      <div className={css.topNav}>
+      <div
+        className={css.topNav}
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <Image src={logo} width={50} height={50} alt="logo" />
         <nav>
           <ul>
@@ -18,6 +24,9 @@ export const Header = () => {
             </li>
             <li>
               <Link href="/about-us">About Us</Link>
+            </li>
+            <li>
+              <Link href="/admin">Admin</Link>
             </li>
           </ul>
         </nav>
