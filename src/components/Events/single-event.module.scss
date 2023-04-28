@@ -1,0 +1,40 @@
+.event_single_page {
+  .email_registration {
+    margin-top: 25px;
+
+    label {
+      display: flex;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-top: 25px;
+    }
+  }
+
+  input {
+    height: 40px;
+    min-width: 350px;
+    box-shadow: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  button {
+    border-radius: 5px;
+    height: 40px;
+    min-width: 150px;
+    border: 1px solid #5f5a5a;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-weight: 600;
+    background: #dcfff3;
+    cursor: pointer;
+  }
+  &:hover {
+    color: #dcfff3;
+    background: #333;
+  }
+}

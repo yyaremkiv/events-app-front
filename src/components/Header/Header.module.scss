@@ -3,10 +3,37 @@
   height: 300px;
 
   background: linear-gradient(305deg, #dbfff3, transparent);
+
+  div {
+    width: 100%;
+    max-width: 1250px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 .topNav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-content: center;
+
+  ul {
+    display: flex;
+    text-decoration: none;
+    list-style: none;
+    gap: 15px;
+
+    li {
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+}
+
+.title {
+  width: 50%;
+  font-size: 40px;
+  text-transform: uppercase;
 }

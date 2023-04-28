@@ -1,13 +1,8 @@
 import Image from "next/image";
+import { SingleEvet } from "@/components/Events/single-event";
 
 const EventPage = ({ data }) => {
-  return (
-    <div>
-      <Image src={data.image} width={1000} height={500} alt={data.title} />
-      <h1>{data.title}</h1>
-      <p>{data.description}</p>
-    </div>
-  );
+  return <SingleEvet data={data} />;
 };
 
 export default EventPage;

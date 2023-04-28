@@ -1,0 +1,42 @@
+.events_page {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  height: 50%;
+  border: 1px solid red;
+}
+
+.card {
+  position: relative;
+  h2 {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    text-align: center;
+    font-size: 38px;
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 20px black;
+  }
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 50%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+}
+
+.container > :global(img) {
+  position: absolute;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
