@@ -2,9 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 
 import { FormCity } from "@/components/FormCity/FormCity";
-import { ListCity } from "@/components/ListCity.admin";
 
 import EventService from "@/services/EventService";
+
+import { ListCity } from "@/components/ListCity";
 
 const Admin = ({ data }) => {
   const [city, setCity] = useState("");
@@ -19,9 +20,9 @@ const Admin = ({ data }) => {
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "4rem", padding: "2rem" }}>
-        <ListCity data={data} />
+      <div style={{ display: "grid", padding: "2rem" }}>
         <FormCity handleAddCity={handleAddCity} />
+        <ListCity data={data} />
       </div>
     </div>
   );

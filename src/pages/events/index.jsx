@@ -1,6 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
 import { AllEvents } from "@/components/Events/events-page";
+import EventService from "@/services/EventService";
 
 const EvantsPage = ({ data }) => {
   return <AllEvents data={data} />;
@@ -9,10 +8,15 @@ const EvantsPage = ({ data }) => {
 export default EvantsPage;
 
 export async function getStaticProps() {
-  const { events_categories } = await import("../../../data/data.json");
+  const { data } = await EventService.getCategories();
+
+  if (!data) {
+    return null;
+  }
+
   return {
     props: {
-      data: events_categories,
+      data,
     },
   };
 }
