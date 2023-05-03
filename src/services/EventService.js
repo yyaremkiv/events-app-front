@@ -1,7 +1,7 @@
 import API from "@/http";
 
 class EventService {
-  static async getCategories() {
+  static async getCity() {
     return API.get("/events/city");
   }
 

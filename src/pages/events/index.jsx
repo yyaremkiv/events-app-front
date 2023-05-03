@@ -8,7 +8,7 @@ const EvantsPage = ({ data }) => {
 export default EvantsPage;
 
 export async function getStaticProps() {
-  const { data } = await EventService.getCategories();
+  const { data } = await EventService.getCity();
 
   if (!data) {
     return null;
