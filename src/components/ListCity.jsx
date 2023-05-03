@@ -16,7 +16,7 @@ export const ListCity = ({ data }) => {
   };
 
   return (
-    <Box sx={{ border: "1px solid red" }}>
+    <Box>
       <ul>
         {data.map((city) => (
           <ItemCity

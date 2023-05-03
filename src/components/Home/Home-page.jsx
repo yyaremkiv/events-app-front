@@ -3,13 +3,11 @@ import Image from "next/image";
 import css from "./Home-page.module.scss";
 
 export const HomePage = ({ data }) => {
-  console.log(data);
-  console.log(data);
   return (
     <main className={css.main}>
       <div className={css.home_body}>
         {data.map((ev) => (
-          <Link key={ev._id} href={`/events/${ev.id}`} className={css.card}>
+          <Link key={ev._id} href={`/events/${ev._id}`} className={css.card}>
             <div className={css.image}>
               <Image
                 src={ev.imagePath}

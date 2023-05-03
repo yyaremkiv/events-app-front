@@ -3,11 +3,12 @@ import Image from "next/image";
 import css from "./catEvent.module.scss";
 
 export const CatEvent = ({ data, pageName }) => {
+  console.log("data", data);
   return (
     <div className={css.cat_events}>
       <h1> Events in {pageName}</h1>
       <div className={css.content}>
-        {data.map((ev) => (
+        {data[0].events?.map((ev) => (
           <Link
             key={ev.id}
             href={`/events/${ev.city}/${ev.id}`}

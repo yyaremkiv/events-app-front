@@ -1,21 +1,28 @@
+import { useSelector } from "react-redux";
 import { CatEvent } from "@/components/Events/catEvent";
+import EventService from "@/services/EventService";
+import { Box } from "@mui/system";
 
 const EventsCatPage = ({ data, pageName }) => {
-  return <CatEvent data={data} pageName={pageName} />;
+  return (
+    <Box>
+      sdfjjsd falsjd flsd fjskdl
+      <CatEvent data={data} pageName={pageName} />
+    </Box>
+  );
 };
 
 export default EventsCatPage;
 
 export async function getStaticPaths() {
-  const { events_categories } = await import("../../../../data/data.json");
-  const AllPath = events_categories.map((ev) => {
+  const cities = await EventService.getCity();
+  const AllPath = cities.data.map((ev) => {
     return {
       params: {
-        cat: ev.id.toString(),
+        cat: ev._id.toString(),
       },
     };
   });
-
   return {
     paths: AllPath,
     fallback: false,
@@ -23,10 +30,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  console.log("context", context);
   const id = context?.params.cat;
-  const { allEvents } = await import("../../../../data/data.json");
+  const { data } = await EventService.getEvent(id);
 
-  const data = allEvents.filter((ev) => ev.city === id);
   return { props: { data, pageName: id } };
 }

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Box } from "@mui/material";
 import css from "./events-page.module.scss";
 
 export const AllEvents = ({ data }) => {
-  console.log("this is console.log", data);
   return (
-    <div className={css.events_page}>
+    <Box sx={{ margin: "0 auto", width: "75%" }}>
       {data.map(({ _id, title, imagePath }) => (
         <Link key={_id} href={`/events/${_id}`} className={css.card}>
           <div style={{ height: "30%", border: "1px solid green" }}>
@@ -14,6 +14,6 @@ export const AllEvents = ({ data }) => {
           <h2>{title}</h2>
         </Link>
       ))}
-    </div>
+    </Box>
   );
 };

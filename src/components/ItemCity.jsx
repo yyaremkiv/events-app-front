@@ -24,7 +24,6 @@ export const ItemCity = ({ data, handleAddEvent }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "50%",
         }}
       >
         <p>{city}</p>
