@@ -3,17 +3,17 @@ import { ItemCity } from "./ItemCity";
 import { Box, Modal } from "@mui/material";
 import { ModalEvent } from "./ModalEvent";
 
-export const ListCity = ({ data }) => {
+export const ListCity = ({ data, handleUpdateCity, handleAddEvent }) => {
   const [openModal, setOpenModal] = useState(false);
   const [cityId, setCityId] = useState(null);
 
   const handleCloseModal = () => setOpenModal(!modalOpen);
   const handleModalClose = () => setOpenModal(false);
 
-  const handleAddEvent = (id) => {
-    setCityId(id);
-    setOpenModal(true);
-  };
+  // const handleAddEvent = (id) => {
+  //   setCityId(id);
+  //   setOpenModal(true);
+  // };
 
   return (
     <Box>
@@ -22,6 +22,7 @@ export const ListCity = ({ data }) => {
           <ItemCity
             key={city._id}
             data={city}
+            handleUpdateCity={handleUpdateCity}
             handleAddEvent={handleAddEvent}
           />
         ))}
@@ -55,7 +56,7 @@ export const ListCity = ({ data }) => {
             overflowY: "auto",
           }}
         >
-          <ModalEvent id={cityId} />
+          {/* <ModalEvent id={cityId} /> */}
         </Box>
       </Modal>
     </Box>

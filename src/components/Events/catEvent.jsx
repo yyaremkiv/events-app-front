@@ -8,7 +8,7 @@ export const CatEvent = ({ data, pageName }) => {
     <div className={css.cat_events}>
       <h1> Events in {pageName}</h1>
       <div className={css.content}>
-        {data[0].events?.map((ev) => (
+        {data[0]?.events?.map((ev) => (
           <Link
             key={ev.id}
             href={`/events/${ev.city}/${ev.id}`}

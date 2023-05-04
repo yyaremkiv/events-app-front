@@ -1,5 +1,5 @@
 import { AllEvents } from "@/components/Events/events-page";
-import EventService from "@/services/EventService";
+import EventService from "@/services/event.service";
 
 const EvantsPage = ({ data }) => {
   return <AllEvents data={data} />;

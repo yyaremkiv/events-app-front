@@ -11,16 +11,24 @@ class EventService {
     });
   }
 
+  static async updateCity(formData) {
+    return API.patch("/events/city", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+
   static async deleteCity(cityId) {
     return API.delete(`/events/city/${cityId}`);
   }
 
-  static async getEvent(id) {
-    return API.get(`/events/event/${id}`);
+  static async getEvent(cityId) {
+    return API.get(`/events/event/${cityId}`);
   }
 
-  static async addEvent(event) {
-    return API.post("/events/event", event);
+  static async addEvent(formData) {
+    return API.post("/events/event", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   }
 }
 

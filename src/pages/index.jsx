@@ -1,6 +1,5 @@
 import { HomePage } from "@/components/Home/Home-page";
-import axios from "axios";
-import EventService from "@/services/EventService";
+import EventService from "@/services/event.service";
 
 export default function Home({ data }) {
   return <HomePage data={data} />;

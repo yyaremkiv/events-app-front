@@ -6,10 +6,10 @@ import ListIcon from "@mui/icons-material/List";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import EventService from "@/services/EventService";
+import EventService from "@/services/event.service";
 import CityOperations from "@/redux/cities/city.operations";
 
-export const ItemCity = ({ data, handleAddEvent }) => {
+export const ItemCity = ({ data, handleUpdateCity, handleAddEvent }) => {
   const [openList, setOpenList] = useState(false);
   const { _id: cityId, city } = data;
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ export const ItemCity = ({ data, handleAddEvent }) => {
       >
         <p>{city}</p>
         <Box sx={{ display: "flex", gap: "0.5rem" }}>
-          <IconButton>
+          <IconButton onClick={() => handleUpdateCity(cityId)}>
             <EditIcon />
           </IconButton>
           <IconButton onClick={() => handleDeleteCity(cityId)}>
@@ -39,7 +39,9 @@ export const ItemCity = ({ data, handleAddEvent }) => {
           </IconButton>
         </Box>
       </Box>
-      {openList ? <ListEvent cityId={cityId} /> : null}
+      {openList ? (
+        <ListEvent cityId={cityId} handleAddEvent={handleAddEvent} />
+      ) : null}
     </Box>
   );
 };

@@ -1,48 +1,36 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Formik } from "formik";
-import * as Yup from "yup";
-import { DropzoneUpload } from "../DropzoneUpload";
+import { DropzoneUpload } from "./DropzoneUpload";
 import { Box, Button } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import CityOperations from "@/redux/cities/city.operations";
+import { FormValidation } from "@/config/form.validation";
+import { ImageCity } from "./ImageCity";
 
-const initialValuesCity = {
-  city: "",
-  title: "",
-  country: "",
-  population: "",
-};
-
-const citySchema = Yup.object().shape({
-  city: Yup.string()
-    .min(3, "City must be at least 3 characters long.")
-    .max(50, "City cannot be longer than 50 characters.")
-    .required("City is required."),
-  title: Yup.string()
-    .min(3, "City must be at least 3 characters long.")
-    .max(50, "City cannot be longer than 50 characters.")
-    .required("City is required."),
-  country: Yup.string()
-    .min(3, "Last name must be at least 3 characters long.")
-    .max(50, "Last name cannot be longer than 50 characters.")
-    .required("Last name is required."),
-  population: Yup.string()
-    .max(50, "Location must be no more than 50 characters")
-    .required("Last name is required."),
-  occupation: Yup.string().max(
-    50,
-    "Occupation must be no more than 50 characters"
-  ),
-});
-
-export const FormCity = ({ handleAddCity }) => {
+export const ModalCity = ({ cityId }) => {
   const [image, setImage] = useState(null);
+  const dispatch = useDispatch();
+  const city = useSelector((state) => state.city.cities).filter(
+    (city) => city._id === cityId
+  )[0];
 
   const handleSubmitCity = (values, { resetForm }) => {
     const formData = new FormData();
+
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
     });
+
     if (image) formData.append("picture", image);
-    handleAddCity(formData);
+
+    if (cityId) {
+      dispatch(CityOperations.updateCity(formData));
+    } else {
+      dispatch(CityOperations.addCity(formData));
+    }
+
     setImage(null);
     resetForm();
   };
@@ -51,8 +39,8 @@ export const FormCity = ({ handleAddCity }) => {
     <div style={{ width: "100%" }}>
       <Formik
         onSubmit={handleSubmitCity}
-        initialValues={initialValuesCity}
-        validationSchema={citySchema}
+        initialValues={city ? city : FormValidation.initialValuesCity}
+        validationSchema={FormValidation.citySchema}
       >
         {({
           values,
@@ -61,10 +49,15 @@ export const FormCity = ({ handleAddCity }) => {
           handleBlur,
           handleChange,
           handleSubmit,
+          setFieldValue,
         }) => (
           <form
             onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
           >
             <div className="sm:col-span-3">
               <label
@@ -149,11 +142,37 @@ export const FormCity = ({ handleAddCity }) => {
                 <p>{errors.population}</p>
               </div>
 
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="showOnHomePage"
+                    checked={values.showOnHomePage}
+                    onChange={(e) =>
+                      setFieldValue("showOnHomePage", e.target.checked)
+                    }
+                  />
+                }
+                label="Show on Home Page"
+              />
+
+              {city?.imagePath ? (
+                <ImageCity imagePath={city.imagePath} size="100px" />
+              ) : null}
+
               <DropzoneUpload image={image} setImage={setImage} />
 
-              <div className="mt-6 flex items-center justify-center gap-x-6">
-                <Button type="submit">Add city</Button>
-              </div>
+              <Box sx={{ padding: "1rem" }}>
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  sx={{
+                    display: "block",
+                    margin: "0 auto",
+                  }}
+                >
+                  {cityId ? "Update City" : "Add city"}
+                </Button>
+              </Box>
             </div>
           </form>
         )}

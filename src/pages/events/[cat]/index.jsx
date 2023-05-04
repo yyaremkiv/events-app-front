@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { CatEvent } from "@/components/Events/catEvent";
-import EventService from "@/services/EventService";
+import EventService from "@/services/event.service";
 import { Box } from "@mui/system";
 
 const EventsCatPage = ({ data, pageName }) => {

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FormCity } from "@/components/FormCity/FormCity";
+import { ModalCity } from "@/components/ModalCity";
+import { ModalEvent } from "@/components/ModalEvent";
 
-import EventService from "@/services/EventService";
+import EventService from "@/services/event.service";
 
 import { ListCity } from "@/components/ListCity";
 import {
@@ -16,20 +17,34 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CityOperations from "@/redux/cities/city.operations";
-
 import { useGetCity } from "@/components/hooks/useCity";
 
 const Admin = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [typeModal, setTypeModal] = useState(null);
+  const [cityId, setCityId] = useState(null);
   const [cities, isLoading, error] = useGetCity();
   const dispatch = useDispatch();
 
   const handleModalClose = () => {
+    setCityId(null);
     setOpenModal(false);
   };
 
-  const handleAddCity = async (formData) =>
+  const handleAddCity = (formData) =>
     dispatch(CityOperations.addCity(formData));
+
+  const handleUpdateCity = (cityId) => {
+    setCityId(cityId);
+    setTypeModal("city");
+    setOpenModal(true);
+  };
+
+  const handleAddEvent = (cityId) => {
+    setCityId(cityId);
+    setTypeModal("event");
+    setOpenModal(true);
+  };
 
   return (
     <div>
@@ -46,13 +61,24 @@ const Admin = () => {
           <Typography style={{ fontWeight: 600 }}>List of cities</Typography>
           <Input />
           <Tooltip title="Add new city" placement="top">
-            <IconButton onClick={() => setOpenModal(true)}>
+            <IconButton
+              onClick={() => {
+                setTypeModal("city");
+                setOpenModal(true);
+              }}
+            >
               <AddIcon />
             </IconButton>
           </Tooltip>
         </Box>
         {isLoading ? <CircularProgress /> : null}
-        {cities.length ? <ListCity data={cities} /> : null}
+        {cities.length ? (
+          <ListCity
+            data={cities}
+            handleUpdateCity={handleUpdateCity}
+            handleAddEvent={handleAddEvent}
+          />
+        ) : null}
       </div>
       <Modal
         open={openModal}
@@ -82,7 +108,13 @@ const Admin = () => {
             overflowY: "auto",
           }}
         >
-          <FormCity handleAddCity={handleAddCity} />
+          {typeModal === "city" && (
+            <ModalCity cityId={cityId} handleAddCity={handleAddCity} />
+          )}
+
+          {typeModal === "event" && (
+            <ModalEvent cityId={cityId} handleAddEvent={handleAddEvent} />
+          )}
         </Box>
       </Modal>
     </div>

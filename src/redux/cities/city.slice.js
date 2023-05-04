@@ -35,6 +35,24 @@ const citiesSlice = createSlice({
       state.error = action.payload;
       state.isLoading = false;
     });
+    builder.addCase(CityOperations.updateCity.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(CityOperations.updateCity.fulfilled, (state, action) => {
+      const updatedCity = action.payload;
+      const cityIndex = state.cities.findIndex(
+        (city) => city._id === updatedCity._id
+      );
+      if (cityIndex !== -1) {
+        state.cities[cityIndex] = updatedCity;
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.updateCity.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
     builder.addCase(CityOperations.deleteCity.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -44,6 +62,38 @@ const citiesSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(CityOperations.deleteCity.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.getEvent.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(CityOperations.getEvent.fulfilled, (state, action) => {
+      const { cityId, events } = action.payload;
+      const cityIndex = state.cities.findIndex((city) => city._id === cityId);
+      if (cityIndex !== -1) {
+        state.cities[cityIndex].events.push(...events);
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.getEvent.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.addEvent.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(CityOperations.addEvent.fulfilled, (state, action) => {
+      const { cityId, events } = action.payload;
+      const cityIndex = state.cities.findIndex((city) => city._id === cityId);
+      if (cityIndex !== -1) {
+        state.cities[cityIndex].events.push(...events);
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.addEvent.rejected, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
     });

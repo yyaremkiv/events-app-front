@@ -1,61 +1,45 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { Box, FormHelperText, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useState } from "react";
+import EventService from "@/services/event.service";
+import { FormValidation } from "@/config/form.validation";
 import dayjs from "dayjs";
-import EventService from "@/services/EventService";
+import { DropzoneUpload } from "./DropzoneUpload";
+import CityOperations from "@/redux/cities/city.operations";
 
-const initialValuesEvent = {
-  title: "",
-  description: "",
-  date: dayjs(),
-  seats: "",
-};
-
-const eventSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(3, "City must be at least 3 characters long.")
-    .max(50, "City cannot be longer than 50 characters.")
-    .required("City is required."),
-  description: Yup.string()
-    .min(3, "City must be at least 3 characters long.")
-    .max(50, "City cannot be longer than 50 characters.")
-    .required("City is required."),
-  date: Yup.date()
-    .required("Date is required")
-    .test("is-after-today", "Date cannot be after today", function (value) {
-      return dayjs(value).isAfter(dayjs(), "day");
-    }),
-  seats: Yup.string()
-    .max(50, "Location must be no more than 50 characters")
-    .required("Last name is required."),
-});
-
-export const ModalEvent = ({ id }) => {
+export const ModalEvent = ({ cityId }) => {
   const isLoading = false;
+  const [image, setImage] = useState(null);
   const [value, setValue] = useState(dayjs());
   const [time, setTime] = useState(dayjs());
+  const dispatch = useDispatch();
 
-  const handleSubmitPost = (values) => {
-    EventService.addEvent({
-      cityId: id,
-      title: values.title,
-      description: values.description,
-      date: values.date.$d,
-      seats: values.seats,
+  const handleSubmitEvent = (values, { resetForm }) => {
+    const formData = new FormData();
+    formData.append("cityId", cityId);
+
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
     });
+
+    if (image) {
+      formData.append("picture", image);
+    }
+
+    dispatch(CityOperations.addEvent(formData));
   };
 
   return (
     <Box>
       <Formik
-        onSubmit={handleSubmitPost}
-        initialValues={initialValuesEvent}
-        validationSchema={eventSchema}
+        onSubmit={handleSubmitEvent}
+        initialValues={FormValidation.initialValuesEvent}
+        validationSchema={FormValidation.eventSchema}
       >
         {({
           values,
@@ -129,6 +113,8 @@ export const ModalEvent = ({ id }) => {
               sx={{ height: "60px" }}
             />
 
+            <DropzoneUpload image={image} setImage={setImage} />
+
             <LoadingButton
               variant="outlined"
               loading={isLoading}
@@ -149,10 +135,3 @@ export const ModalEvent = ({ id }) => {
     </Box>
   );
 };
-
-{
-  /* <p>title</p>
-          <p>description</p>
-          <p>date</p>
-          <p>seats</p> */
-}
