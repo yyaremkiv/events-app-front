@@ -73,7 +73,7 @@ const citiesSlice = createSlice({
       const { cityId, events } = action.payload;
       const cityIndex = state.cities.findIndex((city) => city._id === cityId);
       if (cityIndex !== -1) {
-        state.cities[cityIndex].events.push(...events);
+        state.cities[cityIndex].events = [...events];
       }
       state.isLoading = false;
     });

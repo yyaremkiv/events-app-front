@@ -6,7 +6,6 @@ import { Box } from "@mui/system";
 const EventsCatPage = ({ data, pageName }) => {
   return (
     <Box>
-      sdfjjsd falsjd flsd fjskdl
       <CatEvent data={data} pageName={pageName} />
     </Box>
   );
