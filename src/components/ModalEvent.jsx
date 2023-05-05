@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Formik } from "formik";
 import { Box, FormHelperText, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -12,12 +12,17 @@ import dayjs from "dayjs";
 import { DropzoneUpload } from "./DropzoneUpload";
 import CityOperations from "@/redux/cities/city.operations";
 
-export const ModalEvent = ({ cityId }) => {
+export const ModalEvent = ({ cityId, eventId }) => {
   const isLoading = false;
   const [image, setImage] = useState(null);
   const [value, setValue] = useState(dayjs());
   const [time, setTime] = useState(dayjs());
   const dispatch = useDispatch();
+  const city = useSelector((state) => state.city.cities).find(
+    (city) => city._id === cityId
+  );
+  const singleEvent = city.events.find((event) => event.id === eventId);
+  console.log("sfsdf", singleEvent);
 
   const handleSubmitEvent = (values, { resetForm }) => {
     const formData = new FormData();

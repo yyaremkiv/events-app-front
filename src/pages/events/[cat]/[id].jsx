@@ -10,10 +10,8 @@ const EventPage = () => {
 
   useEffect(() => {
     async function fetch() {
-      console.log("cat = ", cat, "id = ", id);
       const { data } = await EventService.getEvent(cat);
-      console.log("data", cat, data);
-      const event = data.events.filter((event) => event.id === id);
+      const event = data.events.find((event) => event.id === id);
       setData(event);
     }
 

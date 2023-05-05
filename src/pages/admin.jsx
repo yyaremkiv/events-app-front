@@ -23,6 +23,7 @@ const Admin = () => {
   const [openModal, setOpenModal] = useState(false);
   const [typeModal, setTypeModal] = useState(null);
   const [cityId, setCityId] = useState(null);
+  const [eventId, setEventId] = useState(null);
   const [cities, isLoading, error] = useGetCity();
   const dispatch = useDispatch();
 
@@ -42,6 +43,13 @@ const Admin = () => {
 
   const handleAddEvent = (cityId) => {
     setCityId(cityId);
+    setTypeModal("event");
+    setOpenModal(true);
+  };
+
+  const handleEditEvent = ({ cityId, eventId }) => {
+    setCityId(cityId);
+    setEventId(eventId);
     setTypeModal("event");
     setOpenModal(true);
   };
@@ -77,6 +85,7 @@ const Admin = () => {
             data={cities}
             handleUpdateCity={handleUpdateCity}
             handleAddEvent={handleAddEvent}
+            handleEditEvent={handleEditEvent}
           />
         ) : null}
       </div>
@@ -113,7 +122,11 @@ const Admin = () => {
           )}
 
           {typeModal === "event" && (
-            <ModalEvent cityId={cityId} handleAddEvent={handleAddEvent} />
+            <ModalEvent
+              cityId={cityId}
+              eventId={eventId}
+              handleAddEvent={handleAddEvent}
+            />
           )}
         </Box>
       </Modal>

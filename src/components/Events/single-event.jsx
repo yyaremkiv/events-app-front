@@ -8,6 +8,8 @@ export const SingleEvet = ({ data }) => {
   const router = useRouter();
   const [message, setMessage] = useState("");
 
+  console.log("this is a event", data);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const emailValue = inputEmail.current.value;
@@ -41,7 +43,9 @@ export const SingleEvet = ({ data }) => {
   return (
     <div className={css.event_single_page}>
       <h1>{data.title}</h1>
-      <Image src={data.image} width={1000} height={500} alt={data.title} />
+      {data.imagePath ? (
+        <Image src={data.imagePath} width={500} height={500} alt={data.title} />
+      ) : null}
       <p>{data.description}</p>
       <form onSubmit={onSubmit} className={css.email_registration}>
         <label>Get Registered for this event!</label>

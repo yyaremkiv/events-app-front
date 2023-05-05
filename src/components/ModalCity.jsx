@@ -12,9 +12,9 @@ import { ImageCity } from "./ImageCity";
 export const ModalCity = ({ cityId }) => {
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
-  const city = useSelector((state) => state.city.cities).filter(
+  const city = useSelector((state) => state.city.cities).find(
     (city) => city._id === cityId
-  )[0];
+  );
 
   const handleSubmitCity = (values, { resetForm }) => {
     const formData = new FormData();
