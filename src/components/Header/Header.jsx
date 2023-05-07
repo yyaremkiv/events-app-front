@@ -31,7 +31,7 @@ export const Header = () => {
           </ul>
         </nav>
       </div>
-      <h1 className={css.title}>Sed ut perspiciatis unde omnis iste.</h1>
+      <h1 className={css.title}>Events</h1>
     </header>
   );
 };

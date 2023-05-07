@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import citySlice from "./cities/city.slice";
+import eventSlice from "./cities/event.slice";
 
 export const store = configureStore({
   reducer: {
-    city: citySlice,
+    events: eventSlice,
   },
 });

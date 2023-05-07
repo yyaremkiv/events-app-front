@@ -29,6 +29,7 @@ const Admin = () => {
 
   const handleModalClose = () => {
     setCityId(null);
+    setEventId(null);
     setOpenModal(false);
   };
 

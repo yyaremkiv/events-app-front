@@ -12,7 +12,7 @@ import { ImageCity } from "./ImageCity";
 export const ModalCity = ({ cityId }) => {
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
-  const city = useSelector((state) => state.city.cities).find(
+  const city = useSelector((state) => state.events.cities).find(
     (city) => city._id === cityId
   );
 

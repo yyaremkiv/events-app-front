@@ -12,7 +12,7 @@ export const ListEvent = ({
   handleEditEvent,
 }) => {
   const dispatch = useDispatch();
-  const city = useSelector((state) => state.city.cities).find(
+  const city = useSelector((state) => state.events.cities).find(
     (city) => city._id === cityId
   );
 
@@ -21,6 +21,10 @@ export const ListEvent = ({
   }, []);
 
   const eventsList = city.events ? city.events : [];
+
+  const handleDeleteEvent = (eventId) => {
+    dispatch(CityOperations.deleteEvent({ cityId, eventId }));
+  };
 
   return (
     <Box
@@ -42,11 +46,15 @@ export const ListEvent = ({
       {eventsList?.map(
         ({ id: eventId, title, description, date, seats }, index) => (
           <Box
-            sx={{ display: "flex", gap: "1rem", border: "1px solid green" }}
+            sx={{
+              display: "flex",
+              justifyContent: "left",
+              gap: "1rem",
+              border: "1px solid green",
+            }}
             key={index}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <p>{eventId}</p>
               <p>{index}</p>
               <p>{title}</p>
               <p>{date}</p>
@@ -55,7 +63,7 @@ export const ListEvent = ({
             <IconButton onClick={() => handleEditEvent({ cityId, eventId })}>
               <EditIcon />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => handleDeleteEvent(eventId)}>
               <DeleteIcon />
             </IconButton>
           </Box>

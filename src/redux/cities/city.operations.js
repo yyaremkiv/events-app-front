@@ -73,6 +73,30 @@ class CityOperations {
       }
     }
   );
+
+  static updateEvent = createAsyncThunk(
+    "city/updateEvent",
+    async (formData, { rejectWithValue }) => {
+      try {
+        const { data } = await EventService.updateEvent(formData);
+        return data;
+      } catch (err) {
+        return rejectWithValue(err.message);
+      }
+    }
+  );
+
+  static deleteEvent = createAsyncThunk(
+    "city/deleteEvent",
+    async ({ cityId, eventId }, { rejectWithValue }) => {
+      try {
+        const { data } = await EventService.deleteEvent({ cityId, eventId });
+        return data;
+      } catch (err) {
+        return rejectWithValue(err.message);
+      }
+    }
+  );
 }
 
 export default CityOperations;

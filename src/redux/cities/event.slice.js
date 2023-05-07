@@ -7,8 +7,8 @@ const initialState = {
   error: null,
 };
 
-const citiesSlice = createSlice({
-  name: "cities",
+const eventSlice = createSlice({
+  name: "event",
   initialState,
   extraReducers: (builder) => {
     builder.addCase(CityOperations.getCity.pending, (state) => {
@@ -97,7 +97,39 @@ const citiesSlice = createSlice({
       state.error = action.payload;
       state.isLoading = false;
     });
+    builder.addCase(CityOperations.updateEvent.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(CityOperations.updateEvent.fulfilled, (state, action) => {
+      const { cityId, events } = action.payload;
+      const cityIndex = state.cities.findIndex((city) => city._id === cityId);
+      if (cityIndex !== -1) {
+        state.cities[cityIndex].events = events;
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.updateEvent.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.deleteEvent.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(CityOperations.deleteEvent.fulfilled, (state, action) => {
+      const { cityId, events } = action.payload;
+      const cityIndex = state.cities.findIndex((city) => city._id === cityId);
+      if (cityIndex !== -1) {
+        state.cities[cityIndex].events = events;
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(CityOperations.deleteEvent.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
   },
 });
 
-export default citiesSlice.reducer;
+export default eventSlice.reducer;

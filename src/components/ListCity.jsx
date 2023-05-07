@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { ItemCity } from "./ItemCity";
-import { Box, Modal } from "@mui/material";
-import { ModalEvent } from "./ModalEvent";
+import { Box } from "@mui/material";
 
 export const ListCity = ({
   data,
@@ -9,17 +7,6 @@ export const ListCity = ({
   handleAddEvent,
   handleEditEvent,
 }) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [cityId, setCityId] = useState(null);
-
-  const handleCloseModal = () => setOpenModal(!modalOpen);
-  const handleModalClose = () => setOpenModal(false);
-
-  // const handleAddEvent = (id) => {
-  //   setCityId(id);
-  //   setOpenModal(true);
-  // };
-
   return (
     <Box>
       <ul>

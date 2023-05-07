@@ -18,11 +18,19 @@ export const ModalEvent = ({ cityId, eventId }) => {
   const [value, setValue] = useState(dayjs());
   const [time, setTime] = useState(dayjs());
   const dispatch = useDispatch();
-  const city = useSelector((state) => state.city.cities).find(
+  const city = useSelector((state) => state.events.cities).find(
     (city) => city._id === cityId
   );
   const singleEvent = city.events.find((event) => event.id === eventId);
-  console.log("sfsdf", singleEvent);
+
+  const dataEvent = eventId
+    ? {
+        title: singleEvent.title,
+        description: singleEvent.description,
+        date: dayjs(singleEvent.date),
+        seats: singleEvent.seats,
+      }
+    : null;
 
   const handleSubmitEvent = (values, { resetForm }) => {
     const formData = new FormData();
@@ -36,14 +44,21 @@ export const ModalEvent = ({ cityId, eventId }) => {
       formData.append("picture", image);
     }
 
-    dispatch(CityOperations.addEvent(formData));
+    if (eventId) {
+      formData.append("eventId", eventId);
+      dispatch(CityOperations.updateEvent(formData));
+    } else {
+      dispatch(CityOperations.addEvent(formData));
+    }
   };
 
   return (
     <Box>
       <Formik
         onSubmit={handleSubmitEvent}
-        initialValues={FormValidation.initialValuesEvent}
+        initialValues={
+          dataEvent ? dataEvent : FormValidation.initialValuesEvent
+        }
         validationSchema={FormValidation.eventSchema}
       >
         {({

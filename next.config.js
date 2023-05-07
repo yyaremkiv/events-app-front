@@ -9,6 +9,7 @@ const nextConfig = {
       "storage.googleapis.com",
     ],
   },
+  devtools: "false",
 };
 
 module.exports = nextConfig;

@@ -30,6 +30,16 @@ class EventService {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
+
+  static async updateEvent(formData) {
+    return API.patch("/events/event", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+
+  static async deleteEvent({ cityId, eventId }) {
+    return API.delete(`/events/event/${cityId}/${eventId}`);
+  }
 }
 
 export default EventService;
