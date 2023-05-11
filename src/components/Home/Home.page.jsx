@@ -28,10 +28,9 @@ export const HomePage = ({ data }) => {
               <div className={css.content}>
                 <h2>{ev.title}</h2>
                 <p>{ev.description}</p>
-                <p>Total events on this city: {ev.totalEvents}</p>
-                <p>total people on this city</p>
-                <p>count on event</p>
-                <p>first event data</p>
+                <p>Total events on this city: {ev.eventCount}</p>
+                <p>total people on this city: {ev.population}</p>
+                <p>country: {ev.country}</p>
               </div>
             </Link>
           ))}
