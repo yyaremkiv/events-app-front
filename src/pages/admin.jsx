@@ -17,7 +17,8 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CityOperations from "@/redux/cities/city.operations";
-import { useGetCity } from "@/components/hooks/useCity";
+import { useGetCity } from "@/hooks/useCity";
+import { useAuth } from "@/hooks/useAuth";
 
 const Admin = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -135,4 +136,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default useAuth(Admin);

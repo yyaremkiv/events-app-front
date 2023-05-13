@@ -1,9 +1,15 @@
+import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "/public/images/logo_black.png";
 import css from "./Header.module.scss";
+import { Box, Button, Typography } from "@mui/material";
+import { logout } from "@/redux/auth/authSlice";
 
 export const Header = () => {
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  const dispatch = useDispatch();
+
   return (
     <header className={css.header}>
       <div
@@ -14,6 +20,12 @@ export const Header = () => {
         }}
       >
         <Image src={logo} width={50} height={50} alt="logo" />
+        {isLogged ? (
+          <Box>
+            <Typography>Hello, Admin!</Typography>
+            <Button onClick={() => dispatch(logout())}>Logout</Button>
+          </Box>
+        ) : null}
         <nav>
           <ul>
             <li>
