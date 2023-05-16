@@ -17,7 +17,7 @@ import themeSlice from "./theme/themeSlice";
 const persistAuthConfig = {
   key: "auth",
   storage,
-  whitelist: ["accessToken", "isLogged", "admin"],
+  whitelist: ["accessToken", "isLogged"],
 };
 
 const persistThemeConfig = {

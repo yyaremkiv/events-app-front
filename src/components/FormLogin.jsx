@@ -28,7 +28,7 @@ export const FormLogin = () => {
       <Formik
         onSubmit={(values) =>
           dispatch(
-            AuthOperations.login({
+            AuthOperations.signin({
               email: values.email.toLocaleLowerCase(),
               password: values.password,
             })
