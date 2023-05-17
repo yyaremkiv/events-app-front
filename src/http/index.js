@@ -8,7 +8,7 @@ export const injectStore = (_store) => {
 };
 
 const API = axios.create({
-  withCredentials: true,
+  // withCredentials: true,
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
