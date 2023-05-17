@@ -12,6 +12,8 @@ const API = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
+API.defaults.headers.common["Origin"] = "https://events-app-front.vercel.app";
+
 API.interceptors.request.use((config) => {
   const accessToken = store.getState().auth.accessToken;
   config.headers.Authorization = `Bearer ${accessToken}`;
