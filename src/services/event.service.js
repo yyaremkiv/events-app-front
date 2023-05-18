@@ -1,8 +1,10 @@
-import API from "@/http";
+import API from "@/config/axios.api.js";
 
 class EventService {
-  static async getCity() {
-    return API.get("/events/city");
+  static async getCity({ limit }) {
+    return API.get("/events/city", {
+      params: { limit },
+    });
   }
 
   static async addCity(formData) {

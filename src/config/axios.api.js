@@ -1,6 +1,6 @@
 import axios from "axios";
-import AuthActions from "@/redux/auth/AuthOperations";
-import { resetRefreshAttempts } from "@/redux/auth/authSlice";
+import AuthActions from "../redux/auth/AuthOperations";
+import { resetRefreshAttempts } from "../redux/auth/AuthOperations";
 
 let store;
 export const injectStore = (_store) => {
@@ -11,8 +11,6 @@ const API = axios.create({
   withCredentials: true,
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
-
-API.defaults.headers.common["Origin"] = "https://events-app-front.vercel.app";
 
 API.interceptors.request.use((config) => {
   const accessToken = store.getState().auth.accessToken;
@@ -26,7 +24,7 @@ API.interceptors.response.use(
   async (err) => {
     const originalRequest = err.config;
 
-    if (err.response.status === 401 && err.config && !err.config._isRetry) {
+    if (err?.response?.status === 401 && err.config && !err.config._isRetry) {
       originalRequest._isRetry = true;
       try {
         const refreshAttempts = store.getState().auth.refreshAttempts;

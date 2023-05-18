@@ -2,10 +2,12 @@ import { useSelector } from "react-redux";
 import { CatEvent } from "@/components/Events/catEvent";
 import EventService from "@/services/event.service";
 import { Box } from "@mui/system";
+import { MenuNavigation } from "@/components/MenuNavigation";
 
 const EventsCatPage = ({ data, pageName }) => {
   return (
     <Box>
+      <MenuNavigation />
       <CatEvent data={data} pageName={pageName} />
     </Box>
   );
@@ -14,8 +16,8 @@ const EventsCatPage = ({ data, pageName }) => {
 export default EventsCatPage;
 
 export async function getStaticPaths() {
-  const cities = await EventService.getCity();
-  const AllPath = cities.data.map((ev) => {
+  const cities = await EventService.getCity({ limit: 10 });
+  const AllPath = cities.data.cities.map((ev) => {
     return {
       params: {
         cat: ev._id.toString(),

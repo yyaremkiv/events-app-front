@@ -9,7 +9,7 @@ export const useGetCity = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(CityOperations.getCity());
+    dispatch(CityOperations.getCity({}));
   }, []);
 
   return [cities, isLoading, error];

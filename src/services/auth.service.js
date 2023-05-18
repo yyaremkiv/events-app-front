@@ -1,4 +1,4 @@
-import API from "@/http";
+import API from "@/config/axios.api.js";
 
 class AuthService {
   static async signup({ username, email, password }) {

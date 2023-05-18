@@ -6,7 +6,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const { data } = await EventService.getCity();
+  const { data } = await EventService.getCity({ limit: 10 });
 
   return {
     props: {

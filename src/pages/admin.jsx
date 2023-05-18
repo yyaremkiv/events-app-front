@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { ModalCity } from "@/components/ModalCity";
 import { ModalEvent } from "@/components/ModalEvent";
-
-import EventService from "@/services/event.service";
 
 import { ListCity } from "@/components/ListCity";
 import {

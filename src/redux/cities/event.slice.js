@@ -16,7 +16,7 @@ const eventSlice = createSlice({
       state.error = null;
     });
     builder.addCase(CityOperations.getCity.fulfilled, (state, action) => {
-      state.cities = action.payload;
+      state.cities = action.payload.cities;
       state.isLoading = false;
     });
     builder.addCase(CityOperations.getCity.rejected, (state, action) => {
