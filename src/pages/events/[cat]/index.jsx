@@ -18,9 +18,10 @@ export default EventsCatPage;
 export async function getStaticPaths() {
   const cities = await EventService.getCity({ limit: 10 });
   const AllPath = cities.data.cities.map((ev) => {
+    console.log("ev", ev.city.toLowerCase());
     return {
       params: {
-        cat: ev._id.toString(),
+        cat: ev.city.toLowerCase(),
       },
     };
   });
@@ -31,8 +32,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const id = context?.params.cat;
-  const { data } = await EventService.getEvent(id);
+  console.log("context", context);
+  const city = context?.params.cat;
+  const { data } = await EventService.getEvent(city);
+  console.log("this is console.log", data);
 
-  return { props: { data, pageName: id } };
+  return { props: { data } };
 }

@@ -12,7 +12,7 @@ const EventPage = () => {
   useEffect(() => {
     async function fetch() {
       const { data } = await EventService.getEvent(cat);
-      const event = data.events.find((event) => event.id === id);
+      const event = data.events.events.find((event) => event.title === id);
       setData(event);
     }
 
@@ -21,6 +21,7 @@ const EventPage = () => {
     }
   }, [cat, id]);
 
+  console.log("eventPage", data);
   return (
     <Box>
       <SingleEvet data={data} />;

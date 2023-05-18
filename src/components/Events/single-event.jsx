@@ -8,8 +8,6 @@ export const SingleEvet = ({ data }) => {
   const router = useRouter();
   const [message, setMessage] = useState("");
 
-  console.log("this is a event", data);
-
   const onSubmit = async (e) => {
     e.preventDefault();
     const emailValue = inputEmail.current.value;
