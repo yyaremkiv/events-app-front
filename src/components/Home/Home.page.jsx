@@ -4,18 +4,18 @@ import css from "./Home-page.module.scss";
 import { Box, Typography } from "@mui/material";
 
 export const HomePage = ({ data }) => {
-  console.log("homePage", data);
   return (
     <main className={css.main}>
       <div className={css.home_body}>
         {data.cities
           .filter((city) => city.showOnHomePage)
           .map((ev) => (
-            <Box sx={{ display: "flex", border: "1px solid gray" }}>
+            <Box
+              key={ev._id}
+              sx={{ display: "flex", border: "1px solid gray" }}
+            >
               <Link
-                key={ev._id}
                 href={`/events/${ev.city.toLowerCase()}`}
-                // href={`/events/${ev.city.toLowerCase()}`}
                 className={css.card}
               >
                 <div className={css.image}>
@@ -23,7 +23,9 @@ export const HomePage = ({ data }) => {
                     src={ev.imagePath}
                     alt={ev.title}
                     width={800}
-                    height={300}
+                    height={500}
+                    priority={true}
+                    style={{ width: "auto", height: "auto" }}
                   />
                 </div>
               </Link>

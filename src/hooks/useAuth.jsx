@@ -7,8 +7,6 @@ export const useAuth = (Component) => {
     const router = useRouter();
     const isLogged = useSelector((state) => state.auth.isLogged);
 
-    console.log("this is console");
-
     useEffect(() => {
       if (!isLogged) {
         router.push("/login");

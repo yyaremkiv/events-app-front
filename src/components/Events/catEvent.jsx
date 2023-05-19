@@ -1,27 +1,35 @@
 import Link from "next/link";
 import Image from "next/image";
 import css from "./catEvent.module.scss";
+import { Box, Container, Typography } from "@mui/material";
 
-export const CatEvent = ({ data }) => {
-  console.log("CatEvent", data);
-  const { city } = data;
-
+export const CatEvent = ({ data, cityNameLink }) => {
+  console.log("data events", data);
   return (
-    <div className={css.cat_events}>
-      <div className={css.content}>
-        {data?.events.events?.map((ev) => (
+    <Container>
+      <Box className={css.content}>
+        {data?.map(({ id, title, imagePath, description, date, seats }) => (
           <Link
-            key={ev.id}
-            href={`/events/${city.toLowerCase()}/${ev.title}`}
+            key={id}
+            href={`/events/${cityNameLink.toLowerCase()}/${title}`}
             className={css.card}
             style={{ border: "1px solid red" }}
           >
-            <Image src={ev.imagePath} alt={ev.title} width={300} height={300} />
-            <h2>{ev.title}</h2>
-            <p>{ev.description}</p>
+            <Image
+              src={imagePath}
+              alt={title}
+              width={300}
+              height={300}
+              priority={true}
+              style={{ width: "auto", height: "auto" }}
+            />
+            <Typography variant="h4">Title: {title}</Typography>
+            <Typography>Descrition: {description}</Typography>
+            <Typography>Data: {date}</Typography>
+            <Typography>Seats: {seats}</Typography>
           </Link>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };

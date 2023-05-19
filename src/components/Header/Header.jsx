@@ -19,7 +19,10 @@ export const Header = () => {
           alignItems: "center",
         }}
       >
-        <Image src={logo} width={50} height={50} alt="logo" />
+        <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <Image src={logo} width={50} height="auto" alt="logo" />
+          <h1 className={css.title}>Events</h1>
+        </Box>
         {isLogged ? (
           <Box>
             <Typography>Hello, Admin!</Typography>
@@ -43,7 +46,6 @@ export const Header = () => {
           </ul>
         </nav>
       </div>
-      <h1 className={css.title}>Events</h1>
     </header>
   );
 };

@@ -37,12 +37,7 @@ export const ImageCity = ({ imagePath, size = "80px" }) => {
 
       {isLoading && (
         <Box position="absolute">
-          <Skeleton
-            // variant="circular"
-            width={size}
-            height={size}
-            animation="wave"
-          />
+          <Skeleton width={size} height={size} animation="wave" />
         </Box>
       )}
 

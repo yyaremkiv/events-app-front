@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import css from "./single-event.module.scss";
 import { useRouter } from "next/router";
+import { Box, Typography } from "@mui/material";
 
 export const SingleEvet = ({ data }) => {
   const inputEmail = useRef();
@@ -39,23 +40,37 @@ export const SingleEvet = ({ data }) => {
   };
 
   return (
-    <div className={css.event_single_page}>
-      <h1>{data.title}</h1>
-      {data.imagePath ? (
-        <Image src={data.imagePath} width={500} height={500} alt={data.title} />
-      ) : null}
-      <p>{data.description}</p>
-      <form onSubmit={onSubmit} className={css.email_registration}>
-        <label>Get Registered for this event!</label>
-        <input
-          ref={inputEmail}
-          type="email"
-          id="email"
-          placeholder="Please insert your email here"
-        />
-        <button type="submit">Submit</button>
-      </form>
-      <p>{message}</p>
-    </div>
+    <Box>
+      <Typography variant="h4">{data.title}</Typography>
+
+      <Box sx={{ display: "flex" }}>
+        {data.imagePath ? (
+          <Image
+            src={data.imagePath}
+            width={400}
+            height={300}
+            alt={data.title}
+            style={{ width: "auto", height: "auto" }}
+            priority={true}
+          />
+        ) : null}
+
+        <Box sx={{ padding: "1rem" }}>
+          <Typography variant="h4">Description: {data.description}</Typography>
+          <form onSubmit={onSubmit}>
+            <label>Get Registered for this event!</label>
+            <input
+              ref={inputEmail}
+              type="email"
+              id="email"
+              placeholder="Please insert your email here"
+              style={{ border: "1px solid gray" }}
+            />
+            <button type="submit">Submit</button>
+          </form>
+          <p>{message}</p>
+        </Box>
+      </Box>
+    </Box>
   );
 };

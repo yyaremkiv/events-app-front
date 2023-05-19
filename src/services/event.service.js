@@ -1,9 +1,9 @@
 import API from "@/config/axios.api.js";
 
 class EventService {
-  static async getCity({ limit }) {
+  static async getCity({ page = 1, limit = 5 }) {
     return API.get("/events/city", {
-      params: { limit },
+      params: { page, limit },
     });
   }
 
@@ -23,8 +23,10 @@ class EventService {
     return API.delete(`/events/city/${cityId}`);
   }
 
-  static async getEvent(cityId) {
-    return API.get(`/events/event/${cityId}`);
+  static async getEvent({ cityName, page = 1, limit = 5 }) {
+    return API.get(`/events/event/${cityName}`, {
+      params: { page, limit },
+    });
   }
 
   static async addEvent(formData) {
