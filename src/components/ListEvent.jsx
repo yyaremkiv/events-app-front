@@ -16,8 +16,10 @@ export const ListEvent = ({
     (city) => city._id === cityId
   );
 
+  const cityName = city.city[0].toUpperCase() + city.city.slice(1);
+
   useEffect(() => {
-    dispatch(CityOperations.getEvent(cityId));
+    dispatch(CityOperations.getEvent({ cityName, limit: 10 }));
   }, []);
 
   const eventsList = city.events ? city.events : [];

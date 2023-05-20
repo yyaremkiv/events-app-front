@@ -1,16 +1,33 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik } from "formik";
-import { Box, FormHelperText, TextField } from "@mui/material";
+import { Autocomplete, Box, FormHelperText, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import EventService from "@/services/event.service";
 import { FormValidation } from "@/config/form.validation";
 import dayjs from "dayjs";
 import { DropzoneUpload } from "./DropzoneUpload";
 import CityOperations from "@/redux/cities/city.operations";
+
+const eventCategories = [
+  { id: 1, name: "Music" },
+  { id: 2, name: "Sports" },
+  { id: 3, name: "Art" },
+  { id: 4, name: "Food & Drink" },
+  { id: 5, name: "Technology" },
+  { id: 6, name: "Fashion" },
+  { id: 7, name: "Health & Wellness" },
+  { id: 8, name: "Business" },
+  { id: 9, name: "Science" },
+  { id: 10, name: "Education" },
+  { id: 11, name: "Theater" },
+  { id: 12, name: "Film & Media" },
+  { id: 13, name: "Literature" },
+  { id: 14, name: "Gaming" },
+  { id: 15, name: "Nature & Outdoors" },
+];
 
 export const ModalEvent = ({ cityId, eventId }) => {
   const isLoading = false;
@@ -33,17 +50,15 @@ export const ModalEvent = ({ cityId, eventId }) => {
     : null;
 
   const handleSubmitEvent = (values, { resetForm }) => {
+    console.log("this is handle console", values);
     const formData = new FormData();
     formData.append("cityId", cityId);
-
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
     });
-
     if (image) {
       formData.append("picture", image);
     }
-
     if (eventId) {
       formData.append("eventId", eventId);
       dispatch(CityOperations.updateEvent(formData));
@@ -122,15 +137,53 @@ export const ModalEvent = ({ cityId, eventId }) => {
               </LocalizationProvider>
             </Box>
 
-            <TextField
-              label="Seats"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.seats}
-              name="seats"
-              error={Boolean(touched.seats && errors.seats)}
-              helperText={touched.seats && errors.seats}
-              sx={{ height: "60px" }}
+            <Box sx={{ display: "flex", gap: "1rem" }}>
+              <TextField
+                label="Seats count"
+                type="number"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.seats}
+                name="seats"
+                error={Boolean(touched.seats && errors.seats)}
+                helperText={touched.seats && errors.seats}
+                sx={{ height: "60px", width: "50%" }}
+              />
+              <TextField
+                label="Price"
+                type="number"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.price}
+                name="price"
+                error={Boolean(touched.price && errors.price)}
+                helperText={touched.price && errors.price}
+                sx={{ height: "60px", width: "50%" }}
+              />
+            </Box>
+
+            <Autocomplete
+              multiple
+              id="size-small-outlined-multi"
+              options={eventCategories}
+              getOptionLabel={(option) => option.name}
+              disabled={eventCategories.length > 0 ? false : true}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Set category"
+                  placeholder="Add more"
+                />
+              )}
+              onChange={(_, selectedValues) => {
+                setFieldValue(
+                  "categories",
+                  selectedValues.reduce((acc, cat) => {
+                    acc.push(cat.name);
+                    return acc;
+                  }, [])
+                );
+              }}
             />
 
             <DropzoneUpload image={image} setImage={setImage} />

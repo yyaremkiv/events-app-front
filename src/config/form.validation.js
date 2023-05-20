@@ -13,7 +13,9 @@ export const FormValidation = {
     title: "",
     description: "",
     date: dayjs(),
-    seats: "",
+    seats: 0,
+    price: 0,
+    categories: [],
   },
   citySchema: Yup.object().shape({
     city: Yup.string()

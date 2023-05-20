@@ -17,9 +17,9 @@ import { LoadingButton } from "@mui/lab";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { FilterEvent } from "@/components/FilterEvent";
 
-const EventsCatPage = ({ data, totalCounts }) => {
+const EventsCatPage = ({ data, eventsParams }) => {
   const [events, setEvents] = useState(data.events);
-  const [totalEvents, setTotalEvents] = useState(totalCounts);
+  const [totalEvents, setTotalEvents] = useState(eventsParams.totalEvents);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
 
@@ -55,8 +55,7 @@ const EventsCatPage = ({ data, totalCounts }) => {
     try {
       const { data } = await EventService.getEvent({
         cityName: cat,
-        page,
-        limit,
+        params: { page, limit },
       });
       if (data.events) {
         const newEventsList = isLoadingMore
@@ -121,7 +120,14 @@ const EventsCatPage = ({ data, totalCounts }) => {
       <Container>
         <Box sx={{ display: "flex" }}>
           {/* Filter - start */}
-          <FilterEvent />
+          {eventsParams ? (
+            <FilterEvent
+              data={eventsParams}
+              cityName={cat}
+              page={page}
+              limit={limit}
+            />
+          ) : null}
           {/* Filter - end */}
 
           <Box
@@ -135,6 +141,7 @@ const EventsCatPage = ({ data, totalCounts }) => {
             }}
           >
             <CatEvent data={events} cityNameLink={cat} />
+
             <LoadingButton
               variant="text"
               loadingPosition="start"
@@ -181,7 +188,10 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const city = context?.params.cat;
-  const { data } = await EventService.getEvent({ cityName: city });
+  const { data } = await EventService.getEvent({
+    cityName: city,
+    params: { page: 1, limit: 5 },
+  });
 
-  return { props: { data: data.events, totalCounts: data.totalEvents } };
+  return { props: { data: data.events, eventsParams: data.eventsParams } };
 }

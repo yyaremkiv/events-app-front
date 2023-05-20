@@ -70,7 +70,8 @@ const eventSlice = createSlice({
       state.error = null;
     });
     builder.addCase(CityOperations.getEvent.fulfilled, (state, action) => {
-      const { cityId, events } = action.payload;
+      const { events, eventsParams } = action.payload;
+      const cityId = eventsParams.cityId;
       const cityIndex = state.cities.findIndex((city) => city._id === cityId);
       if (cityIndex !== -1) {
         state.cities[cityIndex].events = [...events];

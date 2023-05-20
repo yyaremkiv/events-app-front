@@ -23,11 +23,16 @@ class EventService {
     return API.delete(`/events/city/${cityId}`);
   }
 
-  static async getEvent({ cityName, page = 1, limit = 5 }) {
-    return API.get(`/events/event/${cityName}`, {
-      params: { page, limit },
-    });
+  static async getEvent({ cityName, params }) {
+    console.log("this is console", cityName, params);
+    return API.get(`/events/event/${cityName}`, { params });
   }
+
+  // static async getEvent({ cityName, page = 1, limit = 5 }) {
+  //   return API.get(`/events/event/${cityName}`, {
+  //     params: { page, limit },
+  //   });
+  // }
 
   static async addEvent(formData) {
     return API.post("/events/event", formData, {

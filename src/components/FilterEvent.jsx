@@ -5,61 +5,88 @@ import * as React from "react";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Box, Button, FormHelperText, Slider, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  Slider,
+  Typography,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-import Stack from "@mui/material/Stack";
-import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-
-const initialValues = {
-  query: "",
-  dateStart: dayjs(),
-  dateEnd: dayjs(),
-  category: [],
-};
+import EventService from "@/services/event.service";
 
 const searchSchema = Yup.object().shape({
   query: Yup.string(),
   dateStart: Yup.date().required("Date is required"),
   dateEnd: Yup.date().required("Date is required"),
+  priceStart: Yup.number(),
+  priceEnd: Yup.number(),
+  seatsStart: Yup.number(),
+  seatsEnd: Yup.number(),
 });
 
-const eventCategories = [
-  { id: 1, name: "Music" },
-  { id: 2, name: "Sports" },
-  { id: 3, name: "Art" },
-  { id: 4, name: "Food & Drink" },
-  { id: 5, name: "Technology" },
-  { id: 6, name: "Fashion" },
-  { id: 7, name: "Health & Wellness" },
-  { id: 8, name: "Business" },
-  { id: 9, name: "Science" },
-  { id: 10, name: "Education" },
-  { id: 11, name: "Theater" },
-  { id: 12, name: "Film & Media" },
-  { id: 13, name: "Literature" },
-  { id: 14, name: "Gaming" },
-  { id: 15, name: "Nature & Outdoors" },
-];
-
-function valuetext(value) {
-  return `${value}°C`;
-}
-
-export const FilterEvent = () => {
-  const [value, setValue] = React.useState([20, 37]);
-  const handleSubmitEvent = (values, { resetForm }) => {
-    console.log("values", values);
+export const FilterEvent = ({
+  data: {
+    dateStart,
+    dateEnd,
+    categories,
+    seatsMin,
+    seatsMax,
+    priceMin,
+    priceMax,
+  },
+  cityName,
+  page,
+  limit,
+}) => {
+  const initialValues = {
+    query: "",
+    dateStart: dayjs(dateStart),
+    dateEnd: dayjs(dateEnd),
+    categories,
+    seatsMin,
+    seatsMax,
+    priceMin,
+    priceMax,
+    hasFreePlaces: false,
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleSubmitEvent = (
+    {
+      query,
+      dateStart,
+      dateEnd,
+      categories,
+      seatsMin,
+      seatsMax,
+      priceMin,
+      priceMax,
+      hasFreePlaces,
+    },
+    { resetForm }
+  ) => {
+    const queryObject = {
+      page,
+      limit,
+      searchQuery: query,
+      dateStart: dateStart.$d,
+      dataEnd: dateEnd.$d,
+      categories: categories.length ? categories : initialValues.categories,
+      seatsMin,
+      seatsMax,
+      priceMin,
+      priceMax,
+      hasFreePlaces,
+    };
+    EventService.getEvent({ cityName, params: queryObject });
   };
 
   return (
-    <Box sx={{ border: "1px solid gray" }}>
+    <Box>
       <Typography>Filter by value:</Typography>
       <Formik
         onSubmit={handleSubmitEvent}
@@ -122,8 +149,9 @@ export const FilterEvent = () => {
             <Autocomplete
               multiple
               id="size-small-outlined-multi"
-              options={eventCategories}
-              getOptionLabel={(option) => option.name}
+              options={categories}
+              getOptionLabel={(option) => option}
+              disabled={values.categories.length > 0 ? false : true}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -132,54 +160,96 @@ export const FilterEvent = () => {
                 />
               )}
               onChange={(_, selectedValues) => {
-                setFieldValue("category", selectedValues);
+                setFieldValue("categories", selectedValues);
               }}
             />
 
             <Typography>Seats:</Typography>
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
               <TextField
-                label="Start"
-                id="outlined-size-small"
-                defaultValue="minPrice"
+                label="Seats min"
                 size="small"
+                name="seatsMin"
+                value={values.seatsMin}
+                error={Boolean(touched.seatsMin && errors.seatsMin)}
+                helperText={touched.seatsMin && errors.seatsMin}
+                onChange={(e) => {
+                  setFieldValue("seatsMin", e.target.value);
+                }}
               />
               <TextField
-                label="End"
-                id="outlined-size-small"
-                defaultValue="max-price"
+                label="Seats end"
                 size="small"
+                name="seatsMax"
+                value={values.seatsMax}
+                error={Boolean(touched.seatsMax && errors.seatsMax)}
+                helperText={touched.seatsMax && errors.seatsMax}
+                onChange={(e) => {
+                  setFieldValue("seatsMax", e.target.value);
+                }}
               />
             </Box>
             <Slider
-              getAriaLabel={() => "Temperature range"}
-              value={value}
-              onChange={handleChange}
+              getAriaLabel={() => "Диапазон мест"}
+              value={[values.seatsMin, values.seatsMax]}
+              min={seatsMin}
+              max={seatsMax}
+              step={(seatsMax - seatsMin) / 100}
+              onChange={(_, newValue) => {
+                setFieldValue("seatsMin", parseInt(newValue[0]));
+                setFieldValue("seatsMax", parseInt(newValue[1]));
+              }}
               valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
             />
 
             <Typography>Price:</Typography>
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
               <TextField
-                label="Start"
-                id="outlined-size-small"
-                defaultValue="minPrice"
+                label="Price start"
                 size="small"
+                name="priceMin"
+                value={values.priceMin}
+                error={Boolean(touched.priceMin && errors.priceMin)}
+                helperText={touched.priceMin && errors.priceMin}
+                disabled={priceMin === 0 && priceMax === 0}
+                onChange={(e) => {
+                  setFieldValue("priceMin", e.target.value);
+                }}
               />
               <TextField
-                label="End"
-                id="outlined-size-small"
-                defaultValue="max-price"
+                label="Price end"
                 size="small"
+                name="priceMax"
+                value={values.priceMax}
+                error={Boolean(touched.priceMax && errors.priceMax)}
+                helperText={touched.priceMax && errors.priceMax}
+                disabled={priceMin === 0 && priceMax === 0}
+                onChange={(e) => {
+                  setFieldValue("priceMax", e.target.value);
+                }}
               />
             </Box>
             <Slider
-              getAriaLabel={() => "Temperature range"}
-              value={value}
-              onChange={handleChange}
+              getAriaLabel={() => "Price range"}
+              value={[values.priceMin, values.priceMax]}
+              min={priceMin}
+              max={priceMax}
+              step={(priceMax - priceMin) / 100}
+              disabled={priceMin === 0 && priceMax === 0}
+              onChange={(e) => {
+                setFieldValue("priceMin", parseInt(e.target.value[0]));
+                setFieldValue("priceMax", parseInt(e.target.value[1]));
+              }}
               valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
+            />
+
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Free places"
+              checked={values.hasFreePlaces}
+              onChange={() =>
+                setFieldValue("hasFreePlaces", !values.hasFreePlaces)
+              }
             />
 
             <Button type="submit" variant="outlined">
