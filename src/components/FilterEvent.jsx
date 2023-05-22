@@ -1,13 +1,10 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
-import * as React from "react";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import {
   Box,
-  Button,
   Checkbox,
   FormControlLabel,
   FormHelperText,
@@ -15,9 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LoadingButton } from "@mui/lab";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import EventService from "@/services/event.service";
 
 const searchSchema = Yup.object().shape({
   query: Yup.string(),
@@ -39,15 +36,15 @@ export const FilterEvent = ({
     priceMin,
     priceMax,
   },
-  cityName,
-  page,
-  limit,
+  handleFetchByFilter,
+  handleClearFilter,
+  isLoading,
 }) => {
   const initialValues = {
     query: "",
     dateStart: dayjs(dateStart),
     dateEnd: dayjs(dateEnd),
-    categories,
+    categories: [],
     seatsMin,
     seatsMax,
     priceMin,
@@ -55,39 +52,37 @@ export const FilterEvent = ({
     hasFreePlaces: false,
   };
 
-  const handleSubmitEvent = (
-    {
-      query,
-      dateStart,
-      dateEnd,
-      categories,
-      seatsMin,
-      seatsMax,
-      priceMin,
-      priceMax,
-      hasFreePlaces,
-    },
-    { resetForm }
-  ) => {
-    const queryObject = {
-      page,
-      limit,
+  const handleSubmitEvent = ({
+    query,
+    dateStart,
+    dateEnd,
+    categories,
+    seatsMin,
+    seatsMax,
+    priceMin,
+    priceMax,
+    hasFreePlaces,
+  }) => {
+    handleFetchByFilter({
       searchQuery: query,
       dateStart: dateStart.$d,
       dataEnd: dateEnd.$d,
-      categories: categories.length ? categories : initialValues.categories,
+      categories: categories.length ? categories : [],
       seatsMin,
       seatsMax,
       priceMin,
       priceMax,
       hasFreePlaces,
-    };
-    EventService.getEvent({ cityName, params: queryObject });
+    });
+  };
+
+  const handleClearForm = (resetForm) => {
+    resetForm();
+    handleClearFilter();
   };
 
   return (
     <Box>
-      <Typography>Filter by value:</Typography>
       <Formik
         onSubmit={handleSubmitEvent}
         initialValues={initialValues}
@@ -101,6 +96,7 @@ export const FilterEvent = ({
           handleChange,
           handleSubmit,
           setFieldValue,
+          resetForm,
         }) => (
           <form
             onSubmit={handleSubmit}
@@ -108,7 +104,6 @@ export const FilterEvent = ({
               display: "flex",
               flexDirection: "column",
               gap: "0.5rem",
-              padding: "1rem",
             }}
           >
             <TextField
@@ -119,6 +114,7 @@ export const FilterEvent = ({
               name="query"
               error={Boolean(touched.query && errors.query)}
               helperText={touched.query && errors.query}
+              disabled={isLoading}
               sx={{ marginBottom: "0.75rem" }}
             />
 
@@ -126,6 +122,7 @@ export const FilterEvent = ({
               <DatePicker
                 label="Date Start"
                 value={values.dateStart}
+                disabled={isLoading}
                 onChange={(date) => setFieldValue("dateStart", date)}
               />
               <FormHelperText
@@ -137,6 +134,7 @@ export const FilterEvent = ({
               <DatePicker
                 label="Date End"
                 value={values.dateEnd}
+                disabled={isLoading}
                 onChange={(date) => setFieldValue("dateEnd", date)}
               />
               <FormHelperText
@@ -149,9 +147,10 @@ export const FilterEvent = ({
             <Autocomplete
               multiple
               id="size-small-outlined-multi"
-              options={categories}
+              options={[...categories]}
               getOptionLabel={(option) => option}
-              disabled={values.categories.length > 0 ? false : true}
+              value={values.categories}
+              disabled={categories.length === 0 || isLoading ? true : false}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -168,93 +167,108 @@ export const FilterEvent = ({
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
               <TextField
                 label="Seats min"
-                size="small"
                 name="seatsMin"
+                size="small"
                 value={values.seatsMin}
                 error={Boolean(touched.seatsMin && errors.seatsMin)}
                 helperText={touched.seatsMin && errors.seatsMin}
+                disabled={isLoading}
                 onChange={(e) => {
                   setFieldValue("seatsMin", e.target.value);
                 }}
               />
               <TextField
                 label="Seats end"
-                size="small"
                 name="seatsMax"
+                size="small"
                 value={values.seatsMax}
                 error={Boolean(touched.seatsMax && errors.seatsMax)}
                 helperText={touched.seatsMax && errors.seatsMax}
+                disabled={isLoading}
                 onChange={(e) => {
                   setFieldValue("seatsMax", e.target.value);
                 }}
               />
             </Box>
             <Slider
+              valueLabelDisplay="auto"
               getAriaLabel={() => "Диапазон мест"}
               value={[values.seatsMin, values.seatsMax]}
               min={seatsMin}
               max={seatsMax}
               step={(seatsMax - seatsMin) / 100}
+              disabled={isLoading}
               onChange={(_, newValue) => {
                 setFieldValue("seatsMin", parseInt(newValue[0]));
                 setFieldValue("seatsMax", parseInt(newValue[1]));
               }}
-              valueLabelDisplay="auto"
             />
 
             <Typography>Price:</Typography>
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
               <TextField
                 label="Price start"
-                size="small"
                 name="priceMin"
+                size="small"
                 value={values.priceMin}
                 error={Boolean(touched.priceMin && errors.priceMin)}
                 helperText={touched.priceMin && errors.priceMin}
-                disabled={priceMin === 0 && priceMax === 0}
+                disabled={(priceMin === 0 && priceMax === 0) || isLoading}
                 onChange={(e) => {
                   setFieldValue("priceMin", e.target.value);
                 }}
               />
               <TextField
                 label="Price end"
-                size="small"
                 name="priceMax"
+                size="small"
                 value={values.priceMax}
                 error={Boolean(touched.priceMax && errors.priceMax)}
                 helperText={touched.priceMax && errors.priceMax}
-                disabled={priceMin === 0 && priceMax === 0}
+                disabled={(priceMin === 0 && priceMax === 0) || isLoading}
                 onChange={(e) => {
                   setFieldValue("priceMax", e.target.value);
                 }}
               />
             </Box>
             <Slider
+              valueLabelDisplay="auto"
               getAriaLabel={() => "Price range"}
               value={[values.priceMin, values.priceMax]}
               min={priceMin}
               max={priceMax}
               step={(priceMax - priceMin) / 100}
-              disabled={priceMin === 0 && priceMax === 0}
+              disabled={(priceMin === 0 && priceMax === 0) || isLoading}
               onChange={(e) => {
                 setFieldValue("priceMin", parseInt(e.target.value[0]));
                 setFieldValue("priceMax", parseInt(e.target.value[1]));
               }}
-              valueLabelDisplay="auto"
             />
 
             <FormControlLabel
               control={<Checkbox />}
               label="Free places"
               checked={values.hasFreePlaces}
+              disabled={isLoading}
               onChange={() =>
                 setFieldValue("hasFreePlaces", !values.hasFreePlaces)
               }
             />
 
-            <Button type="submit" variant="outlined">
-              Send
-            </Button>
+            <LoadingButton type="submit" variant="outlined" loading={isLoading}>
+              Search Event
+            </LoadingButton>
+            <LoadingButton
+              type="button"
+              variant="outlined"
+              loading={isLoading}
+              onClick={() => {
+                handleClearForm(resetForm, setFieldValue);
+                setFieldValue("categories", []);
+              }}
+            >
+              Clear Filter
+            </LoadingButton>
           </form>
         )}
       </Formik>

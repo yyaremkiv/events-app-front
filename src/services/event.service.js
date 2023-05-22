@@ -24,7 +24,6 @@ class EventService {
   }
 
   static async getEvent({ cityName, params }) {
-    console.log("this is console", cityName, params);
     return API.get(`/events/event/${cityName}`, { params });
   }
 

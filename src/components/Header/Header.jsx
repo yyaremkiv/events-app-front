@@ -1,10 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-import Image from "next/image";
-import logo from "/public/images/logo_black.png";
 import css from "./Header.module.scss";
 import { Box, Button, Typography } from "@mui/material";
-import { logout } from "@/redux/auth/authSlice";
+import AuthActions from "@/redux/auth/AuthOperations";
 
 export const Header = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
@@ -20,13 +18,14 @@ export const Header = () => {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <Image src={logo} width={50} height="auto" alt="logo" />
           <h1 className={css.title}>Events</h1>
         </Box>
         {isLogged ? (
           <Box>
             <Typography>Hello, Admin!</Typography>
-            <Button onClick={() => dispatch(logout())}>Logout</Button>
+            <Button onClick={() => dispatch(AuthActions.logout())}>
+              Logout
+            </Button>
           </Box>
         ) : null}
         <nav>

@@ -19,7 +19,7 @@ import { FilterEvent } from "@/components/FilterEvent";
 
 const EventsCatPage = ({ data, eventsParams }) => {
   const [events, setEvents] = useState(data.events);
-  const [totalEvents, setTotalEvents] = useState(eventsParams.totalEvents);
+  const [params, setParams] = useState(eventsParams);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
 
@@ -50,18 +50,27 @@ const EventsCatPage = ({ data, eventsParams }) => {
     fetchDataEvents({ page: newPageValue, isLoadingMore: true });
   };
 
-  async function fetchDataEvents({ page, isLoadingMore = false }) {
+  const handleFetchByFilter = (queryParams) => {
+    fetchDataEvents({ page, isLoadingMore: false, queryParams });
+  };
+
+  const handleClearFilter = () => {
+    fetchDataEvents({ queryParams: {} });
+  };
+
+  async function fetchDataEvents({ page, isLoadingMore = false, queryParams }) {
     setIsLoading(true);
     try {
       const { data } = await EventService.getEvent({
         cityName: cat,
-        params: { page, limit },
+        params: { page, limit, ...queryParams },
       });
-      if (data.events) {
+      if (data.events || data.eventsParams) {
         const newEventsList = isLoadingMore
           ? [...events, ...data.events]
           : data.events;
         setEvents(newEventsList);
+        setParams(data.eventsParams);
       }
     } catch (err) {
       setError(err?.response?.data.message || "Network error");
@@ -97,7 +106,7 @@ const EventsCatPage = ({ data, eventsParams }) => {
                 padding: "0.5rem",
               }}
             >
-              <Typography>All Events: {totalEvents}</Typography>
+              <Typography>All Events: {params.totalEvents}</Typography>
               <Typography>Displayed: {events?.length}</Typography>
 
               <FormControl sx={{ minWidth: 80 }} size="small">
@@ -119,55 +128,60 @@ const EventsCatPage = ({ data, eventsParams }) => {
 
       <Container>
         <Box sx={{ display: "flex" }}>
-          {/* Filter - start */}
-          {eventsParams ? (
+          {params && (
             <FilterEvent
-              data={eventsParams}
-              cityName={cat}
-              page={page}
-              limit={limit}
+              data={params}
+              handleFetchByFilter={handleFetchByFilter}
+              handleClearFilter={handleClearFilter}
+              isLoading={isLoading}
             />
-          ) : null}
-          {/* Filter - end */}
+          )}
 
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-
-              p: "0.75rem",
-              border: "1px solid tomato",
             }}
           >
-            <CatEvent data={events} cityNameLink={cat} />
-
-            <LoadingButton
-              variant="text"
-              loadingPosition="start"
-              startIcon={<RefreshIcon />}
-              loading={isLoading}
-              onClick={handleLoadMore}
-              sx={{ p: "0.75rem 2rem", fontSize: "0.8rem", color: "inherit" }}
-            >
-              <span>Load more cities!</span>
-            </LoadingButton>
-            <Box
-              sx={{
-                border: "1px solid gray",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "1rem",
-              }}
-            >
-              <Pagination
-                count={Math.ceil(totalEvents / limit)}
-                page={page}
-                onChange={handleChangePage}
-                disabled={isLoading}
+            {events?.length > 0 ? (
+              <CatEvent
+                data={events}
+                cityNameLink={cat}
+                isLoading={isLoading}
               />
-            </Box>
+            ) : null}
+
+            {events?.length < params.totalEvents && (
+              <LoadingButton
+                variant="text"
+                loadingPosition="start"
+                startIcon={<RefreshIcon />}
+                loading={isLoading}
+                onClick={handleLoadMore}
+                sx={{ p: "0.75rem 2rem", fontSize: "0.8rem", color: "inherit" }}
+              >
+                <span>Load more cities!</span>
+              </LoadingButton>
+            )}
+
+            {events?.length < params.totalEvents && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "1rem",
+                }}
+              >
+                <Pagination
+                  count={Math.ceil(params.totalEvents / limit)}
+                  page={page}
+                  onChange={handleChangePage}
+                  disabled={isLoading}
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       </Container>
