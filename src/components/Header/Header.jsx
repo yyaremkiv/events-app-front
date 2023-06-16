@@ -1,7 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-import css from "./Header.module.scss";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/material";
+import { AccountCircle, Logout } from "@mui/icons-material";
 import AuthActions from "@/redux/auth/AuthOperations";
 
 export const Header = () => {
@@ -9,42 +16,87 @@ export const Header = () => {
   const dispatch = useDispatch();
 
   return (
-    <header className={css.header}>
-      <div
-        className={css.topNav}
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <h1 className={css.title}>Events</h1>
-        </Box>
-        {isLogged ? (
-          <Box>
-            <Typography>Hello, Admin!</Typography>
-            <Button onClick={() => dispatch(AuthActions.logout())}>
-              Logout
-            </Button>
+    <header>
+      <Box sx={{ backgroundColor: "#BDE7D9" }}>
+        <Container>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              variant="h2"
+              fontSize="42px"
+              fontWeight="700"
+              sx={{ textTransform: "uppercase", padding: "20px 0px" }}
+            >
+              Events
+            </Typography>
+
+            {isLogged ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "2rem",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <AccountCircle fontSize="large" />
+                  <Typography variant="subtitle1">Hello, Admin!</Typography>
+                </Box>
+
+                <Button
+                  onClick={() => dispatch(AuthActions.logout())}
+                  startIcon={<Logout />}
+                  sx={{ backgroundColor: "black" }}
+                >
+                  Logout
+                </Button>
+              </Box>
+            ) : null}
           </Box>
-        ) : null}
+        </Container>
+      </Box>
+
+      <Container>
         <nav>
-          <ul>
-            <li>
+          <List
+            sx={{
+              minHeight: "50px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "500",
+              fontSize: "20px",
+              padding: "0",
+            }}
+          >
+            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
               <Link href="/">Home</Link>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
               <Link href="/events">Events</Link>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
               <Link href="/about-us">About Us</Link>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
               <Link href="/admin">Admin</Link>
-            </li>
-          </ul>
+            </ListItem>
+          </List>
         </nav>
-      </div>
+      </Container>
     </header>
   );
 };
