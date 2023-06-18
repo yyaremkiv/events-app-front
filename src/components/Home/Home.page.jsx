@@ -51,11 +51,6 @@ export const HomePage = ({ data }) => {
           />
         </Box>
 
-        <Box>
-          sdfsdf
-          <img src={`https://flagcdn.com/48x36/al.png`} alt="..." />
-        </Box>
-
         <Grid
           container
           rowSpacing={1}

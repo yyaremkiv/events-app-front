@@ -1,6 +1,6 @@
 import axios from "axios";
-import AuthActions from "@/redux/auth/AuthOperations";
-import { resetRefreshAttempts } from "@/redux/auth/authSlice";
+import AuthActions from "../redux/auth/AuthOperations";
+import { resetRefreshAttempts } from "../redux/auth/authSlice";
 
 let store;
 export const injectStore = (_store) => {

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import css from "./catEvent.module.scss";
 import {
   Box,
   Chip,

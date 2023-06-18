@@ -4,16 +4,21 @@ import {
   Box,
   Button,
   Container,
+  IconButton,
   List,
   ListItem,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { AccountCircle, Logout } from "@mui/icons-material";
-import AuthActions from "@/redux/auth/AuthOperations";
+import AuthActions from "../../redux/auth/AuthOperations";
+import { setModeTheme } from "@/src/redux/theme/themeSlice";
+import { DarkMode, LightMode } from "@mui/icons-material";
 
 export const Header = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   return (
     <header>
@@ -66,6 +71,13 @@ export const Header = () => {
               </Box>
             ) : null}
           </Box>
+          <IconButton onClick={() => dispatch(setModeTheme())}>
+            {theme.palette.mode === "dark" ? (
+              <DarkMode sx={{ fontSize: "25px" }} />
+            ) : (
+              <LightMode sx={{ color: "white", fontSize: "25px" }} />
+            )}
+          </IconButton>
         </Container>
       </Box>
 
