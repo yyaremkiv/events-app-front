@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
-import css from "./single-event.module.scss";
 import { useRouter } from "next/router";
 import { Box, Typography } from "@mui/material";
 
