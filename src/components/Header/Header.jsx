@@ -1,19 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import Link from "next/link";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  List,
-  ListItem,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import AuthActions from "../../redux/auth/AuthOperations";
-import { setModeTheme } from "@/src/redux/theme/themeSlice";
-import { DarkMode, LightMode } from "@mui/icons-material";
+import { ThemeToggle } from "../ThemeToggle";
 
 export const Header = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
@@ -39,6 +28,8 @@ export const Header = () => {
             >
               Events
             </Typography>
+
+            <ThemeToggle />
 
             {isLogged ? (
               <Box
@@ -71,44 +62,8 @@ export const Header = () => {
               </Box>
             ) : null}
           </Box>
-          <IconButton onClick={() => dispatch(setModeTheme())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkMode sx={{ fontSize: "25px" }} />
-            ) : (
-              <LightMode sx={{ color: "white", fontSize: "25px" }} />
-            )}
-          </IconButton>
         </Container>
       </Box>
-
-      <Container>
-        <nav>
-          <List
-            sx={{
-              minHeight: "50px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontWeight: "500",
-              fontSize: "20px",
-              padding: "0",
-            }}
-          >
-            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
-              <Link href="/">Home</Link>
-            </ListItem>
-            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
-              <Link href="/events">Events</Link>
-            </ListItem>
-            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
-              <Link href="/about-us">About Us</Link>
-            </ListItem>
-            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
-              <Link href="/admin">Admin</Link>
-            </ListItem>
-          </List>
-        </nav>
-      </Container>
     </header>
   );
 };

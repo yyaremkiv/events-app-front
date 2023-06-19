@@ -1,10 +1,7 @@
-import { Box, Container, Grid, ImageListItem } from "@mui/material";
 import { BannerHero } from "../components/BannerHero";
-import { HomePage } from "../components/Home/Home.page";
-import EventService from "../services/event.service";
-import { GridWrapper } from "../components/GridWrapper";
-import Link from "next/link";
 import { ListHomePage } from "../components/ListHomePage";
+import { Container } from "@mui/material";
+import EventService from "../services/event.service";
 
 export default function Home({ data }: any) {
   return (

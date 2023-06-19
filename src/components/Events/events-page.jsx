@@ -1,6 +1,6 @@
-import { Box, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
+import { Box, Grid, Typography } from "@mui/material";
 
 export const AllEvents = ({ data }) => {
   return (
@@ -28,7 +28,7 @@ export const AllEvents = ({ data }) => {
                 width={400}
                 height={200}
                 priority={true}
-                style={{ width: "auto", height: "auto" }}
+                style={{ width: "100%", height: "auto" }}
               />
               <h2>{title}</h2>
               <Typography>Count events: {totalEvents}</Typography>

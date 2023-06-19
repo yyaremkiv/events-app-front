@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import { AllEvents } from "@/components/Events/events-page";
-import EventService from "@/services/event.service";
-import { Box, Pagination, Typography } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { AllEvents } from "../../components/Events/events-page";
+import EventService from "../../services/event.service";
+import {
+  Box,
+  Pagination,
+  Typography,
+  Select,
+  FormControl,
+  MenuItem,
+  InputLabel,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import { Refresh as RefreshIcon } from "@mui/icons-material";
 
 const EvantsPage = ({ data, totalCounts }) => {
   const [cities, setCities] = useState(data);
@@ -82,7 +86,9 @@ const EvantsPage = ({ data, totalCounts }) => {
         <Typography>All city: {totalCities}</Typography>
         <Typography>Display: {cities.length}</Typography>
       </Box>
+
       <AllEvents data={cities} />
+
       <Box sx={{ display: "flex", justifyContent: "center", p: "0.75rem" }}>
         <LoadingButton
           variant="text"
