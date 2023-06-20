@@ -20,9 +20,9 @@ import { useAuth } from "../hooks/useAuth";
 
 const Admin = (): JSX.Element => {
   const [openModal, setOpenModal] = useState(false);
-  const [typeModal, setTypeModal] = useState(null);
-  const [cityId, setCityId] = useState(null);
-  const [eventId, setEventId] = useState(null);
+  const [typeModal, setTypeModal] = useState<string | null>(null);
+  const [cityId, setCityId] = useState<string | null>(null);
+  const [eventId, setEventId] = useState<string | null>(null);
   const [cities, isLoading, error] = useGetCity();
   const dispatch = useDispatch();
 
@@ -33,21 +33,28 @@ const Admin = (): JSX.Element => {
   };
 
   const handleAddCity = (formData: any) =>
+    // @ts-ignore
     dispatch(CityOperations.addCity(formData));
 
-  const handleUpdateCity = (cityId) => {
+  const handleUpdateCity = (cityId: string) => {
     setCityId(cityId);
     setTypeModal("city");
     setOpenModal(true);
   };
 
-  const handleAddEvent = (cityId) => {
+  const handleAddEvent = (cityId: string) => {
     setCityId(cityId);
     setTypeModal("event");
     setOpenModal(true);
   };
 
-  const handleEditEvent = ({ cityId, eventId }) => {
+  const handleEditEvent = ({
+    cityId,
+    eventId,
+  }: {
+    cityId: string;
+    eventId: string;
+  }) => {
     setCityId(cityId);
     setEventId(eventId);
     setTypeModal("event");
@@ -122,7 +129,7 @@ const Admin = (): JSX.Element => {
             overflowY: "auto",
           }}
         >
-          {typeModal === "city" && (
+          {/* {typeModal === "city" && (
             <ModalCity cityId={cityId} handleAddCity={handleAddCity} />
           )}
 
@@ -132,7 +139,7 @@ const Admin = (): JSX.Element => {
               eventId={eventId}
               handleAddEvent={handleAddEvent}
             />
-          )}
+          )} */}
         </Box>
       </Modal>
     </div>
