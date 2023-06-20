@@ -6,8 +6,8 @@ import ListIcon from "@mui/icons-material/List";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import EventService from "@/services/event.service";
-import CityOperations from "@/redux/cities/city.operations";
+import EventService from "../services/event.service";
+import CityOperations from "../redux/cities/city.operations";
 
 export const ItemCity = ({
   data,
@@ -32,7 +32,7 @@ export const ItemCity = ({
         }}
       >
         <p>{city}</p>
-        <Box sx={{ display: "flex", gap: "0.5rem" }}>
+        {/* <Box sx={{ display: "flex", gap: "0.5rem" }}>
           <IconButton onClick={() => handleUpdateCity(cityId)}>
             <EditIcon />
           </IconButton>
@@ -42,7 +42,7 @@ export const ItemCity = ({
           <IconButton onClick={() => setOpenList(!openList)}>
             <ListIcon />
           </IconButton>
-        </Box>
+        </Box> */}
       </Box>
       {openList ? (
         <ListEvent

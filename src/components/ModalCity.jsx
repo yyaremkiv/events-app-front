@@ -5,8 +5,8 @@ import { DropzoneUpload } from "./DropzoneUpload";
 import { Box, Button } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import CityOperations from "@/redux/cities/city.operations";
-import { FormValidation } from "@/config/form.validation";
+import CityOperations from "../redux/cities/city.operations";
+import { FormValidation } from "../config/form.validation";
 import { ImageCity } from "./ImageCity";
 
 export const ModalCity = ({ cityId }) => {

@@ -6,10 +6,10 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { FormValidation } from "@/config/form.validation";
+import { FormValidation } from "../config/form.validation";
 import dayjs from "dayjs";
 import { DropzoneUpload } from "./DropzoneUpload";
-import CityOperations from "@/redux/cities/city.operations";
+import CityOperations from "../redux/cities/city.operations";
 
 const eventCategories = [
   { id: 1, name: "Music" },

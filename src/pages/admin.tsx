@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ModalCity } from "@/components/ModalCity";
-import { ModalEvent } from "@/components/ModalEvent";
+import { ModalCity } from "../components/ModalCity";
+import { ModalEvent } from "../components/ModalEvent";
 
-import { ListCity } from "@/components/ListCity";
+import { ListAdminCity } from "../components/ListAdminCity";
 import {
   Box,
   CircularProgress,
@@ -14,11 +14,11 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CityOperations from "@/redux/cities/city.operations";
-import { useGetCity } from "@/hooks/useCity";
-import { useAuth } from "@/hooks/useAuth";
+import CityOperations from "../redux/cities/city.operations";
+import { useGetCity } from "../hooks/useCity";
+import { useAuth } from "../hooks/useAuth";
 
-const Admin = () => {
+const Admin = (): JSX.Element => {
   const [openModal, setOpenModal] = useState(false);
   const [typeModal, setTypeModal] = useState(null);
   const [cityId, setCityId] = useState(null);
@@ -32,7 +32,7 @@ const Admin = () => {
     setOpenModal(false);
   };
 
-  const handleAddCity = (formData) =>
+  const handleAddCity = (formData: any) =>
     dispatch(CityOperations.addCity(formData));
 
   const handleUpdateCity = (cityId) => {
@@ -67,7 +67,9 @@ const Admin = () => {
           }}
         >
           <Typography style={{ fontWeight: 600 }}>List of cities</Typography>
+
           <Input />
+
           <Tooltip title="Add new city" placement="top">
             <IconButton
               onClick={() => {
@@ -79,9 +81,11 @@ const Admin = () => {
             </IconButton>
           </Tooltip>
         </Box>
+
         {isLoading ? <CircularProgress /> : null}
+
         {cities.length ? (
-          <ListCity
+          <ListAdminCity
             data={cities}
             handleUpdateCity={handleUpdateCity}
             handleAddEvent={handleAddEvent}
@@ -89,6 +93,7 @@ const Admin = () => {
           />
         ) : null}
       </div>
+
       <Modal
         open={openModal}
         onClose={handleModalClose}

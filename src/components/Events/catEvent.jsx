@@ -24,7 +24,6 @@ export const CatEvent = ({ data, cityNameLink, isLoading }) => {
             <Link
               key={id}
               href={`/events/${cityNameLink.toLowerCase()}/${title}`}
-              className={css.card}
               style={{ border: "1px solid red" }}
             >
               <Image

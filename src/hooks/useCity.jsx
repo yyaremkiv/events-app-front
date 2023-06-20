@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import CityOperations from "@/redux/cities/city.operations.js";
+import CityOperations from "../redux/cities/city.operations.js";
 
 export const useGetCity = () => {
   const cities = useSelector((state) => state.events.cities);

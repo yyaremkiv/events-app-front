@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
-import { FormConfig } from "../config/form.login";
+import { FormConfig } from "../../config/form.login";
 import { TextField } from "@mui/material";
 import { FormHelperText } from "@mui/material";
 import { Box } from "@mui/system";
@@ -15,7 +15,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
-import AuthOperations from "@/redux/auth/AuthOperations";
+import AuthOperations from "../../redux/auth/AuthOperations";
 
 export const FormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);

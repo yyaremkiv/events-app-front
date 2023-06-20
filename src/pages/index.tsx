@@ -1,5 +1,5 @@
 import { BannerHero } from "../components/BannerHero";
-import { ListHomePage } from "../components/ListHomePage";
+import { ListCities } from "../components/ListCities";
 import { Container } from "@mui/material";
 import EventService from "../services/event.service";
 
@@ -7,7 +7,7 @@ export default function Home({ data }: any) {
   return (
     <Container>
       <BannerHero />
-      <ListHomePage data={data} />
+      <ListCities data={data} />
 
       {/* <HomePage data={data} /> */}
     </Container>

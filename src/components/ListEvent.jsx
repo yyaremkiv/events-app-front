@@ -1,6 +1,6 @@
 import { Box, Button, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
-import CityOperations from "@/redux/cities/city.operations";
+import CityOperations from "../redux/cities/city.operations";
 import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";

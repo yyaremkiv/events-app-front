@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import EventService from "../../services/event.service.js";
+import EventService from "../../services/event.service";
 
 class CityOperations {
   static getCity = createAsyncThunk(

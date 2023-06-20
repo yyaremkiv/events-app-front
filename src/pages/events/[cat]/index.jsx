@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { CatEvent } from "@/components/Events/catEvent";
-import EventService from "@/services/event.service";
+import { CatEvent } from "../../../components/Events/catEvent";
+import EventService from "../../../services/event.service";
 import { Box } from "@mui/system";
-import { MenuNavigation } from "@/components/MenuNavigation";
+import { MenuNavigation } from "../../../components/MenuNavigation";
 import {
   Container,
   FormControl,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { FilterEvent } from "@/components/FilterEvent";
+import { FilterEvent } from "../../../components/FilterEvent";
 
 const EventsCatPage = ({ data, eventsParams }) => {
   const [events, setEvents] = useState(data.events);

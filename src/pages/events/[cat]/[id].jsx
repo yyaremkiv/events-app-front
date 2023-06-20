@@ -1,5 +1,5 @@
-import { SingleEvet } from "@/components/Events/single-event";
-import EventService from "@/services/event.service";
+import { SingleEvet } from "../../../components/Events/single-event";
+import EventService from "../../../services/event.service";
 import { Box, Menu } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";

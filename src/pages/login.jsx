@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import { Box, Typography, useMediaQuery, IconButton } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
-import { FormLogin } from "@/components/FormLogin";
-import { setModeTheme } from "@/redux/theme/themeSlice";
-import { useAuth } from "@/hooks/useAuth";
+import { FormLogin } from "../components/FormLogin/FormLogin";
+import { setModeTheme } from "../redux/theme/themeSlice";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
