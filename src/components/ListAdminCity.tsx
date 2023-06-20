@@ -31,6 +31,7 @@ export const ListAdminCity = ({
     };
 
   const handleDeleteCity = (cityId: any) =>
+    // @ts-ignore
     dispatch(CityOperations.deleteCity(cityId));
 
   return (
