@@ -2,28 +2,19 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ModalCity } from "../components/ModalCity";
 import { ModalEvent } from "../components/ModalEvent";
-
-import { ListAdminCity } from "../components/ListAdminCity";
-import {
-  Box,
-  CircularProgress,
-  IconButton,
-  Input,
-  Modal,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { ModalWindow } from "../components/ModalWindows";
+import { AdminListCities } from "../components/AdminListCities/AdminListCities";
+import { Add as AddIcon } from "@mui/icons-material";
+import { useAuth, useCity } from "../hooks";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import CityOperations from "../redux/cities/city.operations";
-import { useGetCity } from "../hooks/useCity";
-import { useAuth } from "../hooks/useAuth";
 
 const Admin = (): JSX.Element => {
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [typeModal, setTypeModal] = useState<string | null>(null);
   const [cityId, setCityId] = useState<string | null>(null);
   const [eventId, setEventId] = useState<string | null>(null);
-  const [cities, isLoading, error] = useGetCity();
+  const [cities, isLoading, error] = useCity();
   const dispatch = useDispatch();
 
   const handleModalClose = () => {
@@ -62,22 +53,19 @@ const Admin = (): JSX.Element => {
   };
 
   return (
-    <div>
-      <div style={{ display: "grid", padding: "2rem" }}>
+    <Box>
+      <Box>
         <Box
           sx={{
-            display: "fles",
+            display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            border: "1px solid red",
-            padding: "0.5rem",
+            paddingBottom: "0.25rem",
           }}
         >
-          <Typography style={{ fontWeight: 600 }}>List of cities</Typography>
+          <Typography variant="h6">List Of All Cities:</Typography>
 
-          <Input />
-
-          <Tooltip title="Add new city" placement="top">
+          <Tooltip title="Add New City" placement="top">
             <IconButton
               onClick={() => {
                 setTypeModal("city");
@@ -89,60 +77,32 @@ const Admin = (): JSX.Element => {
           </Tooltip>
         </Box>
 
-        {isLoading ? <CircularProgress /> : null}
-
-        {cities.length ? (
-          <ListAdminCity
+        {Boolean(cities.length) && (
+          <AdminListCities
             data={cities}
             handleUpdateCity={handleUpdateCity}
             handleAddEvent={handleAddEvent}
             handleEditEvent={handleEditEvent}
           />
-        ) : null}
-      </div>
+        )}
+      </Box>
 
-      <Modal
-        open={openModal}
-        onClose={handleModalClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            padding: "1rem",
-            maxWidth: {
-              xs: "90vw",
-              sm: "80vw",
-              md: "60vw",
-              lg: "50vw",
-              xl: "40vw",
-            },
-            width: "100%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            borderRadius: "0.5rem",
-            boxShadow: 24,
-            maxHeight: "90vh",
-            overflowY: "auto",
-          }}
-        >
-          {/* {typeModal === "city" && (
-            <ModalCity cityId={cityId} handleAddCity={handleAddCity} />
-          )}
+      <ModalWindow open={openModal} onCloseFunc={handleModalClose}>
+        {typeModal === "city" && (
+          // @ts-ignore
+          <ModalCity cityId={cityId} handleAddCity={handleAddCity} />
+        )}
 
-          {typeModal === "event" && (
-            <ModalEvent
-              cityId={cityId}
-              eventId={eventId}
-              handleAddEvent={handleAddEvent}
-            />
-          )} */}
-        </Box>
-      </Modal>
-    </div>
+        {typeModal === "event" && (
+          <ModalEvent
+            cityId={cityId}
+            eventId={eventId}
+            // @ts-ignore
+            handleAddEvent={handleAddEvent}
+          />
+        )}
+      </ModalWindow>
+    </Box>
   );
 };
 
