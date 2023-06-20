@@ -90,7 +90,7 @@ export const ListAdminCity = ({
               <AdminItemCity
                 key={city._id}
                 data={city}
-                handleUpdateCity={handleUpdateCity}
+                // handleUpdateCity={handleUpdateCity}
                 handleAddEvent={handleAddEvent}
                 handleEditEvent={handleEditEvent}
               />
