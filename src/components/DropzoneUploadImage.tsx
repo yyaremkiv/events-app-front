@@ -2,21 +2,13 @@ import { useState } from "react";
 import Dropzone from "react-dropzone";
 import FlexBetween from "./FlexBetween";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import {
-  Box,
-  Typography,
-  useTheme,
-  IconButton,
-  Button,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, IconButton, Button, Tooltip } from "@mui/material";
 import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
 
-export const DropzoneUpload = ({ image, setImage }) => {
-  const [error, setError] = useState(null);
-  const { palette } = useTheme();
+export const DropzoneUploadImage = ({ image, setImage }: any) => {
+  const [error, setError] = useState<string | null>(null);
 
-  const handleDrop = (acceptedFiles) => {
+  const handleDrop = (acceptedFiles: any) => {
     const file = acceptedFiles[0];
     const fileType = file.type;
     const fileName = file.name;
@@ -31,7 +23,6 @@ export const DropzoneUpload = ({ image, setImage }) => {
       );
       return;
     }
-
     setImage(file);
     setError(null);
   };
@@ -59,7 +50,6 @@ export const DropzoneUpload = ({ image, setImage }) => {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "0.5rem",
-                    width: "100%",
                     backgroundColor: "whiteGray",
                     border: `1px dashed tomato`,
                     borderRadius: "0.5rem",

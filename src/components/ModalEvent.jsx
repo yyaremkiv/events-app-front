@@ -8,7 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FormValidation } from "../config/form.validation";
 import dayjs from "dayjs";
-import { DropzoneUpload } from "./DropzoneUpload";
+import { DropzoneUpload } from "./DropzoneUploadImage.tsx";
 import CityOperations from "../redux/cities/city.operations";
 
 const eventCategories = [

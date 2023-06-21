@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { ModalCity } from "../components/ModalCity";
+import { ModalCity } from "../components/ModalCity/ModalCity";
 import { ModalEvent } from "../components/ModalEvent";
 import { ModalWindow } from "../components/ModalWindows";
 import { AdminListCities } from "../components/AdminListCities/AdminListCities";

@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import AuthActions from "../../redux/auth/AuthOperations";
-import { ThemeToggle } from "../ThemeToggle";
+import { ThemeToggle } from "../index";
 
-export const Header = () => {
-  const isLogged = useSelector((state) => state.auth.isLogged);
+export const Header = (): JSX.Element => {
+  const isLogged = useSelector((state: any) => state.auth.isLogged);
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -53,6 +53,7 @@ export const Header = () => {
                 </Box>
 
                 <Button
+                  // @ts-ignore
                   onClick={() => dispatch(AuthActions.logout())}
                   startIcon={<Logout />}
                   sx={{ backgroundColor: "black" }}

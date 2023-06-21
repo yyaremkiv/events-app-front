@@ -6,6 +6,8 @@ import {
   IconButton,
   Stack,
   TextField,
+  ListItem,
+  List,
 } from "@mui/material";
 import {
   Instagram,
@@ -15,10 +17,15 @@ import {
   Facebook,
 } from "@mui/icons-material";
 
-export const Footer = () => {
+export const Footer = (): JSX.Element => {
   return (
     <footer>
-      <Box sx={{ backgroundColor: "#C49D5E", padding: "20px 0" }}>
+      <Box
+        sx={{
+          backgroundColor: "#C49D5E",
+          padding: "20px 0",
+        }}
+      >
         <Container
           sx={{
             display: "flex",
@@ -41,6 +48,44 @@ export const Footer = () => {
           />
           <Button variant="contained">Send</Button>
         </Container>
+      </Box>
+
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "start",
+            alignItems: "center",
+            gap: "460px",
+            marginBottom: "30px",
+            padding: "20px 0",
+            borderBottom: "1px solid gray",
+          }}
+        >
+          <Typography variant="h5" fontSize="36px" fontWeight="700">
+            EVENTS
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "start",
+              gap: "20px",
+            }}
+          >
+            <List>
+              <ListItem>Email</ListItem>
+              <ListItem>Support</ListItem>
+              <ListItem>Ticketing</ListItem>
+              <ListItem>Guest Management</ListItem>
+            </List>
+            <List>
+              <ListItem>Partners</ListItem>
+              <ListItem>Carreers</ListItem>
+              <ListItem>Management team</ListItem>
+            </List>
+          </Box>
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -67,7 +112,7 @@ export const Footer = () => {
             </IconButton>
           </Stack>
         </Box>
-      </Box>
+      </Container>
     </footer>
   );
 };

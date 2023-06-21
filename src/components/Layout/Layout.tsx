@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { themeSettings } from "../../config/theme";
-import { Header } from "../Header/Header.jsx";
-import { Footer } from "../Footer/Footer.jsx";
+import { Header } from "../Header/Header";
+import { Footer } from "../Footer/Footer";
 import { Box, Container, ThemeProvider, createTheme } from "@mui/material";
 import { MenuNavigation } from "../MenuNavigation";
 
@@ -14,11 +14,14 @@ export const Layout = ({ children }: any) => {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
           backgroundColor: theme.palette.background.default,
         }}
       >
         <Header />
-        <Container>
+        <Container sx={{ flexGrow: 1 }}>
           <MenuNavigation />
           {children}
         </Container>
