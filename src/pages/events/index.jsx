@@ -14,8 +14,8 @@ import { LoadingButton } from "@mui/lab";
 import { Refresh as RefreshIcon } from "@mui/icons-material";
 
 const EvantsPage = ({ data, totalCounts }) => {
-  const [cities, setCities] = useState(data);
-  const [totalCities, setTotalCities] = useState(totalCounts);
+  const [cities, setCities] = useState(data | []);
+  const [totalCities, setTotalCities] = useState(totalCounts | 1);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +87,7 @@ const EvantsPage = ({ data, totalCounts }) => {
         <Typography>Display: {cities.length}</Typography>
       </Box>
 
-      <AllEvents data={cities} />
+      {cities?.length > 0 && <AllEvents data={cities} />}
 
       <Box sx={{ display: "flex", justifyContent: "center", p: "0.75rem" }}>
         <LoadingButton
@@ -123,15 +123,15 @@ const EvantsPage = ({ data, totalCounts }) => {
 
 export default EvantsPage;
 
-export async function getStaticProps() {
-  const { data } = await EventService.getCity({ limit: 10 });
+// export async function getStaticProps() {
+//   const { data } = await EventService.getCity({ limit: 10 });
 
-  if (!data.cities) return null;
+//   if (!data.cities) return null;
 
-  return {
-    props: {
-      data: data.cities,
-      totalCounts: data.totalCounts,
-    },
-  };
-}
+//   return {
+//     props: {
+//       data: data.cities,
+//       totalCounts: data.totalCounts,
+//     },
+//   };
+// }

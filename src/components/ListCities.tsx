@@ -1,9 +1,5 @@
-import { Box, Grid, ImageListItem } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React, { useEffect } from "react";
-import { GridWrapper } from "./GridWrapper";
-import Link from "next/link";
-import Image from "next/image";
-import { ItemSmallCard } from "./ItemSmallCard";
 
 import AOS from "aos";
 import "aos/dist/aos.css";

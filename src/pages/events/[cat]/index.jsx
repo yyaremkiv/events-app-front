@@ -17,9 +17,9 @@ import { LoadingButton } from "@mui/lab";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { FilterEvent } from "../../../components/FilterEvent";
 
-const EventsCatPage = ({ data, eventsParams }) => {
-  const [events, setEvents] = useState(data.events);
-  const [params, setParams] = useState(eventsParams);
+const EventsCatPage = () => {
+  const [events, setEvents] = useState([]);
+  const [params, setParams] = useState({});
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
 
@@ -28,7 +28,21 @@ const EventsCatPage = ({ data, eventsParams }) => {
   const router = useRouter();
   const { cat } = router.query;
 
-  const cityName = cat[0].toUpperCase() + cat.slice(1);
+  const cityName = cat ? cat[0].toUpperCase() + cat.slice(1) : null;
+
+  useEffect(() => {
+    async function fetch() {
+      const { data } = await EventService.getEvent({
+        cityName,
+        params: { page: 1, limit: 5 },
+      });
+      if (data) {
+        setEvents(data.events);
+        setParams(data.eventsParams);
+      }
+    }
+    if (cat) fetch();
+  }, [cat]);
 
   useEffect(() => {
     fetchDataEvents({ page });
@@ -128,7 +142,7 @@ const EventsCatPage = ({ data, eventsParams }) => {
 
       <Container>
         <Box sx={{ display: "flex" }}>
-          {params && (
+          {params && events.length > 0 && (
             <FilterEvent
               data={params}
               handleFetchByFilter={handleFetchByFilter}
@@ -191,21 +205,21 @@ const EventsCatPage = ({ data, eventsParams }) => {
 
 export default EventsCatPage;
 
-export async function getStaticPaths() {
-  const cities = await EventService.getCity({ limit: 10 });
-  const AllPath = cities.data.cities.map((ev) => {
-    return { params: { cat: ev.city.toLowerCase() } };
-  });
+// export async function getStaticPaths() {
+//   const cities = await EventService.getCity({ limit: 10 });
+//   const AllPath = cities.data.cities.map((ev) => {
+//     return { params: { cat: ev.city.toLowerCase() } };
+//   });
 
-  return { paths: AllPath, fallback: false };
-}
+//   return { paths: AllPath, fallback: false };
+// }
 
-export async function getStaticProps(context) {
-  const city = context?.params.cat;
-  const { data } = await EventService.getEvent({
-    cityName: city,
-    params: { page: 1, limit: 5 },
-  });
+// export async function getStaticProps(context) {
+//   const city = context?.params.cat;
+//   const { data } = await EventService.getEvent({
+//     cityName: city,
+//     params: { page: 1, limit: 5 },
+//   });
 
-  return { props: { data: data.events, eventsParams: data.eventsParams } };
-}
+//   return { props: { data: data.events, eventsParams: data.eventsParams } };
+// }
