@@ -1,30 +1,34 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik } from "formik";
-import CityOperations from "../../redux/cities/city.operations";
-import { FormValidation } from "../../config/form.validation";
 import {
   FormikTextField,
   FormikNumberField,
   FormikCheckbox,
   ImageItemCity,
   DropzoneUploadImage,
+  CustomLoadingButton,
 } from "../";
-import { Box, Button, useTheme, IconButton, Tooltip } from "@mui/material";
-import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
+import { FormValidation } from "../../config";
+import { Box, useTheme, Typography } from "@mui/material";
+import { EventOperations } from "../../redux/event/event.operations";
 
-export const ModalCity = ({ cityId }: { cityId: string }) => {
+interface IModalCityProps {
+  cityId: string | null;
+  isLoading?: boolean;
+}
+
+export const ModalCity = ({
+  cityId,
+  isLoading,
+}: IModalCityProps): JSX.Element => {
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
+  const theme = useTheme();
+
   const city = useSelector((state: any) => state.events.cities).find(
     (city: any) => city._id === cityId
   );
-
-  console.log("city", city);
-
-  const theme = useTheme();
-
-  const isLoading = false;
 
   const handleSubmitCity = (values: any, { resetForm }: { resetForm: any }) => {
     const formData = new FormData();
@@ -37,24 +41,18 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
 
     if (cityId) {
       // @ts-ignore
-      dispatch(CityOperations.updateCity(formData));
+      dispatch(EventOperations.updateCity(formData));
     } else {
       // @ts-ignore
-      dispatch(CityOperations.addCity(formData));
+      dispatch(EventOperations.addCity(formData));
     }
 
     setImage(null);
     resetForm();
   };
 
-  const handleDeleteImage = (setFieldValue: any) => {
-    setImage(null);
-    city.imagePath = "";
-    console.log("sdjfdsfd", setFieldValue);
-  };
-
   return (
-    <div style={{ width: "100%" }}>
+    <Box>
       <Formik
         onSubmit={handleSubmitCity}
         initialValues={city ? city : FormValidation.initialValuesCity}
@@ -75,7 +73,6 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
-              padding: "1rem",
             }}
           >
             <FormikTextField
@@ -84,18 +81,21 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />
+
             <FormikTextField
               label="Title Event"
               name="title"
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />
+
             <FormikTextField
               label="Country"
               name="country"
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />
+
             <FormikNumberField
               label="Population"
               name="population"
@@ -103,6 +103,7 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />
+
             <FormikCheckbox
               label="Show This City On Home Page"
               name="showOnHomePage"
@@ -110,11 +111,12 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
               isLoading={isLoading}
             />
 
-            {city?.imagePath ? (
+            {city?.imagePath && !image ? (
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  gap: "2rem",
                 }}
               >
                 <ImageItemCity
@@ -122,27 +124,9 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
                   size="100px"
                   borderRadius="1rem"
                 />
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "1.5rem",
-                    width: "100%",
-                  }}
-                >
-                  <Tooltip title="Change Current Photo" placement="top">
-                    <IconButton>
-                      <EditOutlined />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete Current Photo" placement="top">
-                    <IconButton
-                      onClick={() => handleDeleteImage(setFieldValue)}
-                    >
-                      <DeleteOutlined />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+                <Typography sx={{ color: theme.palette.text.primary }}>
+                  This Is Current Photo
+                </Typography>
               </Box>
             ) : null}
 
@@ -152,16 +136,17 @@ export const ModalCity = ({ cityId }: { cityId: string }) => {
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                padding: "0.5rem 1rem",
+                padding: "0.5rem 0",
               }}
             >
-              <Button type="submit" sx={{ padding: "0.75rem 3rem" }}>
-                {cityId ? "Update City" : "Add city"}
-              </Button>
+              <CustomLoadingButton
+                text={cityId ? "Update City" : "Add city"}
+                isLoading={isLoading}
+              />
             </Box>
           </form>
         )}
       </Formik>
-    </div>
+    </Box>
   );
 };

@@ -30,7 +30,7 @@ export const AllEvents = ({ data }) => {
                 priority={true}
                 style={{ width: "100%", height: "auto" }}
               />
-              <h2>{title}</h2>
+              <h2>{city}</h2>
               <Typography>Count events: {totalEvents}</Typography>
             </Link>
           </Grid>

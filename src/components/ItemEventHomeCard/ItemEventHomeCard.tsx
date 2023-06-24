@@ -1,19 +1,17 @@
-import { Event, PeopleAlt, Place, Public } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Grid,
-  ImageListItem,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import Image from "next/image";
+import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import { Event, PeopleAlt, Place, Public } from "@mui/icons-material";
 
-import { ICityData } from "../interfaces";
+interface IItemEventHomeCardProps {
+  data: any;
+  index: number;
+}
 
-export const ItemCityCard = ({ data, index }: any) => {
+export const ItemEventHomeCard = ({
+  data,
+  index,
+}: IItemEventHomeCardProps): JSX.Element => {
   const {
     city,
     imagePath,
@@ -25,12 +23,12 @@ export const ItemCityCard = ({ data, index }: any) => {
   } = data;
   const theme = useTheme();
 
-  console.log("data", data);
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: index % 2 === 0 ? "row" : "row-reverse",
+        alignItems: "center",
         padding: "1rem 0",
       }}
     >
@@ -40,30 +38,19 @@ export const ItemCityCard = ({ data, index }: any) => {
           height: "100%",
           maxHeight: "500px",
           overflow: "hidden",
-          backgroundColor: "red",
           display: "flex",
           justifyContent: "center",
-          border: "1px solid green",
         }}
       >
         <Link href={`/events/${city.toLowerCase()}`}>
-          <ImageListItem
-            sx={{
-              width: "80%",
-              height: "auto",
-              transition: "transform 500ms linear",
-              "&:hover": { transform: "scale(1.1)" },
-            }}
-          >
-            <Image
-              src={imagePath}
-              alt={title}
-              width={800}
-              height={500}
-              priority={true}
-              style={{ width: "100%", objectFit: "cover" }}
-            />
-          </ImageListItem>
+          <Image
+            src={imagePath}
+            alt={title}
+            width={800}
+            height={500}
+            priority={true}
+            style={{ width: "100%", objectFit: "contain" }}
+          />
         </Link>
       </Box>
 

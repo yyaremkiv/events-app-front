@@ -5,3 +5,6 @@ export { FormikNumberField } from "./FormikNumberField";
 export { FormikCheckbox } from "./FormikCheckbox";
 export { ImageItemCity } from "./ImageItemCity";
 export { DropzoneUploadImage } from "./DropzoneUploadImage";
+export { CustomLoadingButton } from "./CustomLoadingButton";
+export { FormikDate } from "./FormikDate";
+export { FormikAutocomplete } from "./FormikAutocomplete";

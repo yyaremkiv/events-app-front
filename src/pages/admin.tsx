@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useAuth, useCity } from "../hooks";
 import { ModalCity } from "../components/ModalCity/ModalCity";
-import { ModalEvent } from "../components/ModalEvent";
+import { ModalEvent } from "../components/ModalEvent/ModalEvent";
 import { ModalWindow } from "../components/ModalWindows";
 import { AdminListCities } from "../components/AdminListCities/AdminListCities";
+import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
-import { useAuth, useCity } from "../hooks";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-import CityOperations from "../redux/cities/city.operations";
 
 const Admin = (): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -15,17 +13,13 @@ const Admin = (): JSX.Element => {
   const [cityId, setCityId] = useState<string | null>(null);
   const [eventId, setEventId] = useState<string | null>(null);
   const [cities, isLoading, error] = useCity();
-  const dispatch = useDispatch();
+  const theme = useTheme();
 
   const handleModalClose = () => {
     setCityId(null);
     setEventId(null);
     setOpenModal(false);
   };
-
-  const handleAddCity = (formData: any) =>
-    // @ts-ignore
-    dispatch(CityOperations.addCity(formData));
 
   const handleUpdateCity = (cityId: string) => {
     setCityId(cityId);
@@ -60,10 +54,12 @@ const Admin = (): JSX.Element => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingBottom: "0.25rem",
+            padding: "0.5rem 0",
           }}
         >
-          <Typography variant="h6">List Of All Cities:</Typography>
+          <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+            List Of All Cities:
+          </Typography>
 
           <Tooltip title="Add New City" placement="top">
             <IconButton
@@ -89,8 +85,7 @@ const Admin = (): JSX.Element => {
 
       <ModalWindow open={openModal} onCloseFunc={handleModalClose}>
         {typeModal === "city" && (
-          // @ts-ignore
-          <ModalCity cityId={cityId} handleAddCity={handleAddCity} />
+          <ModalCity cityId={cityId} isLoading={isLoading} />
         )}
 
         {typeModal === "event" && (

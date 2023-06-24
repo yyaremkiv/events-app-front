@@ -1,14 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import AuthService from "../../services/auth.service";
+import { ISignupArg, ISigninArg } from "../../interfaces";
+import { AuthService } from "../../services";
 
-class AuthActions {
+export class AuthOperations {
   static signin = createAsyncThunk(
     "auth/signin",
-    async ({ email, password }, { rejectWithValue }) => {
+    async ({ email, password }: ISigninArg, { rejectWithValue }) => {
       try {
         const { data } = await AuthService.signin({ email, password });
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -18,7 +19,7 @@ class AuthActions {
 
   static signup = createAsyncThunk(
     "auth/signup",
-    async ({ username, email, password }, { rejectWithValue }) => {
+    async ({ username, email, password }: ISignupArg, { rejectWithValue }) => {
       try {
         const { data } = await AuthService.signup({
           username,
@@ -26,7 +27,7 @@ class AuthActions {
           password,
         });
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -40,7 +41,7 @@ class AuthActions {
       try {
         const { data } = await AuthService.logout();
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -54,7 +55,7 @@ class AuthActions {
       try {
         const { data } = await AuthService.refresh();
         return data;
-      } catch (err) {
+      } catch (err: any) {
         return rejectWithValue(
           err?.response?.data?.message || "An error occurred with the network"
         );
@@ -62,5 +63,3 @@ class AuthActions {
     }
   );
 }
-
-export default AuthActions;

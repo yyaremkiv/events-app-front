@@ -34,7 +34,7 @@ export const ModalWindow = ({
             },
             maxHeight: "85vh",
             overflowY: "auto",
-            padding: "1rem",
+            padding: "1.5rem",
             backgroundColor: theme.palette.background.light,
             borderRadius: "0.5rem",
             transform: "translate(-50%, -50%)",

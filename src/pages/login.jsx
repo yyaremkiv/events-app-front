@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { Box, Typography, useMediaQuery, IconButton } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { FormLogin } from "../components/FormLogin/FormLogin";
-import { setModeTheme } from "../redux/theme/themeSlice";
+import { setModeTheme } from "../redux/theme/theme.slice";
 import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {

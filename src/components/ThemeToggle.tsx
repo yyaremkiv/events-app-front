@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { setModeTheme } from "../redux/theme/themeSlice";
+import { setModeTheme } from "../redux/theme/theme.slice";
 import { IconButton, useTheme } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
 

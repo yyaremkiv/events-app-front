@@ -2,11 +2,19 @@ import { useState } from "react";
 import Dropzone from "react-dropzone";
 import FlexBetween from "./FlexBetween";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Box, Typography, IconButton, Button, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Button,
+  Tooltip,
+  useTheme,
+} from "@mui/material";
 import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
 
 export const DropzoneUploadImage = ({ image, setImage }: any) => {
   const [error, setError] = useState<string | null>(null);
+  const theme = useTheme();
 
   const handleDrop = (acceptedFiles: any) => {
     const file = acceptedFiles[0];
@@ -51,7 +59,7 @@ export const DropzoneUploadImage = ({ image, setImage }: any) => {
                     alignItems: "center",
                     gap: "0.5rem",
                     backgroundColor: "whiteGray",
-                    border: `1px dashed tomato`,
+                    border: `1px dashed ${theme.palette.primary.main}`,
                     borderRadius: "0.5rem",
                     p: "0.75rem",
                   }}
@@ -59,16 +67,16 @@ export const DropzoneUploadImage = ({ image, setImage }: any) => {
                   <CloudUploadIcon
                     style={{
                       fontSize: "2.5rem",
-                      color: "GrayText",
+                      color: theme.palette.primary.main,
                     }}
                   />
-                  <Typography>
+                  <Typography sx={{ color: theme.palette.text.primary }}>
                     Drag and drop your files here. Only .jpg, .jpeg, or .png
                     files are accepted.
                   </Typography>
                   <Button
-                    variant="outlined"
                     sx={{
+                      padding: "0.25rem 2rem",
                       textTransform: "none",
                     }}
                   >
@@ -77,7 +85,9 @@ export const DropzoneUploadImage = ({ image, setImage }: any) => {
                 </Box>
               ) : (
                 <FlexBetween>
-                  <Typography>{image.name}</Typography>
+                  <Typography sx={{ color: theme.palette.text.primary }}>
+                    {image.name}
+                  </Typography>
                   <Tooltip title="Change the selected file" placement="top">
                     <IconButton sx={{ ml: "1rem" }}>
                       <EditOutlined />

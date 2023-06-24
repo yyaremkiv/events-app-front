@@ -27,6 +27,7 @@ export const FormikCheckbox = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setFieldValue(name, e.target.checked)
           }
+          style={{ color: theme.palette.primary.main }}
         />
       }
       label={label}

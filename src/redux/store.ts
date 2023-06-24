@@ -9,10 +9,12 @@ import {
   REGISTER,
 } from "redux-persist";
 import { persistReducer } from "redux-persist";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import storage from "redux-persist/lib/storage";
-import authSlice from "./auth/authSlice";
-import eventSlice from "./cities/event.slice";
-import themeSlice from "./theme/themeSlice";
+import authSlice, { IAuthState } from "./auth/auth.slice";
+import eventSlice, { IEventState } from "./event/event.slice";
+import themeSlice, { IThemeState } from "./theme/theme.slice";
 
 const persistAuthConfig = {
   key: "auth",
@@ -25,10 +27,18 @@ const persistThemeConfig = {
   storage,
 };
 
+export interface RootState {
+  auth: IAuthState;
+  theme: IThemeState;
+  events: IEventState;
+}
+
+export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
+
 export const store = configureStore({
   reducer: {
-    auth: persistReducer(persistAuthConfig, authSlice),
-    theme: persistReducer(persistThemeConfig, themeSlice),
+    auth: persistReducer<IAuthState>(persistAuthConfig, authSlice),
+    theme: persistReducer<IThemeState>(persistThemeConfig, themeSlice),
     events: eventSlice,
   },
   middleware: (getDefaultMiddleware) =>

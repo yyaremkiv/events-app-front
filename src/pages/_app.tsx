@@ -5,12 +5,6 @@ import { store, persistor } from "../redux/store";
 import { injectStore } from "../config/axios.api";
 import { Layout } from "../components/Layout/Layout";
 import "../styles/globals.scss";
-
-import { ThemeProvider, createTheme } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useMemo } from "react";
-import { themeSettings } from "../config/theme";
-
 injectStore(store);
 
 import "@fontsource/roboto/300.css";

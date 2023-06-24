@@ -8,6 +8,8 @@ import {
   TextField,
   ListItem,
   List,
+  useTheme,
+  Divider,
 } from "@mui/material";
 import {
   Instagram,
@@ -18,6 +20,8 @@ import {
 } from "@mui/icons-material";
 
 export const Footer = (): JSX.Element => {
+  const theme = useTheme();
+
   return (
     <footer>
       <Box
@@ -59,10 +63,17 @@ export const Footer = (): JSX.Element => {
             gap: "460px",
             marginBottom: "30px",
             padding: "20px 0",
-            borderBottom: "1px solid gray",
+            fontFamily: "Roboto, Arial, sans-serif",
           }}
         >
-          <Typography variant="h5" fontSize="36px" fontWeight="700">
+          <Typography
+            variant="h5"
+            sx={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              color: theme.palette.text.primary,
+            }}
+          >
             EVENTS
           </Typography>
           <Box
@@ -73,27 +84,37 @@ export const Footer = (): JSX.Element => {
               gap: "20px",
             }}
           >
-            <List>
+            <List
+              sx={{
+                color: theme.palette.text.primary,
+              }}
+            >
               <ListItem>Email</ListItem>
               <ListItem>Support</ListItem>
               <ListItem>Ticketing</ListItem>
               <ListItem>Guest Management</ListItem>
             </List>
-            <List>
+            <List sx={{ color: theme.palette.text.primary }}>
               <ListItem>Partners</ListItem>
               <ListItem>Carreers</ListItem>
               <ListItem>Management team</ListItem>
             </List>
           </Box>
         </Box>
+      </Container>
+      <Divider />
+      <Container>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "0.75rem 0",
           }}
         >
-          <Typography>&#169; 2022 - A Project Built with Next.js</Typography>
+          <Typography sx={{ color: theme.palette.text.primary }}>
+            &#169; 2022 - A Project Built with Next.js
+          </Typography>
           <Stack direction="row" spacing={1}>
             <IconButton>
               <Instagram />

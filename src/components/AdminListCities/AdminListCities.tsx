@@ -15,7 +15,7 @@ import {
   Delete as DeleteIcon,
   ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material";
-import CityOperations from "../../redux/cities/city.operations";
+import { EventOperations } from "../../redux/event/event.operations";
 
 interface IAdminListCitiesProps {
   data: any;
@@ -40,7 +40,7 @@ export const AdminListCities = ({
 
   const handleDeleteCity = (cityId: any) =>
     // @ts-ignore
-    dispatch(CityOperations.deleteCity(cityId));
+    dispatch(EventOperations.deleteCity(cityId));
 
   return (
     <Box>

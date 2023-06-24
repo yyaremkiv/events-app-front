@@ -9,6 +9,7 @@ declare module "@mui/material" {
   interface TypeText {
     light: string;
     main: string;
+    dark: string;
   }
 }
 
@@ -17,7 +18,7 @@ export const themeSettings = (mode: PaletteMode) => {
     palette: {
       mode: mode,
       primary: {
-        main: "#00838f",
+        main: "#26a69a",
         light: "#00acc1",
         dark: "#006064",
       },
@@ -34,10 +35,14 @@ export const themeSettings = (mode: PaletteMode) => {
         mainHover: "#00796b",
       },
       text: {
+        main: mode === "dark" ? "#26a69a" : "#26a69a",
         primary: mode === "dark" ? "#fff" : "rgba(0, 0, 0, 0.87)",
         light: mode === "dark" ? "#fff" : "#fff",
-        main: mode === "dark" ? "#26a69a" : "#26a69a",
+        dark: mode === "dark" ? "#616161" : "#757575",
       },
+    },
+    typography: {
+      fontFamily: "Roboto, Arial, sans-serif",
     },
     breakpoints: {
       values: {

@@ -1,34 +1,18 @@
 import { BannerHero } from "../components/BannerHero";
-import { ListCities } from "../components/ListCities";
-import { Container } from "@mui/material";
-import EventService from "../services/event.service";
-import { useEffect, useState } from "react";
+import { ListHomeEvents } from "../components/ListHomeEvents/ListHomeEvents";
+import { Container, Typography } from "@mui/material";
+import { useFetchHomeEvent } from "../hooks";
+import { IUseFetchHomeEvent } from "../hooks/useFetchHomeEvent";
 
-export default function Home() {
-  const [data, setData] = useState<any>([]);
-
-  useEffect(() => {
-    async function fetch() {
-      const { data } = await EventService.getCity({ limit: 10 });
-      if (data) setData(data);
-    }
-    fetch();
-  }, []);
+export default function Home(): JSX.Element {
+  const { data, isLoading, error }: IUseFetchHomeEvent = useFetchHomeEvent();
 
   return (
     <Container>
       <BannerHero />
-      {data?.cities?.length > 0 && <ListCities data={data} />}
+      {data.length > 0 && <ListHomeEvents data={data} />}
+
+      {error && !isLoading && <Typography>{error}</Typography>}
     </Container>
   );
 }
-
-// export async function getServerSideProps() {
-//   const { data } = await EventService.getCity({ limit: 10 });
-
-//   return {
-//     props: {
-//       data: data,
-//     },
-//   };
-// }

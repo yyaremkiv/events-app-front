@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import CityOperations from "../redux/cities/city.operations.js";
+import { EventOperations } from "../redux/event/event.operations";
 
 export const useCity = () => {
   const cities = useSelector((state) => state.events.cities);
@@ -9,7 +9,7 @@ export const useCity = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(CityOperations.getCity({}));
+    dispatch(EventOperations.getCity({}));
   }, []);
 
   return [cities, isLoading, error];

@@ -15,7 +15,7 @@ import {
   Delete as DeleteIcon,
   ExpandMore as ExpandMoreIcon,
 } from "@mui/icons-material";
-import CityOperations from "../../redux/cities/city.operations";
+import { EventOperations } from "../../redux/event/event.operations";
 
 interface IListAdminCityProps {
   data: any;
