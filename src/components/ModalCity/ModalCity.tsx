@@ -12,26 +12,29 @@ import {
 import { FormValidation } from "../../config";
 import { Box, useTheme, Typography } from "@mui/material";
 import { EventOperations } from "../../redux/event/event.operations";
+import { AppDispatch } from "../../redux/store";
 
 interface IModalCityProps {
   cityId: string | null;
   isLoading?: boolean;
+  handleCloseModal: any;
 }
 
 export const ModalCity = ({
   cityId,
-  isLoading,
+  isLoading = false,
+  handleCloseModal,
 }: IModalCityProps): JSX.Element => {
-  const [image, setImage] = useState(null);
-  const dispatch = useDispatch();
+  const [image, setImage] = useState<any | null>(null);
+  const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
 
   const city = useSelector((state: any) => state.events.cities).find(
     (city: any) => city._id === cityId
   );
 
-  const handleSubmitCity = (values: any, { resetForm }: { resetForm: any }) => {
-    const formData = new FormData();
+  const handleSubmitCity = async (values: any, { resetForm }: any) => {
+    const formData: any = new FormData();
 
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
@@ -39,13 +42,14 @@ export const ModalCity = ({
 
     if (image) formData.append("picture", image);
 
+    let response: any;
     if (cityId) {
-      // @ts-ignore
-      dispatch(EventOperations.updateCity(formData));
+      response = await dispatch(EventOperations.updateCity(formData));
     } else {
-      // @ts-ignore
-      dispatch(EventOperations.addCity(formData));
+      response = await dispatch(EventOperations.addCity(formData));
     }
+
+    if (!response.error && !isLoading) handleCloseModal();
 
     setImage(null);
     resetForm();

@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>Events App</title>
+        <meta charSet="UTF-8" />
       </Head>
       <body>
         <Main />

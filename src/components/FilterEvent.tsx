@@ -39,7 +39,7 @@ export const FilterEvent = ({
   handleFetchByFilter,
   handleClearFilter,
   isLoading,
-}) => {
+}: any) => {
   const initialValues = {
     query: "",
     dateStart: dayjs(dateStart),
@@ -62,7 +62,7 @@ export const FilterEvent = ({
     priceMin,
     priceMax,
     hasFreePlaces,
-  }) => {
+  }: any) => {
     handleFetchByFilter({
       searchQuery: query,
       dateStart: dateStart.$d,
@@ -76,7 +76,7 @@ export const FilterEvent = ({
     });
   };
 
-  const handleClearForm = (resetForm) => {
+  const handleClearForm = (resetForm: any) => {
     resetForm();
     handleClearFilter();
   };
@@ -97,7 +97,7 @@ export const FilterEvent = ({
           handleSubmit,
           setFieldValue,
           resetForm,
-        }) => (
+        }: any) => (
           <form
             onSubmit={handleSubmit}
             style={{
@@ -199,7 +199,9 @@ export const FilterEvent = ({
               step={(seatsMax - seatsMin) / 100}
               disabled={isLoading}
               onChange={(_, newValue) => {
+                // @ts-ignore
                 setFieldValue("seatsMin", parseInt(newValue[0]));
+                // @ts-ignore
                 setFieldValue("seatsMax", parseInt(newValue[1]));
               }}
             />
@@ -240,7 +242,9 @@ export const FilterEvent = ({
               step={(priceMax - priceMin) / 100}
               disabled={(priceMin === 0 && priceMax === 0) || isLoading}
               onChange={(e) => {
+                // @ts-ignore
                 setFieldValue("priceMin", parseInt(e.target.value[0]));
+                // @ts-ignore
                 setFieldValue("priceMax", parseInt(e.target.value[1]));
               }}
             />
@@ -263,6 +267,7 @@ export const FilterEvent = ({
               variant="outlined"
               loading={isLoading}
               onClick={() => {
+                // @ts-ignore
                 handleClearForm(resetForm, setFieldValue);
                 setFieldValue("categories", []);
               }}

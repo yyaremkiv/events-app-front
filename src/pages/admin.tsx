@@ -1,104 +1,72 @@
-import { useState } from "react";
-import { useAuth, useCity } from "../hooks";
-import { ModalCity } from "../components/ModalCity/ModalCity";
-import { ModalEvent } from "../components/ModalEvent/ModalEvent";
-import { ModalWindow } from "../components/ModalWindows";
-import { AdminListCities } from "../components/AdminListCities/AdminListCities";
-import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import React, { useState } from "react";
+import { useAuth } from "../hooks";
+import { MenuNavigationLink } from "../components/MenuNavigationLink";
+import { AdminTabEvents } from "../components/AdminTabEvents/AdminTabEvents";
+import { Box, Tab, Tabs, Typography, useTheme } from "@mui/material";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
 const Admin = (): JSX.Element => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [typeModal, setTypeModal] = useState<string | null>(null);
-  const [cityId, setCityId] = useState<string | null>(null);
-  const [eventId, setEventId] = useState<string | null>(null);
-  const [cities, isLoading, error] = useCity();
+  const [value, setValue] = useState<number>(0);
   const theme = useTheme();
 
-  const handleModalClose = () => {
-    setCityId(null);
-    setEventId(null);
-    setOpenModal(false);
-  };
-
-  const handleUpdateCity = (cityId: string) => {
-    setCityId(cityId);
-    setTypeModal("city");
-    setOpenModal(true);
-  };
-
-  const handleAddEvent = (cityId: string) => {
-    setCityId(cityId);
-    setTypeModal("event");
-    setOpenModal(true);
-  };
-
-  const handleEditEvent = ({
-    cityId,
-    eventId,
-  }: {
-    cityId: string;
-    eventId: string;
-  }) => {
-    setCityId(cityId);
-    setEventId(eventId);
-    setTypeModal("event");
-    setOpenModal(true);
-  };
+  const handleChange = (_: any, newValue: number) => setValue(newValue);
 
   return (
     <Box>
-      <Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "0.5rem 0",
-          }}
-        >
-          <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
-            List Of All Cities:
-          </Typography>
+      <MenuNavigationLink />
 
-          <Tooltip title="Add New City" placement="top">
-            <IconButton
-              onClick={() => {
-                setTypeModal("city");
-                setOpenModal(true);
-              }}
-            >
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
+      <Box sx={{ width: "100%", color: theme.palette.text.primary }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="List Of All Cities" {...a11yProps(0)} />
+            <Tab label="List Counties" {...a11yProps(1)} />
+            <Tab label="List Cities" {...a11yProps(2)} />
+          </Tabs>
         </Box>
-
-        {Boolean(cities.length) && (
-          <AdminListCities
-            data={cities}
-            handleUpdateCity={handleUpdateCity}
-            handleAddEvent={handleAddEvent}
-            handleEditEvent={handleEditEvent}
-          />
-        )}
+        <TabPanel value={value} index={0}>
+          <AdminTabEvents />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Typography>List of countries in development</Typography>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Typography>List of cities in development</Typography>
+        </TabPanel>
       </Box>
-
-      <ModalWindow open={openModal} onCloseFunc={handleModalClose}>
-        {typeModal === "city" && (
-          <ModalCity cityId={cityId} isLoading={isLoading} />
-        )}
-
-        {typeModal === "event" && (
-          <ModalEvent
-            cityId={cityId}
-            eventId={eventId}
-            // @ts-ignore
-            handleAddEvent={handleAddEvent}
-          />
-        )}
-      </ModalWindow>
     </Box>
   );
 };
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 export default useAuth(Admin);

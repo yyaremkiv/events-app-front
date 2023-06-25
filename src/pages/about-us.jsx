@@ -1,8 +1,14 @@
+import { MenuNavigationLink } from "../components/MenuNavigationLink";
+import { Box, Typography, useTheme } from "@mui/material";
+
 const AboutUsPage = () => {
+  const theme = useTheme();
+
   return (
-    <div>
-      <h1>About us Page</h1>
-      <p>
+    <Box sx={{ color: theme.palette.text.primary }}>
+      <MenuNavigationLink />
+      <Typography variant="h4">About us Page</Typography>
+      <Typography>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -10,8 +16,8 @@ const AboutUsPage = () => {
         velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
         occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 };
 

@@ -5,11 +5,11 @@ import { Box, Grid } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-interface ListHomeEvents {
+interface IListHomeCitiesProps {
   data: IEventItem[];
 }
 
-export const ListHomeEvents = ({ data }: ListHomeEvents): JSX.Element => {
+export const ListHomeCities = ({ data }: IListHomeCitiesProps): JSX.Element => {
   useEffect(() => {
     AOS.init();
   }, []);

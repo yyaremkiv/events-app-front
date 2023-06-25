@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AllEvents } from "../../components/Events/events-page";
+import { ListCities } from "@/src/components/ListCities/ListCities";
 import { useFetchCities } from "../../hooks";
 import { FetchCitiesResult } from "../../hooks/useFetchEvents";
 import {
@@ -14,10 +14,11 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Refresh as RefreshIcon } from "@mui/icons-material";
+import { MenuNavigationLink } from "@/src/components/MenuNavigationLink";
 
 const EvantsPage = (): JSX.Element => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(3);
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(5);
   const [data, isLoading, error, fetchData]: FetchCitiesResult = useFetchCities(
     { page, limit }
   );
@@ -42,9 +43,10 @@ const EvantsPage = (): JSX.Element => {
 
   return (
     <Box>
+      <MenuNavigationLink />
+
       <Box
         sx={{
-          border: "1px solid gray",
           display: "flex",
           alignItems: "center",
           gap: "1rem",
@@ -54,10 +56,8 @@ const EvantsPage = (): JSX.Element => {
           sx={{ m: 1, minWidth: 80, color: theme.palette.text.primary }}
           size="small"
         >
-          <InputLabel id="demo-select-small-label">Count</InputLabel>
+          <InputLabel>Count</InputLabel>
           <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
             value={limit}
             label="Count"
             onChange={(e) => handleChangeLimit(Number(e.target.value))}
@@ -65,6 +65,7 @@ const EvantsPage = (): JSX.Element => {
             <MenuItem value={3}>3</MenuItem>
             <MenuItem value={5}>5</MenuItem>
             <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
           </Select>
         </FormControl>
         <Typography sx={{ color: theme.palette.text.primary }}>
@@ -75,9 +76,16 @@ const EvantsPage = (): JSX.Element => {
         </Typography>
       </Box>
 
-      {data.cities?.length > 0 && <AllEvents data={data.cities} />}
+      {data.cities?.length > 0 && <ListCities data={data.cities} />}
 
-      <Box sx={{ display: "flex", justifyContent: "center", p: "0.75rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          p: "0.75rem",
+          color: theme.palette.text.primary,
+        }}
+      >
         <LoadingButton
           variant="text"
           loadingPosition="start"
@@ -91,11 +99,10 @@ const EvantsPage = (): JSX.Element => {
       </Box>
       <Box
         sx={{
-          border: "1px solid gray",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1rem",
+          padding: "0.5rem 0",
         }}
       >
         <Pagination

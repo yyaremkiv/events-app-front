@@ -1,9 +1,10 @@
-import { SingleEvet } from "../../../components/Events/single-event";
-import EventService from "../../../services/event.service";
+import { EventService } from "../../../services";
 import { Box, Menu } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { MenuNavigation } from "../../../components/MenuNavigation.jsx";
+import { MenuNavigation } from "../../../components/MenuNavigation";
+
+import { ItemEvent } from "../../../components/ItemEvent/ItemEvent";
 
 const EventPage = () => {
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const EventPage = () => {
   useEffect(() => {
     async function fetch() {
       const { data } = await EventService.getEvent({ cityName: cat });
-      const event = data.events.find((event) => event.title === id);
+      const event = data.events.find((event: any) => event.title === id);
 
       setData(event);
     }
@@ -27,13 +28,14 @@ const EventPage = () => {
   return (
     <Box>
       <MenuNavigation
+        // @ts-ignore
         list={[
           { title: "Home", path: "/", iconName: "home" },
           { title: cityName, path: `/events/${cat}`, iconName: "city" },
           { title: eventName, path: "", iconName: "event" },
         ]}
       />
-      <SingleEvet data={data} />;
+      <ItemEvent data={data} />
     </Box>
   );
 };

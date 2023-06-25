@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { CatEvent } from "../../../components/Events/catEvent";
-import EventService from "../../../services/event.service";
+import { EventService } from "../../../services/event.service";
 import { Box } from "@mui/system";
 import { MenuNavigation } from "../../../components/MenuNavigation";
 import {
@@ -16,10 +15,11 @@ import {
 import { LoadingButton } from "@mui/lab";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { FilterEvent } from "../../../components/FilterEvent";
+import { ListEvents } from "@/src/components/ListEvents/ListEvents";
 
-const EventsCatPage = () => {
+const EventsCatPage = (): JSX.Element => {
   const [events, setEvents] = useState([]);
-  const [params, setParams] = useState({});
+  const [params, setParams] = useState<any>({});
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
 
@@ -32,6 +32,7 @@ const EventsCatPage = () => {
 
   useEffect(() => {
     async function fetch() {
+      console.log("fetch", "cityName", cityName);
       const { data } = await EventService.getEvent({
         cityName,
         params: { page: 1, limit: 5 },
@@ -45,15 +46,15 @@ const EventsCatPage = () => {
   }, [cat]);
 
   useEffect(() => {
-    fetchDataEvents({ page });
+    if (cat) fetchDataEvents({ page });
   }, [limit]);
 
-  const handleChangeLimit = (value) => {
+  const handleChangeLimit = (value: number) => {
     setPage(1);
     setLimit(value);
   };
 
-  const handleChangePage = (_, newPageValue) => {
+  const handleChangePage = (_: any, newPageValue: number) => {
     setPage(newPageValue);
     fetchDataEvents({ page: newPageValue });
   };
@@ -64,7 +65,7 @@ const EventsCatPage = () => {
     fetchDataEvents({ page: newPageValue, isLoadingMore: true });
   };
 
-  const handleFetchByFilter = (queryParams) => {
+  const handleFetchByFilter = (queryParams: any) => {
     fetchDataEvents({ page, isLoadingMore: false, queryParams });
   };
 
@@ -72,7 +73,11 @@ const EventsCatPage = () => {
     fetchDataEvents({ queryParams: {} });
   };
 
-  async function fetchDataEvents({ page, isLoadingMore = false, queryParams }) {
+  async function fetchDataEvents({
+    page,
+    isLoadingMore = false,
+    queryParams,
+  }: any) {
     setIsLoading(true);
     try {
       const { data } = await EventService.getEvent({
@@ -86,7 +91,7 @@ const EventsCatPage = () => {
         setEvents(newEventsList);
         setParams(data.eventsParams);
       }
-    } catch (err) {
+    } catch (err: any) {
       setError(err?.response?.data.message || "Network error");
     } finally {
       setIsLoading(false);
@@ -106,6 +111,7 @@ const EventsCatPage = () => {
             }}
           >
             <MenuNavigation
+              // @ts-ignore
               list={[
                 { title: "Home", path: "/", iconName: "home" },
                 { title: cityName, path: "", iconName: "city" },
@@ -120,7 +126,9 @@ const EventsCatPage = () => {
                 padding: "0.5rem",
               }}
             >
-              <Typography>All Events: {params.totalEvents}</Typography>
+              <Typography>
+                All Events: {params.totalEvents ? params.totalEvents : null}
+              </Typography>
               <Typography>Displayed: {events?.length}</Typography>
 
               <FormControl sx={{ minWidth: 80 }} size="small">
@@ -128,7 +136,7 @@ const EventsCatPage = () => {
                 <Select
                   value={limit}
                   label="Count"
-                  onChange={(e) => handleChangeLimit(e.target.value)}
+                  onChange={(e) => handleChangeLimit(Number(e.target.value))}
                 >
                   <MenuItem value={3}>3</MenuItem>
                   <MenuItem value={5}>5</MenuItem>
@@ -159,7 +167,7 @@ const EventsCatPage = () => {
             }}
           >
             {events?.length > 0 ? (
-              <CatEvent
+              <ListEvents
                 data={events}
                 cityNameLink={cat}
                 isLoading={isLoading}
@@ -204,22 +212,3 @@ const EventsCatPage = () => {
 };
 
 export default EventsCatPage;
-
-// export async function getStaticPaths() {
-//   const cities = await EventService.getCity({ limit: 10 });
-//   const AllPath = cities.data.cities.map((ev) => {
-//     return { params: { cat: ev.city.toLowerCase() } };
-//   });
-
-//   return { paths: AllPath, fallback: false };
-// }
-
-// export async function getStaticProps(context) {
-//   const city = context?.params.cat;
-//   const { data } = await EventService.getEvent({
-//     cityName: city,
-//     params: { page: 1, limit: 5 },
-//   });
-
-//   return { props: { data: data.events, eventsParams: data.eventsParams } };
-// }

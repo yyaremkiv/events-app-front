@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 
-export const ItemBanner = ({ title, subtitle }) => {
+export const ItemBanner = ({ title, subtitle }: any) => {
   return (
     <Container>
       <Box

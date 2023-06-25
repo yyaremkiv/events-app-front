@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { Box, Grid, Typography } from "@mui/material";
 
-export const AllEvents = ({ data }) => {
+export const ListCities = ({ data }: any) => {
   return (
-    <Box sx={{ margin: "0 auto", width: "75%" }}>
+    <Box sx={{ padding: "1rem 0" }}>
       <Grid container spacing={1}>
-        {data?.map(({ _id, city, title, totalEvents, imagePath }) => (
+        {data?.map(({ _id, city, title, totalEvents, imagePath }: any) => (
           <Grid
             key={_id}
             item

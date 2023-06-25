@@ -15,11 +15,17 @@ import { Box, Typography, useTheme } from "@mui/material";
 import dayjs from "dayjs";
 import DataConfigInformation from "../../data/DataConfigInformation";
 import { EventOperations } from "../../redux/event/event.operations";
+import { AppDispatch } from "../../redux/store";
 
-export const ModalEvent = ({ cityId, eventId }: any) => {
-  const isLoading = false;
+export const ModalEvent = ({
+  cityId,
+  eventId,
+  handleCloseModal,
+  error,
+  isLoading = false,
+}: any) => {
   const [image, setImage] = useState(null);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const theme = useTheme();
 
@@ -27,8 +33,6 @@ export const ModalEvent = ({ cityId, eventId }: any) => {
     (city: any) => city._id === cityId
   );
   const singleEvent = city.events.find((event: any) => event.id === eventId);
-
-  console.log("this is single event", singleEvent);
 
   const dataEvent = eventId
     ? {
@@ -40,23 +44,26 @@ export const ModalEvent = ({ cityId, eventId }: any) => {
       }
     : null;
 
-  const handleSubmitEvent = (values: any, { resetForm }: any) => {
-    console.log("this is handle console", values);
+  const handleSubmitEvent = async (values: any, { resetForm }: any) => {
     const formData = new FormData();
     formData.append("cityId", cityId);
+    formData.append("eventId", eventId);
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
     });
-    if (image) {
-      formData.append("picture", image);
-    }
+    if (image) formData.append("picture", image);
+
+    let response: any;
     if (eventId) {
-      formData.append("eventId", eventId);
-      // @ts-ignore
-      dispatch(EventOperations.updateEvent(formData));
+      response = await dispatch(EventOperations.updateEvent(formData));
     } else {
-      // @ts-ignore
-      dispatch(EventOperations.addEvent(formData));
+      response = await dispatch(EventOperations.addEvent(formData));
+    }
+
+    if (!response.error && !isLoading) {
+      handleCloseModal();
+      setImage(null);
+      resetForm();
     }
   };
 
@@ -174,11 +181,15 @@ export const ModalEvent = ({ cityId, eventId }: any) => {
                 padding: "0.5rem 0",
               }}
             >
-              <CustomLoadingButton text="Add Event" isLoading={isLoading} />
+              <CustomLoadingButton
+                text={eventId ? "Update Event" : "Add Event"}
+                isLoading={isLoading}
+              />
             </Box>
           </form>
         )}
       </Formik>
+      <Typography sx={{ color: "red" }}>{error}</Typography>
     </Box>
   );
 };

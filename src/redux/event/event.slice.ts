@@ -118,7 +118,7 @@ export const eventSlice = createSlice({
         (city: any) => city._id === cityId
       );
       if (cityIndex !== -1) {
-        state.cities[cityIndex].events.push(...events);
+        state.cities[cityIndex].events = events;
       }
       state.isLoading = false;
     });
@@ -134,13 +134,24 @@ export const eventSlice = createSlice({
       state.error = null;
     });
     builder.addCase(EventOperations.updateEvent.fulfilled, (state, action) => {
-      const { cityId, events } = action.payload;
+      const { cityId, updatedEvent } = action.payload;
+
       const cityIndex = state.cities.findIndex(
         (city: any) => city._id === cityId
       );
+
       if (cityIndex !== -1) {
-        state.cities[cityIndex].events = events;
+        const events = state.cities[cityIndex].events;
+
+        const eventIndex = events.findIndex(
+          (event: any) => event.id === updatedEvent.id
+        );
+
+        if (eventIndex !== -1) {
+          events[eventIndex] = updatedEvent;
+        }
       }
+
       state.isLoading = false;
     });
     builder.addCase(

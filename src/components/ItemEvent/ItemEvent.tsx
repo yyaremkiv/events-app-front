@@ -3,22 +3,22 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Box, Typography } from "@mui/material";
 
-export const SingleEvet = ({ data }) => {
+export const ItemEvent = ({ data }: any) => {
   const inputEmail = useRef();
   const router = useRouter();
   const [message, setMessage] = useState("");
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    const emailValue = inputEmail.current.value;
+    // const emailValue: any = inputEmail.current.value;
     const eventId = router?.query.id;
 
     const validRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    if (!emailValue.match(validRegex)) {
-      setMessage("Please introduce a correct email address");
-    }
+    // if (!emailValue.match(validRegex)) {
+    //   setMessage("Please introduce a correct email address");
+    // }
 
     try {
       const response = await fetch("/api/email-registration", {
@@ -26,13 +26,13 @@ export const SingleEvet = ({ data }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: emailValue, eventId }),
+        // body: JSON.stringify({ email: emailValue, eventId }),
       });
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       setMessage(data.message);
-      inputEmail.current.value = "";
+      // inputEmail.current.value = "";
     } catch (err) {
       console.log("ERROR", err);
     }
@@ -59,7 +59,7 @@ export const SingleEvet = ({ data }) => {
           <form onSubmit={onSubmit}>
             <label>Get Registered for this event!</label>
             <input
-              ref={inputEmail}
+              // ref={inputEmail}
               type="email"
               id="email"
               placeholder="Please insert your email here"

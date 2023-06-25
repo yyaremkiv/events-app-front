@@ -4,7 +4,6 @@ import { themeSettings } from "../../config/theme";
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { Box, Container, ThemeProvider, createTheme } from "@mui/material";
-import { MenuNavigation } from "../MenuNavigation";
 
 export const Layout = ({ children }: any) => {
   const mode = useSelector((state: any) => state.theme.mode);
@@ -21,10 +20,7 @@ export const Layout = ({ children }: any) => {
         }}
       >
         <Header />
-        <Container sx={{ flexGrow: 1 }}>
-          <MenuNavigation />
-          {children}
-        </Container>
+        <Container sx={{ flexGrow: 1 }}>{children}</Container>
         <Footer />
       </Box>
     </ThemeProvider>

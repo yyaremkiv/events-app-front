@@ -16,7 +16,7 @@ export class EventOperations {
 
   static addCity = createAsyncThunk(
     "city/addCity",
-    async (formData, { rejectWithValue }) => {
+    async (formData: any, { rejectWithValue }) => {
       try {
         const { data } = await EventService.addCity(formData);
         return data;
@@ -28,7 +28,7 @@ export class EventOperations {
 
   static updateCity = createAsyncThunk(
     "city/updateCity",
-    async (formData, { rejectWithValue }) => {
+    async (formData: any, { rejectWithValue }) => {
       try {
         const { data } = await EventService.updateCity(formData);
         return data;
@@ -40,7 +40,7 @@ export class EventOperations {
 
   static deleteCity = createAsyncThunk(
     "city/deleteCity",
-    async (cityId, { rejectWithValue }) => {
+    async (cityId: string, { rejectWithValue }) => {
       try {
         const { data } = await EventService.deleteCity(cityId);
         return data;
@@ -64,7 +64,7 @@ export class EventOperations {
 
   static addEvent = createAsyncThunk(
     "city/addEvent",
-    async (formData, { rejectWithValue }) => {
+    async (formData: any, { rejectWithValue }) => {
       try {
         const { data } = await EventService.addEvent(formData);
         return data;
@@ -76,7 +76,7 @@ export class EventOperations {
 
   static updateEvent = createAsyncThunk(
     "city/updateEvent",
-    async (formData, { rejectWithValue }) => {
+    async (formData: any, { rejectWithValue }) => {
       try {
         const { data } = await EventService.updateEvent(formData);
         return data;

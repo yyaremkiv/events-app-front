@@ -1,13 +1,13 @@
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { Public, Place, PeopleAlt, Event } from "@mui/icons-material";
 
-export const ItemSmallCard = ({
+export const ItemSmallCardsdfsdf = ({
   title,
   description,
   country,
   totalEvents,
   population,
-}) => {
+}: any) => {
   return (
     <Box sx={{ padding: "30px 50px" }}>
       <Typography

@@ -1,43 +1,76 @@
+import { Box } from "@mui/material";
+import { emphasize, styled } from "@mui/material/styles";
 import Link from "next/link";
-import { List, ListItem, Typography, useTheme } from "@mui/material";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Chip from "@mui/material/Chip";
+import HomeIcon from "@mui/icons-material/Home";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import EventIcon from "@mui/icons-material/Event";
 
-const linkValues = [
-  { href: "/", text: "Home" },
-  { href: "/events", text: "Events" },
-  { href: "/about-us", text: "About Us" },
-  { href: "/admin", text: "Admin" },
-];
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+  const backgroundColor =
+    theme.palette.mode === "light"
+      ? theme.palette.grey[100]
+      : theme.palette.grey[800];
+  return {
+    backgroundColor,
+    height: theme.spacing(3),
+    color: theme.palette.text.primary,
+    fontWeight: theme.typography.fontWeightRegular,
+    "&:hover, &:focus": {
+      backgroundColor: emphasize(backgroundColor, 0.06),
+      cursor: "pointer",
+    },
+    "&:active": {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(backgroundColor, 0.12),
+    },
+  };
+});
 
-export const MenuNavigation = () => {
-  const theme = useTheme();
+function handleClick(event: any) {
+  event.preventDefault();
+}
 
+export const MenuNavigation = ({ list }: any) => {
+  const getIconByIconName = (iconName: any) => {
+    switch (iconName) {
+      case "home":
+        return <HomeIcon fontSize="small" />;
+      case "city":
+        return <LocationCityIcon fontSize="small" />;
+      case "event":
+        return <EventIcon fontSize="small" />;
+      default:
+        return null;
+    }
+  };
   return (
-    <List
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "0.5rem 0",
-      }}
-    >
-      {linkValues.map((item, index) => (
-        <ListItem
-          key={index}
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
-          <Link
-            href={item.href}
-            style={{
-              textDecoration: "none",
-            }}
-          >
-            <Typography
-              sx={{ fontSize: "1.2rem", color: theme.palette.text.primary }}
-            >
-              {item.text}
-            </Typography>
-          </Link>
-        </ListItem>
-      ))}
-    </List>
+    <Box role="presentation" onClick={handleClick}>
+      <Breadcrumbs aria-label="breadcrumb">
+        {list.map((link: any) => (
+          <Box key={link.path}>
+            {link.path ? (
+              <Link href={link.path} passHref>
+                <StyledBreadcrumb
+                  component="span"
+                  label={link.title}
+                  // @ts-ignore
+                  icon={getIconByIconName(link.iconName)}
+                />
+              </Link>
+            ) : (
+              <StyledBreadcrumb
+                component="a"
+                href="/"
+                label={link.title}
+                // @ts-ignore
+                icon={getIconByIconName(link.iconName)}
+              />
+            )}
+          </Box>
+        ))}
+      </Breadcrumbs>
+    </Box>
   );
 };
