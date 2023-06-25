@@ -52,7 +52,7 @@ export class EventOperations {
 
   static getEvent = createAsyncThunk(
     "city/getEvent",
-    async (cityId, { rejectWithValue }) => {
+    async (cityId: string, { rejectWithValue }) => {
       try {
         const { data } = await EventService.getEvent(cityId);
         return data;

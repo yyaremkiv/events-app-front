@@ -14,11 +14,14 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   ExpandMore as ExpandMoreIcon,
+  Home as HomeIcon,
 } from "@mui/icons-material";
+import { AppDispatch } from "../../redux/store";
 import { EventOperations } from "../../redux/event/event.operations";
+import { ICityItem } from "../../interfaces";
 
 interface IAdminListCitiesProps {
-  data: any;
+  data: ICityItem[];
   handleUpdateCity: any;
   handleAddEvent: any;
   handleEditEvent: any;
@@ -30,8 +33,8 @@ export const AdminListCities = ({
   handleAddEvent,
   handleEditEvent,
 }: IAdminListCitiesProps): JSX.Element => {
-  const [expanded, setExpanded] = useState<string | false>(false);
-  const dispatch = useDispatch();
+  const [expanded, setExpanded] = useState<string | boolean>(false);
+  const dispatch: AppDispatch = useDispatch();
 
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
@@ -39,12 +42,13 @@ export const AdminListCities = ({
     };
 
   const handleDeleteCity = (cityId: any) =>
-    // @ts-ignore
     dispatch(EventOperations.deleteCity(cityId));
+
+  console.log("data", data);
 
   return (
     <Box>
-      {data.map((city: any, index: number) => (
+      {data.map((city: ICityItem, index: number) => (
         <Accordion
           key={index}
           expanded={expanded === city.city}
@@ -60,7 +64,17 @@ export const AdminListCities = ({
                 width: "100%",
               }}
             >
-              <Typography>{city.city}</Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <Typography sx={{ fontWeight: 500 }}>{city.city}</Typography>
+                {city.showOnHomePage ? (
+                  <Tooltip
+                    title="This City Is Shown On The Main Page"
+                    placement="top"
+                  >
+                    <HomeIcon />
+                  </Tooltip>
+                ) : null}
+              </Box>
               <Box sx={{ display: "flex", gap: "0.5rem" }}>
                 <Tooltip title="Update City" placement="top">
                   <IconButton
@@ -90,7 +104,6 @@ export const AdminListCities = ({
               <AdminItemCity
                 key={city._id}
                 data={city}
-                // handleUpdateCity={handleUpdateCity}
                 handleAddEvent={handleAddEvent}
                 handleEditEvent={handleEditEvent}
               />

@@ -9,7 +9,7 @@ export interface ISigninArg {
   password: string;
 }
 
-export interface ICityData {
+export interface ICityItem {
   _id: string;
   city: string;
   country: string;
@@ -19,7 +19,6 @@ export interface ICityData {
   showOnHomePage: boolean;
   title: string;
   totalEvents: number;
-  upcomingEvent: any;
   __v: number;
 }
 

@@ -1,11 +1,11 @@
-import { useCity } from "@/src/hooks";
-import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
-import { Add as AddIcon } from "@mui/icons-material";
-import { AdminListCities } from "../AdminListCities/AdminListCities";
 import { ModalWindow } from "../ModalWindows";
 import { ModalCity } from "../ModalCity/ModalCity";
 import { ModalEvent } from "../ModalEvent/ModalEvent";
+import { AdminListCities } from "../AdminListCities/AdminListCities";
+import { useCity } from "../../hooks";
+import { Add as AddIcon } from "@mui/icons-material";
+import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 
 export const AdminTabEvents = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
