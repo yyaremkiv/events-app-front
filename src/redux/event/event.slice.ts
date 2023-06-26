@@ -89,6 +89,9 @@ export const eventSlice = createSlice({
     builder.addCase(EventOperations.getEvent.pending, (state) => {
       state.isLoading = true;
       state.error = null;
+      state.cities.forEach((city: any) => {
+        city.events = [];
+      });
     });
     builder.addCase(EventOperations.getEvent.fulfilled, (state, action) => {
       const { events, eventsParams } = action.payload;

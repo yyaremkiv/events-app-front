@@ -74,6 +74,7 @@ export const AdminTabEvents = () => {
           handleUpdateCity={handleUpdateCity}
           handleAddEvent={handleAddEvent}
           handleEditEvent={handleEditEvent}
+          isLoading={isLoading}
         />
       )}
 

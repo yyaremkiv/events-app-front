@@ -15,8 +15,14 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { Refresh as RefreshIcon } from "@mui/icons-material";
 import { MenuNavigationLink } from "@/src/components/MenuNavigationLink";
+import { CustomAutocompleteOfCountries } from "@/src/components/CustomAutocompleteOfCountries";
+
+import { DataConfigInformation } from "../../data";
+import { CustomAutocompleteOfCities } from "@/src/components/CustomAutocompleteOfCities";
 
 const EvantsPage = (): JSX.Element => {
+  const [countriesFilter, setCountriesFilter] = useState<any>([]);
+  const [citiesFilter, setCitiesFilter] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
   const [data, isLoading, error, fetchData]: FetchCitiesResult = useFetchCities(
@@ -74,6 +80,24 @@ const EvantsPage = (): JSX.Element => {
         <Typography sx={{ color: theme.palette.text.primary }}>
           Display: {data?.cities.length}
         </Typography>
+      </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <CustomAutocompleteOfCountries
+          label="Set Country"
+          value={countriesFilter}
+          options={DataConfigInformation.listCountries}
+          onChangeFunc={setCountriesFilter}
+          isLoading={isLoading}
+        />
+
+        <CustomAutocompleteOfCities
+          label="Set Cities"
+          value={citiesFilter}
+          options={DataConfigInformation.listCities}
+          onChangeFunc={setCitiesFilter}
+          isLoading={isLoading}
+        />
       </Box>
 
       {data.cities?.length > 0 && <ListCities data={data.cities} />}

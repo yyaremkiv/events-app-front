@@ -1,7 +1,7 @@
 import { MenuNavigationLink } from "../components/MenuNavigationLink";
 import { Box, Typography, useTheme } from "@mui/material";
 
-const AboutUsPage = () => {
+const AboutUsPage = (): JSX.Element => {
   const theme = useTheme();
 
   return (

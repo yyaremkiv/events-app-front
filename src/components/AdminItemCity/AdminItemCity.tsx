@@ -1,28 +1,25 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { LoaderLinearProgress } from "../";
 import { AdminListEvents } from "../AdminListEvents/AdminListEvents";
-import {
-  Box,
-  Divider,
-  IconButton,
-  Tooltip,
-  LinearProgress,
-} from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
 import { EventOperations } from "../../redux/event/event.operations";
-import { ICityItem } from "../../interfaces";
 import { AppDispatch } from "../../redux/store";
+import { ICityItem } from "../../interfaces";
+import { Box, Divider, IconButton, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 
 interface IAdminItemCityProps {
   data: ICityItem;
   handleAddEvent: (value: string) => void;
   handleEditEvent: any;
+  isLoading?: boolean;
 }
 
 export const AdminItemCity = ({
   data,
   handleAddEvent,
   handleEditEvent,
+  isLoading = false,
 }: IAdminItemCityProps): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const { _id: cityId } = data;
@@ -34,8 +31,8 @@ export const AdminItemCity = ({
   const cityName = city.city[0].toUpperCase() + city.city.slice(1);
 
   useEffect(() => {
-    dispatch(EventOperations.getEvent(cityName));
-  }, []);
+    if (cityName) dispatch(EventOperations.getEvent(cityName));
+  }, [cityName]);
 
   const eventsList = city.events ? city.events : [];
 
@@ -47,16 +44,18 @@ export const AdminItemCity = ({
     <Box>
       <Divider sx={{ marginBottom: "0.5rem" }} />
 
-      {!eventsList?.length ? "Dont have events!" : null}
+      {!eventsList?.length && !isLoading ? "Dont have events!" : null}
 
-      <LinearProgress sx={{ backgroundColor: "red" }} />
-
-      {/* <AdminListEvents
-        cityId={cityId}
-        data={eventsList}
-        handleEditEvent={handleEditEvent}
-        handleDeleteEvent={handleDeleteEvent}
-      /> */}
+      {isLoading ? (
+        <LoaderLinearProgress />
+      ) : (
+        <AdminListEvents
+          cityId={cityId}
+          data={eventsList}
+          handleEditEvent={handleEditEvent}
+          handleDeleteEvent={handleDeleteEvent}
+        />
+      )}
 
       <Box
         sx={{ display: "flex", justifyContent: "center", padding: "0.5rem 0" }}

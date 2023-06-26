@@ -13,6 +13,11 @@ import { FormValidation } from "../../config";
 import { Box, useTheme, Typography } from "@mui/material";
 import { EventOperations } from "../../redux/event/event.operations";
 import { AppDispatch } from "../../redux/store";
+import {
+  FormikAutocompleteOfCities,
+  FormikAutocompleteOfCountries,
+} from "../FormikElements";
+import { DataConfigInformation } from "@/src/data";
 
 interface IModalCityProps {
   cityId: string | null;
@@ -42,17 +47,20 @@ export const ModalCity = ({
 
     if (image) formData.append("picture", image);
 
-    let response: any;
-    if (cityId) {
-      response = await dispatch(EventOperations.updateCity(formData));
-    } else {
-      response = await dispatch(EventOperations.addCity(formData));
-    }
+    console.log("values", values);
+    console.log("formData", formData);
 
-    if (!response.error && !isLoading) handleCloseModal();
+    // let response: any;
+    // if (cityId) {
+    //   response = await dispatch(EventOperations.updateCity(formData));
+    // } else {
+    //   response = await dispatch(EventOperations.addCity(formData));
+    // }
 
-    setImage(null);
-    resetForm();
+    // if (!response.error && !isLoading) handleCloseModal();
+
+    // setImage(null);
+    // resetForm();
   };
 
   return (
@@ -79,23 +87,27 @@ export const ModalCity = ({
               gap: "1rem",
             }}
           >
-            <FormikTextField
-              label="City Name"
-              name="city"
-              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
+            <FormikAutocompleteOfCountries
+              label="Set Country"
+              changeFieldName="country"
+              value={values.country}
+              options={DataConfigInformation.listCountries}
+              changeFieldFunction={setFieldValue}
+              isLoading={isLoading}
+            />
+
+            <FormikAutocompleteOfCities
+              label="Set City"
+              changeFieldName="city"
+              value={values.city}
+              options={DataConfigInformation.listCities}
+              changeFieldFunction={setFieldValue}
               isLoading={isLoading}
             />
 
             <FormikTextField
               label="Title Event"
               name="title"
-              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
-              isLoading={isLoading}
-            />
-
-            <FormikTextField
-              label="Country"
-              name="country"
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />

@@ -25,6 +25,7 @@ interface IAdminListCitiesProps {
   handleUpdateCity: any;
   handleAddEvent: any;
   handleEditEvent: any;
+  isLoading?: boolean;
 }
 
 export const AdminListCities = ({
@@ -32,6 +33,7 @@ export const AdminListCities = ({
   handleUpdateCity,
   handleAddEvent,
   handleEditEvent,
+  isLoading = false,
 }: IAdminListCitiesProps): JSX.Element => {
   const [expanded, setExpanded] = useState<string | boolean>(false);
   const dispatch: AppDispatch = useDispatch();
@@ -43,8 +45,6 @@ export const AdminListCities = ({
 
   const handleDeleteCity = (cityId: any) =>
     dispatch(EventOperations.deleteCity(cityId));
-
-  console.log("data", data);
 
   return (
     <Box>
@@ -106,6 +106,7 @@ export const AdminListCities = ({
                 data={city}
                 handleAddEvent={handleAddEvent}
                 handleEditEvent={handleEditEvent}
+                isLoading={isLoading}
               />
             )}
           </AccordionDetails>
