@@ -10,7 +10,7 @@ import {
 
 export const ListEvents = ({ data, cityNameLink, isLoading }: any) => {
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Box
         sx={{
           position: "relative",
@@ -32,7 +32,7 @@ export const ListEvents = ({ data, cityNameLink, isLoading }: any) => {
             <Box sx={{ width: "25%" }}>
               <Link
                 key={id}
-                href={`/events/${cityNameLink.toLowerCase()}/${title}`}
+                href={`/cities/${cityNameLink.toLowerCase()}/${title}`}
                 style={{ border: "1px solid red" }}
               >
                 <Image

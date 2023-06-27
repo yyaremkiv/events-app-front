@@ -1,6 +1,7 @@
 export { FormikDate } from "./FormikDate";
 export { ModalWindow } from "./ModalWindows";
 export { ThemeToggle } from "./ThemeToggle";
+export { CustomButton } from "./CustomButton";
 export { ImageItemCity } from "./ImageItemCity";
 export { FormikCheckbox } from "./FormikCheckbox";
 export { FormikTextField } from "./FormikTextField";

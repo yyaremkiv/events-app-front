@@ -19,7 +19,7 @@ export class BannerHero extends Component {
     };
 
     return (
-      <Box sx={{ border: "1px solid red" }}>
+      <Box sx={{ border: "1px solid red", width: "100%" }}>
         <Slider {...settings}>
           <Box>
             <Image

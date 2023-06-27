@@ -1,3 +1,4 @@
+import { MenuNavigation } from "../components/MenuNavigation";
 import { MenuNavigationLink } from "../components/MenuNavigationLink";
 import { Box, Typography, useTheme } from "@mui/material";
 
@@ -6,7 +7,15 @@ const AboutUsPage = (): JSX.Element => {
 
   return (
     <Box sx={{ color: theme.palette.text.primary }}>
-      <MenuNavigationLink />
+      <Box sx={{ padding: "1rem 0" }}>
+        <MenuNavigation
+          list={[
+            { title: "Home", path: "/", iconName: "home" },
+            { title: "About", path: "", iconName: "about" },
+          ]}
+        />
+      </Box>
+
       <Typography variant="h4">About us Page</Typography>
       <Typography>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

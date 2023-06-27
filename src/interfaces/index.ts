@@ -9,10 +9,21 @@ export interface ISigninArg {
   password: string;
 }
 
+export interface ICountry {
+  label: string;
+  code: string;
+}
+
+export interface ICity {
+  label: string;
+  country: string;
+  population: number;
+}
+
 export interface ICityItem {
   _id: string;
-  city: string;
-  country: string;
+  country: ICountry;
+  city: ICity;
   events: [];
   imagePath: string;
   population: number;

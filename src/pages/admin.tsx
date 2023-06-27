@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks";
-import { MenuNavigationLink } from "../components/MenuNavigationLink";
 import { AdminTabEvents } from "../components/AdminTabEvents/AdminTabEvents";
 import { Box, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import { MenuNavigation } from "../components/MenuNavigation";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -18,7 +18,14 @@ const Admin = (): JSX.Element => {
 
   return (
     <Box>
-      <MenuNavigationLink />
+      <Box sx={{ padding: "1rem 0" }}>
+        <MenuNavigation
+          list={[
+            { title: "Home", path: "/", iconName: "home" },
+            { title: "Admin", path: "", iconName: "admin" },
+          ]}
+        />
+      </Box>
 
       <Box sx={{ width: "100%", color: theme.palette.text.primary }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

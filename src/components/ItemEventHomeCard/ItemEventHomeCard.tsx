@@ -42,7 +42,7 @@ export const ItemEventHomeCard = ({
           justifyContent: "center",
         }}
       >
-        <Link href={`/events/${city.toLowerCase()}`}>
+        <Link href={`/events/${city.label.toLowerCase()}`}>
           <Image
             src={imagePath}
             alt={title}
@@ -88,7 +88,7 @@ export const ItemEventHomeCard = ({
               sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
             />
             <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
-              {country}
+              {country.label}
             </Typography>
           </Grid>
 
@@ -130,7 +130,7 @@ export const ItemEventHomeCard = ({
               sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
             />
             <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
-              Location: {country}
+              Location: {country.label}
             </Typography>
           </Grid>
 

@@ -16,23 +16,17 @@ export const ItemEvent = ({ data }: any) => {
     const validRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    // if (!emailValue.match(validRegex)) {
-    //   setMessage("Please introduce a correct email address");
-    // }
-
     try {
       const response = await fetch("/api/email-registration", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // body: JSON.stringify({ email: emailValue, eventId }),
       });
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       setMessage(data.message);
-      // inputEmail.current.value = "";
     } catch (err) {
       console.log("ERROR", err);
     }
@@ -44,14 +38,16 @@ export const ItemEvent = ({ data }: any) => {
 
       <Box sx={{ display: "flex" }}>
         {data.imagePath ? (
-          <Image
-            src={data.imagePath}
-            width={400}
-            height={300}
-            alt={data.title}
-            style={{ width: "auto", height: "auto" }}
-            priority={true}
-          />
+          <Box sx={{ width: "400px" }}>
+            <Image
+              src={data.imagePath}
+              width={400}
+              height={300}
+              alt={data.title}
+              style={{ width: "100%", height: "auto" }}
+              priority={true}
+            />
+          </Box>
         ) : null}
 
         <Box sx={{ padding: "1rem" }}>

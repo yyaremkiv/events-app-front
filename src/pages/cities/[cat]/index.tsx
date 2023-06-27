@@ -28,7 +28,7 @@ const EventsCatPage = (): JSX.Element => {
   const router = useRouter();
   const { cat } = router.query;
 
-  const cityName = cat ? cat[0].toUpperCase() + cat.slice(1) : null;
+  const cityName = cat ? String(cat).toLowerCase() : null;
 
   useEffect(() => {
     async function fetch() {
@@ -111,10 +111,16 @@ const EventsCatPage = (): JSX.Element => {
             }}
           >
             <MenuNavigation
-              // @ts-ignore
               list={[
                 { title: "Home", path: "/", iconName: "home" },
-                { title: cityName, path: "", iconName: "city" },
+                { title: "Cities", path: "/cities", iconName: "cities" },
+                {
+                  title:
+                    cityName &&
+                    cityName[0].toLocaleUpperCase() + cityName.slice(1),
+                  path: "",
+                  iconName: "city",
+                },
               ]}
             />
 

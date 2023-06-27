@@ -41,26 +41,31 @@ export const ModalCity = ({
   const handleSubmitCity = async (values: any, { resetForm }: any) => {
     const formData: any = new FormData();
 
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
-    });
+    formData.append("country", JSON.stringify(values.country));
+    formData.append("city", JSON.stringify(values.city));
+    formData.append("title", values.title);
+    formData.append("population", values.population);
+    formData.append("showOnHomePage", values.showOnHomePage);
+
+    if (cityId) formData.append("_id", cityId);
+
+    // Object.keys(values).forEach((key) => {
+    //   formData.append(key, values[key]);
+    // });
 
     if (image) formData.append("picture", image);
 
-    console.log("values", values);
-    console.log("formData", formData);
+    let response: any;
+    if (cityId) {
+      response = await dispatch(EventOperations.updateCity(formData));
+    } else {
+      response = await dispatch(EventOperations.addCity(formData));
+    }
 
-    // let response: any;
-    // if (cityId) {
-    //   response = await dispatch(EventOperations.updateCity(formData));
-    // } else {
-    //   response = await dispatch(EventOperations.addCity(formData));
-    // }
+    if (!response.error && !isLoading) handleCloseModal();
 
-    // if (!response.error && !isLoading) handleCloseModal();
-
-    // setImage(null);
-    // resetForm();
+    setImage(null);
+    resetForm();
   };
 
   return (

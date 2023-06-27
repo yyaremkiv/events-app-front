@@ -3,7 +3,7 @@ import { List, ListItem, Typography, useTheme } from "@mui/material";
 
 const linkValues = [
   { href: "/", text: "Home" },
-  { href: "/events", text: "Events" },
+  { href: "/cities", text: "Cities" },
   { href: "/about-us", text: "About Us" },
   { href: "/admin", text: "Admin" },
 ];

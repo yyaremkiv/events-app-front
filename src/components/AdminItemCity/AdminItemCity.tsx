@@ -28,7 +28,7 @@ export const AdminItemCity = ({
     (city: any) => city._id === cityId
   );
 
-  const cityName = city.city[0].toUpperCase() + city.city.slice(1);
+  const cityName = city.city.label[0].toUpperCase() + city.city.label.slice(1);
 
   useEffect(() => {
     if (cityName) dispatch(EventOperations.getEvent(cityName));

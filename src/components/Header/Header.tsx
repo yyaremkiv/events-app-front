@@ -3,16 +3,23 @@ import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import { AuthOperations } from "../../redux/auth/auth.operations";
 import { ThemeToggle } from "../index";
+import { AppDispatch, RootState } from "../../redux/store";
+import { CustomButton } from "../index";
 
 export const Header = (): JSX.Element => {
-  const isLogged = useSelector((state: any) => state.auth.isLogged);
-  const dispatch = useDispatch();
+  const isLogged = useSelector((state: RootState) => state.auth.isLogged);
+  const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
 
   return (
     <header>
-      <Box sx={{ backgroundColor: "#BDE7D9" }}>
-        <Container>
+      <Box
+        sx={{
+          background: theme.palette.background.gradientHeaderBg,
+          color: theme.palette.text.primary,
+        }}
+      >
+        <Container maxWidth="xl">
           <Box
             sx={{
               display: "flex",
@@ -52,14 +59,21 @@ export const Header = (): JSX.Element => {
                   <Typography variant="subtitle1">Hello, Admin!</Typography>
                 </Box>
 
-                <Button
-                  // @ts-ignore
+                <CustomButton
+                  text="Logout"
                   onClick={() => dispatch(AuthOperations.logout())}
                   startIcon={<Logout />}
-                  sx={{ backgroundColor: "black" }}
-                >
-                  Logout
-                </Button>
+                  styles={{
+                    backgroundColor: theme.palette.text.primary,
+                    color: theme.palette.background.default,
+                    borderRadius: "20px",
+                    padding: "7px 20px",
+                    "&:hover": {
+                      backgroundColor: theme.palette.background.default,
+                      color: theme.palette.text.primary,
+                    },
+                  }}
+                />
               </Box>
             ) : null}
           </Box>

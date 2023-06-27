@@ -38,21 +38,25 @@ export const AdminListCities = ({
   const [expanded, setExpanded] = useState<string | boolean>(false);
   const dispatch: AppDispatch = useDispatch();
 
+  console.log("expanded", expanded);
+
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const handleDeleteCity = (cityId: any) =>
+  const handleDeleteCity = (cityId: string) =>
     dispatch(EventOperations.deleteCity(cityId));
+
+  console.log("data", data);
 
   return (
     <Box>
-      {data.map((city: ICityItem, index: number) => (
+      {data.map((CityItem: ICityItem, index: number) => (
         <Accordion
           key={index}
-          expanded={expanded === city.city}
-          onChange={handleChange(city.city)}
+          expanded={expanded === CityItem.city.label}
+          onChange={handleChange(CityItem.city.label)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Box
@@ -65,8 +69,10 @@ export const AdminListCities = ({
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                <Typography sx={{ fontWeight: 500 }}>{city.city}</Typography>
-                {city.showOnHomePage ? (
+                <Typography sx={{ fontWeight: 500 }}>
+                  {CityItem.city.label}
+                </Typography>
+                {CityItem.showOnHomePage ? (
                   <Tooltip
                     title="This City Is Shown On The Main Page"
                     placement="top"
@@ -80,7 +86,7 @@ export const AdminListCities = ({
                   <IconButton
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleUpdateCity(city._id);
+                      handleUpdateCity(CityItem._id);
                     }}
                   >
                     <EditIcon />
@@ -90,7 +96,7 @@ export const AdminListCities = ({
                   <IconButton
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDeleteCity(city._id);
+                      handleDeleteCity(CityItem._id);
                     }}
                   >
                     <DeleteIcon />
@@ -100,10 +106,10 @@ export const AdminListCities = ({
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            {expanded === city.city && (
+            {expanded === CityItem.city.label && (
               <AdminItemCity
-                key={city._id}
-                data={city}
+                key={CityItem._id}
+                data={CityItem}
                 handleAddEvent={handleAddEvent}
                 handleEditEvent={handleEditEvent}
                 isLoading={isLoading}

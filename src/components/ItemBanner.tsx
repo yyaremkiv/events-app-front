@@ -2,7 +2,7 @@ import { Box, Container, Typography } from "@mui/material";
 
 export const ItemBanner = ({ title, subtitle }: any) => {
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Box
         sx={{
           borderBottom: "1px solid black",

@@ -20,7 +20,12 @@ export const Layout = ({ children }: any) => {
         }}
       >
         <Header />
-        <Container sx={{ flexGrow: 1 }}>{children}</Container>
+        <Container
+          maxWidth="xl"
+          sx={{ flexGrow: 1, border: "1px solid green" }}
+        >
+          {children}
+        </Container>
         <Footer />
       </Box>
     </ThemeProvider>

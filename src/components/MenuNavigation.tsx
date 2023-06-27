@@ -1,11 +1,14 @@
-import { Box } from "@mui/material";
-import { emphasize, styled } from "@mui/material/styles";
 import Link from "next/link";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Chip from "@mui/material/Chip";
-import HomeIcon from "@mui/icons-material/Home";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
-import EventIcon from "@mui/icons-material/Event";
+import { Box, Chip, Breadcrumbs } from "@mui/material";
+import { emphasize, styled } from "@mui/material/styles";
+import {
+  Home as HomeIcon,
+  Apartment as ApartmentIcon,
+  Event as EventIcon,
+  LocationCity as LocationCityIcon,
+  Info as InfoIcon,
+  AdminPanelSettings as AdminPanelSettingsIcon,
+} from "@mui/icons-material";
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -32,15 +35,31 @@ function handleClick(event: any) {
   event.preventDefault();
 }
 
-export const MenuNavigation = ({ list }: any) => {
+interface IMenuItem {
+  title: string | null;
+  path: string;
+  iconName: string;
+}
+
+interface IMenuNavigationProps {
+  list: IMenuItem[];
+}
+
+export const MenuNavigation = ({ list }: IMenuNavigationProps) => {
   const getIconByIconName = (iconName: any) => {
     switch (iconName) {
       case "home":
         return <HomeIcon fontSize="small" />;
-      case "city":
-        return <LocationCityIcon fontSize="small" />;
+      case "about":
+        return <InfoIcon fontSize="small" />;
       case "event":
         return <EventIcon fontSize="small" />;
+      case "city":
+        return <ApartmentIcon fontSize="small" />;
+      case "cities":
+        return <LocationCityIcon fontSize="small" />;
+      case "admin":
+        return <AdminPanelSettingsIcon fontSize="small" />;
       default:
         return null;
     }

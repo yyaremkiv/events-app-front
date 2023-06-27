@@ -3,7 +3,6 @@ import { Box, Menu } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { MenuNavigation } from "../../../components/MenuNavigation";
-
 import { ItemEvent } from "../../../components/ItemEvent/ItemEvent";
 
 const EventPage = () => {
@@ -27,14 +26,17 @@ const EventPage = () => {
 
   return (
     <Box>
-      <MenuNavigation
-        // @ts-ignore
-        list={[
-          { title: "Home", path: "/", iconName: "home" },
-          { title: cityName, path: `/events/${cat}`, iconName: "city" },
-          { title: eventName, path: "", iconName: "event" },
-        ]}
-      />
+      <Box sx={{ padding: "1rem 0" }}>
+        <MenuNavigation
+          list={[
+            { title: "Home", path: "/", iconName: "home" },
+            { title: "Cities", path: "/cities", iconName: "cities" },
+            { title: cityName, path: `/cities/${cat}`, iconName: "city" },
+            { title: eventName, path: "", iconName: "event" },
+          ]}
+        />
+      </Box>
+
       <ItemEvent data={data} />
     </Box>
   );
