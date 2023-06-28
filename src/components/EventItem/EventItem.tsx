@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Box, Typography } from "@mui/material";
 
-export const ItemEvent = ({ data }: any) => {
+export const EventItem = ({ data }: any) => {
   const inputEmail = useRef();
   const router = useRouter();
   const [message, setMessage] = useState("");

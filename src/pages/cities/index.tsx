@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ListCities } from "@/src/components/ListCities/ListCities";
+import { useEffect, useState } from "react";
+import { CityList } from "@/src/components/CityList/CityList";
 import { useFetchCities } from "../../hooks";
 import { FetchCitiesResult } from "../../hooks/useFetchCities";
 import {
@@ -14,22 +14,24 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Refresh as RefreshIcon } from "@mui/icons-material";
-import { MenuNavigationLink } from "@/src/components/MenuNavigationLink";
 import { CustomAutocompleteOfCountries } from "@/src/components/CustomAutocompleteOfCountries";
-
 import { DataConfigInformation } from "../../data";
 import { CustomAutocompleteOfCities } from "@/src/components/CustomAutocompleteOfCities";
 import { MenuNavigation } from "@/src/components/MenuNavigation";
+import { ICountry, ICity } from "../../interfaces";
 
 const EvantsPage = (): JSX.Element => {
-  const [countriesFilter, setCountriesFilter] = useState<any>([]);
-  const [citiesFilter, setCitiesFilter] = useState<any>([]);
+  const [countriesFilter, setCountriesFilter] = useState<ICountry[] | []>([]);
+  const [citiesFilter, setCitiesFilter] = useState<ICity[] | []>([]);
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
   const [data, isLoading, error, fetchData]: FetchCitiesResult = useFetchCities(
     { page, limit }
   );
   const theme = useTheme();
+
+  let allCountries = DataConfigInformation.listCountries;
+  let allCities = DataConfigInformation.listCities;
 
   const handleChangeLimit = (nevLimit: number) => {
     setPage(1);
@@ -47,6 +49,12 @@ const EvantsPage = (): JSX.Element => {
     setPage(newPageValue);
     fetchData({ page: newPageValue, limit });
   };
+
+  useEffect(() => {
+    setCitiesFilter([]);
+  }, [countriesFilter]);
+
+  console.log("allCities", allCities);
 
   return (
     <Box>
@@ -106,7 +114,7 @@ const EvantsPage = (): JSX.Element => {
           <CustomAutocompleteOfCountries
             label="Set Country"
             value={countriesFilter}
-            options={DataConfigInformation.listCountries}
+            options={allCountries}
             onChangeFunc={setCountriesFilter}
             isLoading={isLoading}
           />
@@ -114,7 +122,7 @@ const EvantsPage = (): JSX.Element => {
           <CustomAutocompleteOfCities
             label="Set Cities"
             value={citiesFilter}
-            options={DataConfigInformation.listCities}
+            options={allCities}
             onChangeFunc={setCitiesFilter}
             isLoading={isLoading}
           />
@@ -131,7 +139,7 @@ const EvantsPage = (): JSX.Element => {
       </Box>
 
       {data.cities?.length > 0 && (
-        <ListCities data={data.cities} totalCities={Number(data.totalCities)} />
+        <CityList data={data.cities} totalCities={Number(data.totalCities)} />
       )}
 
       {data.cities?.length < data.totalCities && (

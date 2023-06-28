@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { ModalWindow } from "../ModalWindows";
-import { ModalCity } from "../ModalCity/ModalCity";
-import { ModalEvent } from "../ModalEvent/ModalEvent";
-import { AdminListCities } from "../AdminListCities/AdminListCities";
+import { CityModal } from "../CityModal/CityModal";
+import { EventModal } from "../EventModal/EventModal";
+import { AdminCityList } from "../AdminCityList/AdminCityList";
 import { useCity } from "../../hooks";
 import { Add as AddIcon } from "@mui/icons-material";
 import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 
-export const AdminTabEvents = () => {
+export const AdminEventTab = (): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [typeModal, setTypeModal] = useState<string | null>(null);
   const [cityId, setCityId] = useState<string | null>(null);
@@ -69,7 +69,7 @@ export const AdminTabEvents = () => {
       </Box>
 
       {Boolean(cities.length) && (
-        <AdminListCities
+        <AdminCityList
           data={cities}
           handleUpdateCity={handleUpdateCity}
           handleAddEvent={handleAddEvent}
@@ -80,7 +80,7 @@ export const AdminTabEvents = () => {
 
       <ModalWindow open={openModal} onCloseFunc={handleModalClose}>
         {typeModal === "city" && (
-          <ModalCity
+          <CityModal
             cityId={cityId}
             handleCloseModal={handleModalClose}
             isLoading={isLoading}
@@ -88,7 +88,7 @@ export const AdminTabEvents = () => {
         )}
 
         {typeModal === "event" && (
-          <ModalEvent
+          <EventModal
             cityId={cityId}
             eventId={eventId}
             handleAddEvent={handleAddEvent}

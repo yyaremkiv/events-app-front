@@ -38,6 +38,7 @@ export class AuthOperations {
   static logout = createAsyncThunk(
     "auth/logout",
     async (_, { rejectWithValue }) => {
+      console.log("this is login");
       try {
         const { data } = await AuthService.logout();
         return data;

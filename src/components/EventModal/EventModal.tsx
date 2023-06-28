@@ -10,14 +10,14 @@ import {
   FormikAutocomplete,
   CustomLoadingButton,
   ImageItemCity,
-} from "../";
+} from "..";
 import { Box, Typography, useTheme } from "@mui/material";
 import dayjs from "dayjs";
 import { DataConfigInformation } from "../../data";
 import { EventOperations } from "../../redux/event/event.operations";
 import { AppDispatch } from "../../redux/store";
 
-export const ModalEvent = ({
+export const EventModal = ({
   cityId,
   eventId,
   handleCloseModal,

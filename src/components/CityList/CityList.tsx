@@ -3,15 +3,15 @@ import Link from "next/link";
 import { Box, Grid, Typography, useTheme } from "@mui/material";
 import { Place, Celebration as CelebrationIcon } from "@mui/icons-material";
 
-interface IListCitiesProps {
+interface ICityListProps {
   data: any;
   totalCities: number;
 }
 
-export const ListCities = ({
+export const CityList = ({
   data,
   totalCities,
-}: IListCitiesProps): JSX.Element => {
+}: ICityListProps): JSX.Element => {
   const theme = useTheme();
 
   return (
@@ -73,6 +73,7 @@ export const ListCities = ({
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                   }}
+                  sizes="(max-width: 768px) 25vw, (max-width: 1800px) 40vw, 33vw"
                 />
               </Box>
 

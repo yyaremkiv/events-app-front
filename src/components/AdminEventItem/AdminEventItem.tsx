@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
-interface IAdminItemEventProps {
+interface IAdminEventItemProps {
   cityId: string;
   data: { id: string; title: string };
   index: number;
@@ -16,13 +16,13 @@ interface IAdminItemEventProps {
   handleDeleteEvent: (field: string) => void;
 }
 
-export const AdminItemEvent = ({
+export const AdminEventItem = ({
   cityId,
   data: { id: eventId, title },
   index,
   handleEditEvent,
   handleDeleteEvent,
-}: IAdminItemEventProps): JSX.Element => {
+}: IAdminEventItemProps): JSX.Element => {
   const theme = useTheme();
 
   return (

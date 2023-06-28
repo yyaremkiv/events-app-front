@@ -1,26 +1,26 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LoaderLinearProgress } from "../";
-import { AdminListEvents } from "../AdminListEvents/AdminListEvents";
+import { LoaderLinearProgress } from "..";
+import { AdminEventList } from "../AdminEventList/AdminEventList";
 import { EventOperations } from "../../redux/event/event.operations";
 import { AppDispatch } from "../../redux/store";
 import { ICityItem } from "../../interfaces";
 import { Box, Divider, IconButton, Tooltip } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 
-interface IAdminItemCityProps {
+interface IAdminCityItemProps {
   data: ICityItem;
   handleAddEvent: (value: string) => void;
   handleEditEvent: any;
   isLoading?: boolean;
 }
 
-export const AdminItemCity = ({
+export const AdminCityItem = ({
   data,
   handleAddEvent,
   handleEditEvent,
   isLoading = false,
-}: IAdminItemCityProps): JSX.Element => {
+}: IAdminCityItemProps): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
   const { _id: cityId } = data;
 
@@ -49,7 +49,7 @@ export const AdminItemCity = ({
       {isLoading ? (
         <LoaderLinearProgress />
       ) : (
-        <AdminListEvents
+        <AdminEventList
           cityId={cityId}
           data={eventsList}
           handleEditEvent={handleEditEvent}

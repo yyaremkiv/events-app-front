@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AdminItemCity } from "../AdminItemCity/AdminItemCity";
+import { AdminCityItem } from "../AdminCityItem/AdminCityItem";
 import {
   Box,
   IconButton,
@@ -20,7 +20,7 @@ import { AppDispatch } from "../../redux/store";
 import { EventOperations } from "../../redux/event/event.operations";
 import { ICityItem } from "../../interfaces";
 
-interface IAdminListCitiesProps {
+interface IAdminCityListProps {
   data: ICityItem[];
   handleUpdateCity: any;
   handleAddEvent: any;
@@ -28,13 +28,13 @@ interface IAdminListCitiesProps {
   isLoading?: boolean;
 }
 
-export const AdminListCities = ({
+export const AdminCityList = ({
   data,
   handleUpdateCity,
   handleAddEvent,
   handleEditEvent,
   isLoading = false,
-}: IAdminListCitiesProps): JSX.Element => {
+}: IAdminCityListProps): JSX.Element => {
   const [expanded, setExpanded] = useState<string | boolean>(false);
   const dispatch: AppDispatch = useDispatch();
 
@@ -107,7 +107,7 @@ export const AdminListCities = ({
           </AccordionSummary>
           <AccordionDetails>
             {expanded === CityItem.city.label && (
-              <AdminItemCity
+              <AdminCityItem
                 key={CityItem._id}
                 data={CityItem}
                 handleAddEvent={handleAddEvent}

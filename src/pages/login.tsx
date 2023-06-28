@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
-import { Box, Typography, useMediaQuery, IconButton } from "@mui/material";
-import { DarkMode, LightMode } from "@mui/icons-material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { FormLogin } from "../components/FormLogin/FormLogin";
-import { setModeTheme } from "../redux/theme/theme.slice";
 import { useAuth } from "../hooks/useAuth";
+import { ThemeToggle } from "../components";
 
 const Login = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   return (
     <Box>
@@ -36,13 +36,7 @@ const Login = () => {
             Welcome to EventApp!
           </Typography>
 
-          <IconButton onClick={() => dispatch(setModeTheme())}>
-            {true === "dark" ? (
-              <DarkMode sx={{ color: "gray", fontSize: "1.5rem" }} />
-            ) : (
-              <LightMode sx={{ color: "gray", fontSize: "1.5rem" }} />
-            )}
-          </IconButton>
+          <ThemeToggle />
         </Box>
         <FormLogin />
       </Box>

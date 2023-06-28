@@ -8,7 +8,7 @@ import {
   ImageItemCity,
   DropzoneUploadImage,
   CustomLoadingButton,
-} from "../";
+} from "..";
 import { FormValidation } from "../../config";
 import { Box, useTheme, Typography } from "@mui/material";
 import { EventOperations } from "../../redux/event/event.operations";
@@ -19,17 +19,17 @@ import {
 } from "../FormikElements";
 import { DataConfigInformation } from "@/src/data";
 
-interface IModalCityProps {
+interface ICityModalProps {
   cityId: string | null;
   isLoading?: boolean;
   handleCloseModal: any;
 }
 
-export const ModalCity = ({
+export const CityModal = ({
   cityId,
   isLoading = false,
   handleCloseModal,
-}: IModalCityProps): JSX.Element => {
+}: ICityModalProps): JSX.Element => {
   const [image, setImage] = useState<any | null>(null);
   const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();

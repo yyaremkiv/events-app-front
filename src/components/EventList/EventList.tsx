@@ -3,12 +3,15 @@ import Image from "next/image";
 import {
   Box,
   Chip,
+  useTheme,
   Container,
   LinearProgress,
   Typography,
 } from "@mui/material";
 
-export const ListEvents = ({ data, cityNameLink, isLoading }: any) => {
+export const EventList = ({ data, cityNameLink, isLoading }: any) => {
+  const theme = useTheme();
+
   return (
     <Container maxWidth="xl">
       <Box
@@ -29,11 +32,16 @@ export const ListEvents = ({ data, cityNameLink, isLoading }: any) => {
             seats,
             categories,
           }: any) => (
-            <Box sx={{ width: "25%" }}>
+            <Box
+              sx={{
+                width: "25%",
+                backgroundColor: theme.palette.background.light,
+              }}
+            >
               <Link
                 key={id}
                 href={`/cities/${cityNameLink.toLowerCase()}/${title}`}
-                style={{ border: "1px solid red" }}
+                style={{ border: "1px solid red", textDecoration: "none" }}
               >
                 <Image
                   src={imagePath}
@@ -43,14 +51,18 @@ export const ListEvents = ({ data, cityNameLink, isLoading }: any) => {
                   priority={true}
                   style={{ width: "100%", height: "auto" }}
                 />
-                <Typography variant="h4">Title: {title}</Typography>
-                <Typography>Descrition: {description}</Typography>
-                <Typography>Data: {date}</Typography>
-                <Typography>Seats: {seats}</Typography>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
-                  {categories?.map((cat: any, index: number) => (
-                    <Chip key={index} label={cat} variant="outlined" />
-                  ))}
+                <Box sx={{ color: theme.palette.text.primary }}>
+                  <Typography variant="h4">Title: {title}</Typography>
+                  <Typography>Descrition: {description}</Typography>
+                  <Typography>Data: {date}</Typography>
+                  <Typography>Seats: {seats}</Typography>
+                  <Box
+                    sx={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}
+                  >
+                    {categories?.map((cat: any, index: number) => (
+                      <Chip key={index} label={cat} variant="outlined" />
+                    ))}
+                  </Box>
                 </Box>
               </Link>
             </Box>

@@ -3,7 +3,7 @@ import { Box, Menu } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { MenuNavigation } from "../../../components/MenuNavigation";
-import { ItemEvent } from "../../../components/ItemEvent/ItemEvent";
+import { EventItem } from "../../../components/EventItem/EventItem";
 
 const EventPage = () => {
   const [data, setData] = useState([]);
@@ -37,7 +37,7 @@ const EventPage = () => {
         />
       </Box>
 
-      <ItemEvent data={data} />
+      <EventItem data={data} />
     </Box>
   );
 };

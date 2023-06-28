@@ -15,7 +15,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { FilterEvent } from "../../../components/FilterEvent";
-import { ListEvents } from "@/src/components/ListEvents/ListEvents";
+import { EventList } from "@/src/components/EventList/EventList";
 
 const EventsCatPage = (): JSX.Element => {
   const [events, setEvents] = useState([]);
@@ -101,118 +101,111 @@ const EventsCatPage = (): JSX.Element => {
   return (
     <Box>
       <Box>
-        <Container>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "1.5rem",
+          }}
+        >
+          <MenuNavigation
+            list={[
+              { title: "Home", path: "/", iconName: "home" },
+              { title: "Cities", path: "/cities", iconName: "cities" },
+              {
+                title:
+                  cityName &&
+                  cityName[0].toLocaleUpperCase() + cityName.slice(1),
+                path: "",
+                iconName: "city",
+              },
+            ]}
+          />
+
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
               gap: "1.5rem",
+              padding: "0.5rem",
             }}
           >
-            <MenuNavigation
-              list={[
-                { title: "Home", path: "/", iconName: "home" },
-                { title: "Cities", path: "/cities", iconName: "cities" },
-                {
-                  title:
-                    cityName &&
-                    cityName[0].toLocaleUpperCase() + cityName.slice(1),
-                  path: "",
-                  iconName: "city",
-                },
-              ]}
-            />
+            <Typography>
+              All Events: {params.totalEvents ? params.totalEvents : null}
+            </Typography>
+            <Typography>Displayed: {events?.length}</Typography>
 
+            <FormControl sx={{ minWidth: 80 }} size="small">
+              <InputLabel>Events</InputLabel>
+              <Select
+                value={limit}
+                label="Count"
+                onChange={(e) => handleChangeLimit(Number(e.target.value))}
+              >
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box sx={{ display: "flex" }}>
+        {params && events.length > 0 && (
+          <FilterEvent
+            data={params}
+            handleFetchByFilter={handleFetchByFilter}
+            handleClearFilter={handleClearFilter}
+            isLoading={isLoading}
+          />
+        )}
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            border: "1px solid red",
+          }}
+        >
+          {events?.length > 0 ? (
+            <EventList data={events} cityNameLink={cat} isLoading={isLoading} />
+          ) : null}
+
+          {events?.length < params.totalEvents && (
+            <LoadingButton
+              variant="text"
+              loadingPosition="start"
+              startIcon={<RefreshIcon />}
+              loading={isLoading}
+              onClick={handleLoadMore}
+              sx={{ p: "0.75rem 2rem", fontSize: "0.8rem", color: "inherit" }}
+            >
+              <span>Load more cities!</span>
+            </LoadingButton>
+          )}
+
+          {events?.length < params.totalEvents && (
             <Box
               sx={{
                 display: "flex",
+                justifyContent: "center",
                 alignItems: "center",
-                gap: "1.5rem",
-                padding: "0.5rem",
+                padding: "1rem",
               }}
             >
-              <Typography>
-                All Events: {params.totalEvents ? params.totalEvents : null}
-              </Typography>
-              <Typography>Displayed: {events?.length}</Typography>
-
-              <FormControl sx={{ minWidth: 80 }} size="small">
-                <InputLabel>Events</InputLabel>
-                <Select
-                  value={limit}
-                  label="Count"
-                  onChange={(e) => handleChangeLimit(Number(e.target.value))}
-                >
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
-
-      <Container>
-        <Box sx={{ display: "flex" }}>
-          {params && events.length > 0 && (
-            <FilterEvent
-              data={params}
-              handleFetchByFilter={handleFetchByFilter}
-              handleClearFilter={handleClearFilter}
-              isLoading={isLoading}
-            />
-          )}
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            {events?.length > 0 ? (
-              <ListEvents
-                data={events}
-                cityNameLink={cat}
-                isLoading={isLoading}
+              <Pagination
+                count={Math.ceil(params.totalEvents / limit)}
+                page={page}
+                onChange={handleChangePage}
+                disabled={isLoading}
               />
-            ) : null}
-
-            {events?.length < params.totalEvents && (
-              <LoadingButton
-                variant="text"
-                loadingPosition="start"
-                startIcon={<RefreshIcon />}
-                loading={isLoading}
-                onClick={handleLoadMore}
-                sx={{ p: "0.75rem 2rem", fontSize: "0.8rem", color: "inherit" }}
-              >
-                <span>Load more cities!</span>
-              </LoadingButton>
-            )}
-
-            {events?.length < params.totalEvents && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "1rem",
-                }}
-              >
-                <Pagination
-                  count={Math.ceil(params.totalEvents / limit)}
-                  page={page}
-                  onChange={handleChangePage}
-                  disabled={isLoading}
-                />
-              </Box>
-            )}
-          </Box>
+            </Box>
+          )}
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };

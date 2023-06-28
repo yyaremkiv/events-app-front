@@ -2,25 +2,27 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import { FormConfig } from "../../config/form.login";
-import { TextField } from "@mui/material";
-import { FormHelperText } from "@mui/material";
-import { Box } from "@mui/system";
-import { Typography } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import LoadingButton from "@mui/lab/LoadingButton";
+import {
+  Box,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { AuthOperations } from "../../redux/auth/auth.operations";
+import { RootState, AppDispatch } from "../../redux/store";
 
 export const FormLogin = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const isLoading = useSelector((state) => state.auth.isLoading);
-  const isErrorAuth = useSelector((state) => state.auth.error);
-  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
+  const isErrorAuth = useSelector((state: RootState) => state.auth.error);
+  const dispatch: AppDispatch = useDispatch();
 
   return (
     <Box>

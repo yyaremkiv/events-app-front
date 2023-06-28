@@ -1,5 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Button, Container, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import { AuthOperations } from "../../redux/auth/auth.operations";
 import { ThemeToggle } from "../index";
@@ -59,9 +66,15 @@ export const Header = (): JSX.Element => {
                   <Typography variant="subtitle1">Hello, Admin!</Typography>
                 </Box>
 
+                <IconButton onClick={() => dispatch(AuthOperations.logout())}>
+                  <Logout />
+                </IconButton>
+
                 <CustomButton
                   text="Logout"
-                  onClick={() => dispatch(AuthOperations.logout())}
+                  onClick={() => {
+                    dispatch(AuthOperations.logout());
+                  }}
                   startIcon={<Logout />}
                   styles={{
                     backgroundColor: theme.palette.text.primary,

@@ -3,15 +3,15 @@ import Image from "next/image";
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { Event, PeopleAlt, Place, Public } from "@mui/icons-material";
 
-interface IItemEventHomeCardProps {
+interface IHomeCItyItemProps {
   data: any;
   index: number;
 }
 
-export const ItemEventHomeCard = ({
+export const HomeCItyItem = ({
   data,
   index,
-}: IItemEventHomeCardProps): JSX.Element => {
+}: IHomeCItyItemProps): JSX.Element => {
   const {
     city,
     imagePath,
@@ -42,7 +42,7 @@ export const ItemEventHomeCard = ({
           justifyContent: "center",
         }}
       >
-        <Link href={`/events/${city.label.toLowerCase()}`}>
+        <Link href={`/cities/${city.label.toLowerCase()}`}>
           <Image
             src={imagePath}
             alt={title}

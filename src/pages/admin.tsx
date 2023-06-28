@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks";
-import { AdminTabEvents } from "../components/AdminTabEvents/AdminTabEvents";
+import { AdminEventTab } from "../components/AdminEventTab/AdminEventTab";
 import { Box, Tab, Tabs, Typography, useTheme } from "@mui/material";
 import { MenuNavigation } from "../components/MenuNavigation";
 
@@ -40,7 +40,7 @@ const Admin = (): JSX.Element => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <AdminTabEvents />
+          <AdminEventTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Typography>List of countries in development</Typography>

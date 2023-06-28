@@ -5,30 +5,30 @@ import {
   Delete as DeleteIcon,
 } from "@mui/icons-material";
 
-import { AdminItemEvent } from "../AdminItemEvent/AdminItemEvent";
+import { AdminEventItem } from "../AdminEventItem/AdminEventItem";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import CommentIcon from "@mui/icons-material/Comment";
 
-interface IAdminListEventsProps {
+interface IAdminEventListProps {
   cityId: string;
   data: any;
   handleEditEvent: any;
   handleDeleteEvent: any;
 }
 
-export const AdminListEvents = ({
+export const AdminEventList = ({
   cityId,
   data,
   handleEditEvent,
   handleDeleteEvent,
-}: IAdminListEventsProps): JSX.Element => {
+}: IAdminEventListProps): JSX.Element => {
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {data.map((data: any, index: number) => (
-        <AdminItemEvent
+        <AdminEventItem
           key={data.id}
           cityId={cityId}
           data={data}

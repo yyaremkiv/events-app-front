@@ -1,5 +1,5 @@
 import { BannerHero } from "../components/BannerHero";
-import { ListHomeCities } from "../components/ListHomeCities/ListHomeCities";
+import { HomeCityList } from "../components/HomeCityList/HomeCityList";
 import { Typography } from "@mui/material";
 import { useFetchHomeEvent } from "../hooks";
 import { IUseFetchHomeEvent } from "../hooks/useFetchHomeEvent";
@@ -12,7 +12,7 @@ export default function Home(): JSX.Element {
     <>
       <MenuNavigationLink />
       <BannerHero />
-      {data.length > 0 && <ListHomeCities data={data} />}
+      {data.length > 0 && <HomeCityList data={data} />}
 
       {error && !isLoading && <Typography>{error}</Typography>}
     </>
