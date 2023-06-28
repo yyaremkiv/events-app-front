@@ -41,6 +41,7 @@ export const EventModal = ({
         date: dayjs(singleEvent.date),
         seats: singleEvent.seats,
         imagePath: singleEvent.imagePath,
+        categories: singleEvent.categories,
       }
     : null;
 
@@ -48,9 +49,13 @@ export const EventModal = ({
     const formData = new FormData();
     formData.append("cityId", cityId);
     formData.append("eventId", eventId);
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
-    });
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("date", values.date);
+    formData.append("seats", values.seats);
+    formData.append("imagePath", values.imagePath);
+    formData.append("categories", JSON.stringify(values.categories));
+
     if (image) formData.append("picture", image);
 
     let response: any;

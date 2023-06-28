@@ -1,17 +1,14 @@
 import API from "../config/axios.api.js";
+import { IQueryParams } from "../interfaces/index.js";
 
-interface IParamsRequest {
-  page: number;
-  limit: number;
+interface IGetEvents {
+  cityName: string;
+  params?: IQueryParams;
 }
 
 export class EventService {
-  static async getCitiesToHomePage() {
-    return API.get("/events/cities");
-  }
-
-  static async getCities({ page, limit }: IParamsRequest) {
-    return API.get("/events/cities/list", { params: { page, limit } });
+  static async getCities({ params }: IQueryParams): Promise<any> {
+    return API.get("/events/cities/list", { params });
   }
 
   static async addCity(formData: any) {
@@ -30,14 +27,14 @@ export class EventService {
     return API.delete(`/events/city/${cityId}`);
   }
 
+  static async getEvents({ cityName, params }: IGetEvents): Promise<any> {
+    return API.get(`/events/event/${cityName}`, { params });
+  }
+
   static async addEvent(formData: any) {
     return API.post("/events/event", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-  }
-
-  static async getEvent({ cityName, params }: any) {
-    return API.get(`/events/event/${cityName}`, { params });
   }
 
   static async updateEvent(formData: any) {

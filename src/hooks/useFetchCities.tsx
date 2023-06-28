@@ -1,40 +1,48 @@
 import { useState, useEffect } from "react";
 import { EventService } from "../services";
-import { IEventItem } from "../interfaces";
-
-interface IFetchDataProps {
-  page?: number;
-  limit?: number;
-}
+import { IEventItem, IQueryParams } from "../interfaces";
 
 interface ICitiesData {
   cities: IEventItem[];
   totalCities: number;
 }
 
-export type FetchCitiesResult = [
+interface IUseFetchCitiesProps {
+  params: IQueryParams["params"];
+  loadMore?: boolean;
+}
+
+export type TypeFetchCitiesResult = [
   ICitiesData,
   boolean,
   string | null,
-  (props: IFetchDataProps) => Promise<void>
+  (props: IUseFetchCitiesProps) => Promise<void>
 ];
 
 export const useFetchCities = ({
-  page = 1,
-  limit = 5,
-}: IFetchDataProps): FetchCitiesResult => {
+  params,
+  loadMore = false,
+}: IUseFetchCitiesProps): TypeFetchCitiesResult => {
   const [data, setData] = useState<ICitiesData>({ cities: [], totalCities: 1 });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async ({ page = 1, limit = 5 }: IFetchDataProps) => {
+  const fetchData = async ({ params, loadMore }: IUseFetchCitiesProps) => {
     setIsLoading(true);
     try {
-      const response = await EventService.getCities({ page, limit });
-      setData({
-        cities: response.data.cities,
-        totalCities: response.data.totalCities,
-      });
+      const response = await EventService.getCities({ params });
+
+      if (loadMore) {
+        setData({
+          cities: [...data.cities, ...response.data.cities],
+          totalCities: response.data.totalCities,
+        });
+      } else {
+        setData({
+          cities: response.data.cities,
+          totalCities: response.data.totalCities,
+        });
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -43,8 +51,8 @@ export const useFetchCities = ({
   };
 
   useEffect(() => {
-    fetchData({ page, limit });
-  }, [page, limit]);
+    fetchData({ params, loadMore });
+  }, []);
 
   return [data, isLoading, error, fetchData];
 };

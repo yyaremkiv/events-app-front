@@ -15,7 +15,10 @@ const EventPage = () => {
 
   useEffect(() => {
     async function fetch() {
-      const { data } = await EventService.getEvent({ cityName: cat });
+      const { data } = await EventService.getEvents({
+        cityName: cat,
+        params: { page: 1, limit: 10 },
+      });
       const event = data.events.find((event: any) => event.title === id);
 
       setData(event);

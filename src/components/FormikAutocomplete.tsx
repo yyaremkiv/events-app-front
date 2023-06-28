@@ -29,14 +29,7 @@ export const FormikAutocomplete = ({
         option.label === value.label && option.color === value.color
       }
       onChange={(_, selectedValues) => {
-        // @ts-ignore
-        changeFieldFunction(
-          changeFieldName,
-          selectedValues.reduce((acc: any, cat) => {
-            acc.push(cat.label);
-            return acc;
-          }, [])
-        );
+        changeFieldFunction(changeFieldName, selectedValues);
       }}
       renderInput={(params) => <TextField {...params} label={label} />}
       renderOption={(props, option) => (
@@ -74,3 +67,11 @@ export const FormikAutocomplete = ({
     />
   );
 };
+
+// changeFieldFunction(
+//   changeFieldName,
+//   selectedValues.reduce((acc: any, cat) => {
+//     acc.push(cat.label);
+//     return acc;
+//   }, [])
+// );

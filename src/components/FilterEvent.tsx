@@ -144,10 +144,10 @@ export const FilterEvent = ({
               </FormHelperText>
             </LocalizationProvider>
 
-            <Autocomplete
+            {/* <Autocomplete
               multiple
               id="size-small-outlined-multi"
-              options={[...categories]}
+              options={categories}
               getOptionLabel={(option) => option}
               value={values.categories}
               disabled={categories.length === 0 || isLoading ? true : false}
@@ -161,7 +161,7 @@ export const FilterEvent = ({
               onChange={(_, selectedValues) => {
                 setFieldValue("categories", selectedValues);
               }}
-            />
+            /> */}
 
             <Typography>Seats:</Typography>
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
@@ -190,7 +190,7 @@ export const FilterEvent = ({
                 }}
               />
             </Box>
-            <Slider
+            {/* <Slider
               valueLabelDisplay="auto"
               getAriaLabel={() => "Диапазон мест"}
               value={[values.seatsMin, values.seatsMax]}
@@ -204,7 +204,7 @@ export const FilterEvent = ({
                 // @ts-ignore
                 setFieldValue("seatsMax", parseInt(newValue[1]));
               }}
-            />
+            /> */}
 
             <Typography>Price:</Typography>
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
@@ -233,7 +233,7 @@ export const FilterEvent = ({
                 }}
               />
             </Box>
-            <Slider
+            {/* <Slider
               valueLabelDisplay="auto"
               getAriaLabel={() => "Price range"}
               value={[values.priceMin, values.priceMax]}
@@ -247,7 +247,7 @@ export const FilterEvent = ({
                 // @ts-ignore
                 setFieldValue("priceMax", parseInt(e.target.value[1]));
               }}
-            />
+            /> */}
 
             <FormControlLabel
               control={<Checkbox />}

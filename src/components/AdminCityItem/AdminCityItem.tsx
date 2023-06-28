@@ -31,7 +31,7 @@ export const AdminCityItem = ({
   const cityName = city.city.label[0].toUpperCase() + city.city.label.slice(1);
 
   useEffect(() => {
-    if (cityName) dispatch(EventOperations.getEvent(cityName));
+    if (cityName) dispatch(EventOperations.getEvent({ cityName, params: {} }));
   }, [cityName]);
 
   const eventsList = city.events ? city.events : [];

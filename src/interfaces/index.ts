@@ -9,9 +9,20 @@ export interface ISigninArg {
   password: string;
 }
 
+export interface IQueryParams {
+  params: {
+    page?: number;
+    limit?: number;
+    countries?: string;
+    cities?: string;
+    showOnHomePage?: boolean;
+  };
+}
+
 export interface ICountry {
-  label: string;
   code: string;
+  label: string;
+  phone: string;
 }
 
 export interface ICity {
@@ -30,19 +41,13 @@ export interface ICityItem {
   showOnHomePage: boolean;
   title: string;
   totalEvents: number;
-  __v: number;
 }
 
 export interface IEventItem {
-  _id: string;
-  city: string;
-  country: string;
-  events: [];
-  imagePath: string;
-  population: number;
-  showOnHomePage: boolean;
+  id: string;
   title: string;
-  totalEvents: number;
-  upcomingEvent: any;
-  __v: number;
+  description: string;
+  imagePath: string;
+  date: string;
+  seats: number;
 }

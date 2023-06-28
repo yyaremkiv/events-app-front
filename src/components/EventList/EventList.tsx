@@ -33,9 +33,13 @@ export const EventList = ({ data, cityNameLink, isLoading }: any) => {
             categories,
           }: any) => (
             <Box
+              key={id}
               sx={{
                 width: "25%",
                 backgroundColor: theme.palette.background.light,
+                border: "1px solid green",
+                overflow: "hidden",
+                borderRadius: "1rem",
               }}
             >
               <Link
@@ -49,7 +53,7 @@ export const EventList = ({ data, cityNameLink, isLoading }: any) => {
                   width={300}
                   height={300}
                   priority={true}
-                  style={{ width: "100%", height: "auto" }}
+                  style={{ width: "100%", height: "auto", display: "block" }}
                 />
                 <Box sx={{ color: theme.palette.text.primary }}>
                   <Typography variant="h4">Title: {title}</Typography>
@@ -59,9 +63,24 @@ export const EventList = ({ data, cityNameLink, isLoading }: any) => {
                   <Box
                     sx={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}
                   >
-                    {categories?.map((cat: any, index: number) => (
-                      <Chip key={index} label={cat} variant="outlined" />
-                    ))}
+                    {categories?.map(
+                      (
+                        { label, color }: { label: string; color: string },
+                        index: number
+                      ) => (
+                        <Chip
+                          key={index}
+                          label={label}
+                          variant="outlined"
+                          style={{
+                            color: "white",
+                            backgroundColor: color,
+                            marginRight: "5px",
+                            border: "none",
+                          }}
+                        />
+                      )
+                    )}
                   </Box>
                 </Box>
               </Link>

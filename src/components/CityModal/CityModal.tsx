@@ -49,10 +49,6 @@ export const CityModal = ({
 
     if (cityId) formData.append("_id", cityId);
 
-    // Object.keys(values).forEach((key) => {
-    //   formData.append(key, values[key]);
-    // });
-
     if (image) formData.append("picture", image);
 
     let response: any;
