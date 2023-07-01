@@ -1,46 +1,64 @@
-import { EventService } from "../../../services";
-import { Box, Menu } from "@mui/material";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { MenuNavigation } from "../../../components/MenuNavigation";
 import { EventItem } from "../../../components/EventItem/EventItem";
+import { MenuNavigation } from "../../../components/MenuNavigation";
+import { useFetchSingleEvent } from "../../../hooks";
+import { TypeFetchSingleEventResult } from "../../../hooks/useFetchSingleEvent";
+import { Box, Typography } from "@mui/material";
+import { FormSend } from "@/src/components/FormSend/FormSend";
 
-const EventPage = () => {
-  const [data, setData] = useState([]);
-  const router = useRouter();
-  const { cat, id } = router.query;
+const capitalizeFirstLetter = (str: string): string => {
+  return str.charAt(0).toLocaleUpperCase() + str.slice(1);
+};
 
-  const cityName = cat ? cat[0].toUpperCase() + cat.slice(1) : null;
-  const eventName = id ? id[0].toUpperCase() + id.slice(1) : null;
+const EventPage = (): JSX.Element => {
+  const { query } = useRouter();
+  const { cat, id } = query;
+  const cityName = cat ? String(cat).toLocaleLowerCase() : null;
+  const eventName = id ? String(id).toLocaleLowerCase() : null;
+
+  const [data, isLoading, error, fetchData]: TypeFetchSingleEventResult =
+    useFetchSingleEvent();
 
   useEffect(() => {
-    async function fetch() {
-      const { data } = await EventService.getEvents({
-        cityName: cat,
-        params: { page: 1, limit: 10 },
-      });
-      const event = data.events.find((event: any) => event.title === id);
+    if (cityName && eventName) fetchData({ cityName, eventName });
+  }, [eventName]);
 
-      setData(event);
-    }
-
-    if (cat && id) fetch();
-  }, [cat, id]);
+  const list =
+    cityName && eventName
+      ? [
+          { title: "Home", path: "/", iconName: "home" },
+          { title: "Cities", path: "/cities", iconName: "cities" },
+          {
+            title: capitalizeFirstLetter(cityName),
+            path: `/cities/${cat}`,
+            iconName: "city",
+          },
+          {
+            title: capitalizeFirstLetter(eventName),
+            path: "",
+            iconName: "event",
+          },
+        ]
+      : null;
 
   return (
     <Box>
-      <Box sx={{ padding: "1rem 0" }}>
-        <MenuNavigation
-          list={[
-            { title: "Home", path: "/", iconName: "home" },
-            { title: "Cities", path: "/cities", iconName: "cities" },
-            { title: cityName, path: `/cities/${cat}`, iconName: "city" },
-            { title: eventName, path: "", iconName: "event" },
-          ]}
-        />
+      {list && (
+        <Box sx={{ padding: "0.75rem 0" }}>
+          <MenuNavigation list={list} />
+        </Box>
+      )}
+
+      <Box>{data && <EventItem event={data} isLoading={isLoading} />}</Box>
+
+      <Box
+        sx={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}
+      >
+        <FormSend />
       </Box>
 
-      <EventItem data={data} />
+      {error && <Typography color="error">{error}</Typography>}
     </Box>
   );
 };

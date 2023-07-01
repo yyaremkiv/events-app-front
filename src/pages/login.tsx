@@ -18,6 +18,7 @@ const Login = () => {
           m: "2rem auto",
           borderRadius: "1.5rem",
           border: "1px solid gray",
+          color: theme.palette.text.primary,
         }}
       >
         <Box
@@ -35,8 +36,6 @@ const Login = () => {
           >
             Welcome to EventApp!
           </Typography>
-
-          <ThemeToggle />
         </Box>
         <FormLogin />
       </Box>

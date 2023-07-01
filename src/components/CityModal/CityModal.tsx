@@ -19,6 +19,11 @@ import {
 } from "../FormikElements";
 import { DataConfigInformation } from "@/src/data";
 
+import {
+  Home as HomeIcon,
+  HideSource as HideSourceIcon,
+} from "@mui/icons-material";
+
 interface ICityModalProps {
   cityId: string | null;
   isLoading?: boolean;
@@ -46,9 +51,9 @@ export const CityModal = ({
     formData.append("title", values.title);
     formData.append("population", values.population);
     formData.append("showOnHomePage", values.showOnHomePage);
+    formData.append("isHidden", values.isHidden);
 
     if (cityId) formData.append("_id", cityId);
-
     if (image) formData.append("picture", image);
 
     let response: any;
@@ -121,12 +126,34 @@ export const CityModal = ({
               isLoading={isLoading}
             />
 
-            <FormikCheckbox
-              label="Show This City On Home Page"
-              name="showOnHomePage"
-              formikFunc={{ values, setFieldValue }}
-              isLoading={isLoading}
-            />
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <HomeIcon
+                  sx={{
+                    fontSize: "1.8rem",
+                    color: theme.palette.background.main,
+                  }}
+                />
+                <FormikCheckbox
+                  label="Show This City On Home Page"
+                  name="showOnHomePage"
+                  addNameChange="isHidden"
+                  formikFunc={{ values, setFieldValue }}
+                  isLoading={isLoading}
+                />
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <HideSourceIcon sx={{ fontSize: "1.8rem", color: "red" }} />
+                <FormikCheckbox
+                  label="Hide This City"
+                  name="isHidden"
+                  addNameChange="showOnHomePage"
+                  hideStyle={true}
+                  formikFunc={{ values, setFieldValue }}
+                  isLoading={isLoading}
+                />
+              </Box>
+            </Box>
 
             {city?.imagePath && !image ? (
               <Box

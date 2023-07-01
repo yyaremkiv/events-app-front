@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks";
 import { AdminEventTab } from "../components/AdminEventTab/AdminEventTab";
-import { Box, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import { Box, Container, Tab, Tabs, Typography, useTheme } from "@mui/material";
 import { MenuNavigation } from "../components/MenuNavigation";
 
 interface TabPanelProps {
@@ -10,6 +10,11 @@ interface TabPanelProps {
   value: number;
 }
 
+const list = [
+  { title: "Home", path: "/", iconName: "home" },
+  { title: "Admin", path: "", iconName: "admin" },
+];
+
 const Admin = (): JSX.Element => {
   const [value, setValue] = useState<number>(0);
   const theme = useTheme();
@@ -17,14 +22,9 @@ const Admin = (): JSX.Element => {
   const handleChange = (_: any, newValue: number) => setValue(newValue);
 
   return (
-    <Box>
+    <Container maxWidth="xl">
       <Box sx={{ padding: "1rem 0" }}>
-        <MenuNavigation
-          list={[
-            { title: "Home", path: "/", iconName: "home" },
-            { title: "Admin", path: "", iconName: "admin" },
-          ]}
-        />
+        <MenuNavigation list={list} />
       </Box>
 
       <Box sx={{ width: "100%", color: theme.palette.text.primary }}>
@@ -49,7 +49,7 @@ const Admin = (): JSX.Element => {
           <Typography>List of cities in development</Typography>
         </TabPanel>
       </Box>
-    </Box>
+    </Container>
   );
 };
 

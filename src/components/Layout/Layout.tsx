@@ -1,13 +1,18 @@
-import { useMemo } from "react";
+import { useMemo, ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { themeSettings } from "../../config/theme";
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
-import { Box, Container, ThemeProvider, createTheme } from "@mui/material";
+import { RootState } from "../../redux/store";
+import { themeSettings } from "../../config/theme";
+import { Box, ThemeProvider, createTheme, Theme } from "@mui/material";
 
-export const Layout = ({ children }: any) => {
-  const mode = useSelector((state: any) => state.theme.mode);
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+interface ILayoutProps {
+  children: ReactNode;
+}
+
+export const Layout = ({ children }: ILayoutProps): JSX.Element => {
+  const mode = useSelector((state: RootState) => state.theme.mode);
+  const theme: Theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -20,12 +25,7 @@ export const Layout = ({ children }: any) => {
         }}
       >
         <Header />
-        <Container
-          maxWidth="xl"
-          sx={{ flexGrow: 1, border: "1px solid green" }}
-        >
-          {children}
-        </Container>
+        {children}
         <Footer />
       </Box>
     </ThemeProvider>

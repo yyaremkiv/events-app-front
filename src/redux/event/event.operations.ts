@@ -4,9 +4,9 @@ import { EventService } from "../../services";
 export class EventOperations {
   static getCity = createAsyncThunk(
     "city/getCity",
-    async ({ limit = 10 }: any, { rejectWithValue }) => {
+    async ({ params }: any, { rejectWithValue }) => {
       try {
-        const { data } = await EventService.getCity({ limit });
+        const { data } = await EventService.getCity({ params });
         return data;
       } catch (err: any) {
         return rejectWithValue(err.message);

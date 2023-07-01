@@ -12,7 +12,7 @@ export const useCity = (): FetchCitiesResult => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(EventOperations.getCity({}));
+    dispatch(EventOperations.getCity({ params: { isHidden: true } }));
   }, []);
 
   return [cities, isLoading, error];

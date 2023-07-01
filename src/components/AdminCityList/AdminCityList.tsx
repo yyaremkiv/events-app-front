@@ -15,6 +15,7 @@ import {
   Delete as DeleteIcon,
   ExpandMore as ExpandMoreIcon,
   Home as HomeIcon,
+  HideSource as HideSourceIcon,
 } from "@mui/icons-material";
 import { AppDispatch } from "../../redux/store";
 import { EventOperations } from "../../redux/event/event.operations";
@@ -38,8 +39,6 @@ export const AdminCityList = ({
   const [expanded, setExpanded] = useState<string | boolean>(false);
   const dispatch: AppDispatch = useDispatch();
 
-  console.log("expanded", expanded);
-
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -47,8 +46,6 @@ export const AdminCityList = ({
 
   const handleDeleteCity = (cityId: string) =>
     dispatch(EventOperations.deleteCity(cityId));
-
-  console.log("data", data);
 
   return (
     <Box>
@@ -72,14 +69,22 @@ export const AdminCityList = ({
                 <Typography sx={{ fontWeight: 500 }}>
                   {CityItem.city.label}
                 </Typography>
-                {CityItem.showOnHomePage ? (
-                  <Tooltip
-                    title="This City Is Shown On The Main Page"
-                    placement="top"
-                  >
-                    <HomeIcon />
-                  </Tooltip>
-                ) : null}
+
+                <Box>
+                  {CityItem.showOnHomePage && (
+                    <Tooltip
+                      title="This City Is Shown On The Main Page"
+                      placement="top"
+                    >
+                      <HomeIcon />
+                    </Tooltip>
+                  )}
+                  {CityItem.isHidden && (
+                    <Tooltip title="Not Displayed On The Site" placement="top">
+                      <HideSourceIcon color="error" />
+                    </Tooltip>
+                  )}
+                </Box>
               </Box>
               <Box sx={{ display: "flex", gap: "0.5rem" }}>
                 <Tooltip title="Update City" placement="top">

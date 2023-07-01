@@ -1,16 +1,5 @@
-import { Box, IconButton } from "@mui/material";
-import {
-  Edit as EditIcon,
-  Add as AddIcon,
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
-
 import { AdminEventItem } from "../AdminEventItem/AdminEventItem";
-
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import CommentIcon from "@mui/icons-material/Comment";
+import { List } from "@mui/material";
 
 interface IAdminEventListProps {
   cityId: string;
@@ -26,8 +15,8 @@ export const AdminEventList = ({
   handleDeleteEvent,
 }: IAdminEventListProps): JSX.Element => {
   return (
-    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-      {data.map((data: any, index: number) => (
+    <List sx={{ width: "100%", backgroundColor: "background.paper" }}>
+      {data?.map((data: any, index: number) => (
         <AdminEventItem
           key={data.id}
           cityId={cityId}

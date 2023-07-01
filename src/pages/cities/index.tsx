@@ -11,6 +11,7 @@ import {
   MenuItem,
   InputLabel,
   useTheme,
+  Container,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { MenuNavigation } from "@/src/components/MenuNavigation";
@@ -34,7 +35,7 @@ const EvantsPage = (): JSX.Element => {
   const allCountries = Data.listCountries;
   const theme = useTheme();
 
-  const params: IQueryParams["params"] = { page, limit };
+  const params: IQueryParams = { page, limit };
   if (countriesFilter.length > 0) params.countries = arrToStr(countriesFilter);
   if (citiesFilter.length > 0) params.cities = arrToStr(citiesFilter);
 
@@ -78,20 +79,12 @@ const EvantsPage = (): JSX.Element => {
 
   return (
     <Box>
-      {isLoading && (
-        <Box>
-          <LoaderLinearProgress />
-        </Box>
-      )}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "start",
-          alignItems: "center",
-          gap: "2rem",
-          padding: "10px 0",
-        }}
-      >
+      <Container maxWidth="xl">
+        {isLoading && (
+          <Box>
+            <LoaderLinearProgress />
+          </Box>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -101,73 +94,87 @@ const EvantsPage = (): JSX.Element => {
             padding: "10px 0",
           }}
         >
-          <FormControl
-            size="small"
-            sx={{ m: 1, minWidth: 80, color: theme.palette.text.primary }}
-          >
-            <InputLabel>Count</InputLabel>
-            <Select
-              label="Count"
-              value={limit}
-              onChange={(e) => handleChangeLimit(Number(e.target.value))}
+          {data && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "center",
+                gap: "2rem",
+                padding: "10px 0",
+              }}
             >
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={20}>20</MenuItem>
-            </Select>
-          </FormControl>
-          <Typography
-            sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
-          >
-            All city: {data.totalCities}
-          </Typography>
-          <Typography
-            sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
-          >
-            Display: {data?.cities.length}
-          </Typography>
-        </Box>
+              <FormControl
+                size="small"
+                sx={{ m: 1, minWidth: 80, color: theme.palette.text.primary }}
+              >
+                <InputLabel>Count</InputLabel>
+                <Select
+                  label="Count"
+                  value={limit}
+                  onChange={(e) => handleChangeLimit(Number(e.target.value))}
+                >
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  <MenuItem value={20}>20</MenuItem>
+                </Select>
+              </FormControl>
+              <Typography
+                sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
+              >
+                All city: {data.totalCities}
+              </Typography>
+              <Typography
+                sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
+              >
+                Display: {data?.cities.length}
+              </Typography>
+            </Box>
+          )}
 
-        <Box
-          sx={{
-            display: "flex",
-            gap: "2rem",
-            width: "100%",
-          }}
-        >
-          <CustomAutocompleteOfCountries
-            label="Set Country"
-            value={countriesFilter}
-            options={allCountries}
-            onChangeFunc={setCountriesFilter}
-            isLoading={isLoading}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              gap: "2rem",
+              width: "100%",
+            }}
+          >
+            <CustomAutocompleteOfCountries
+              label="Set Country"
+              value={countriesFilter}
+              options={allCountries}
+              onChangeFunc={setCountriesFilter}
+              isLoading={isLoading}
+            />
 
-          <CustomAutocompleteOfCities
-            label="Set Cities"
-            value={citiesFilter}
-            options={allCities}
-            onChangeFunc={setCitiesFilter}
-            isLoading={isLoading}
-          />
+            <CustomAutocompleteOfCities
+              label="Set Cities"
+              value={citiesFilter}
+              options={allCities}
+              onChangeFunc={setCitiesFilter}
+              isLoading={isLoading}
+            />
+          </Box>
         </Box>
-      </Box>
+      </Container>
 
       <Box>
-        <MenuNavigation
-          list={[
-            { title: "Home", path: "/", iconName: "home" },
-            { title: "Cities", path: "", iconName: "city" },
-          ]}
-        />
+        <Container maxWidth="xl">
+          <MenuNavigation
+            list={[
+              { title: "Home", path: "/", iconName: "home" },
+              { title: "Cities", path: "", iconName: "city" },
+            ]}
+          />
+        </Container>
       </Box>
-
-      {data.cities?.length > 0 && (
-        <CityList data={data.cities} totalCities={Number(data.totalCities)} />
+      {data && data.cities?.length > 0 && (
+        <Container maxWidth="xl">
+          <CityList data={data.cities} totalCities={Number(data.totalCities)} />
+        </Container>
       )}
-
-      {data.cities?.length < data.totalCities && (
+      {data && data.cities?.length < data.totalCities && (
         <>
           <Box
             sx={{
@@ -206,6 +213,7 @@ const EvantsPage = (): JSX.Element => {
           </Box>
         </>
       )}
+      {!error && <Typography color="error">{error}</Typography>}
     </Box>
   );
 };

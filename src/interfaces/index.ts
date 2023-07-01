@@ -10,13 +10,17 @@ export interface ISigninArg {
 }
 
 export interface IQueryParams {
-  params: {
-    page?: number;
-    limit?: number;
-    countries?: string;
-    cities?: string;
-    showOnHomePage?: boolean;
-  };
+  page?: number;
+  limit?: number;
+  countries?: string;
+  cities?: string;
+  showOnHomePage?: boolean;
+  showInCityHome?: boolean;
+}
+
+export interface ICategoryItem {
+  label: string;
+  color: string;
 }
 
 export interface ICountry {
@@ -31,18 +35,6 @@ export interface ICity {
   population: number;
 }
 
-export interface ICityItem {
-  _id: string;
-  country: ICountry;
-  city: ICity;
-  events: [];
-  imagePath: string;
-  population: number;
-  showOnHomePage: boolean;
-  title: string;
-  totalEvents: number;
-}
-
 export interface IEventItem {
   id: string;
   title: string;
@@ -50,4 +42,19 @@ export interface IEventItem {
   imagePath: string;
   date: string;
   seats: number;
+  showOnHomePage: boolean;
+  isHidden: boolean;
+  showInCityHome: boolean;
+  categories: ICategoryItem[];
+}
+
+export interface ICityItem {
+  _id: string;
+  country: ICountry;
+  city: ICity;
+  title: string;
+  imagePath: string;
+  showOnHomePage: boolean;
+  isHidden: boolean;
+  events: IEventItem[] | [];
 }

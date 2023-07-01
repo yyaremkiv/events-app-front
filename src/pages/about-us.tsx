@@ -1,6 +1,10 @@
 import { MenuNavigation } from "../components/MenuNavigation";
-import { MenuNavigationLink } from "../components/MenuNavigationLink";
 import { Box, Typography, useTheme } from "@mui/material";
+
+const list = [
+  { title: "Home", path: "/", iconName: "home" },
+  { title: "About", path: "", iconName: "about" },
+];
 
 const AboutUsPage = (): JSX.Element => {
   const theme = useTheme();
@@ -8,12 +12,7 @@ const AboutUsPage = (): JSX.Element => {
   return (
     <Box sx={{ color: theme.palette.text.primary }}>
       <Box sx={{ padding: "1rem 0" }}>
-        <MenuNavigation
-          list={[
-            { title: "Home", path: "/", iconName: "home" },
-            { title: "About", path: "", iconName: "about" },
-          ]}
-        />
+        <MenuNavigation list={list} />
       </Box>
 
       <Typography variant="h4">About us Page</Typography>

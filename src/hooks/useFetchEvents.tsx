@@ -8,34 +8,37 @@ interface IEventsData {
 }
 
 interface IUseFetchEventsProps {
-  cityName: string | null;
-  params?: IQueryParams["params"];
+  cityName: string;
+  params: IQueryParams;
   loadMore?: boolean;
 }
 
 export type TypeFetchEventsResult = [
-  IEventsData,
+  IEventsData | null,
   boolean,
   string | null,
   (props: IUseFetchEventsProps) => Promise<void>
 ];
 
-export const useFetchEvents = ({
-  cityName,
-  params,
-  loadMore = false,
-}: IUseFetchEventsProps): TypeFetchEventsResult => {
-  const [data, setData] = useState<IEventsData>({ events: [], totalEvents: 1 });
+export const useFetchEvents = (): TypeFetchEventsResult => {
+  const [data, setData] = useState<IEventsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async ({ params, loadMore }: IUseFetchEventsProps) => {
+  let cityName = "";
+  let loadMore = false;
+  const params = { page: 1, limit: 5 };
+
+  const fetchData = async ({
+    cityName,
+    params,
+    loadMore = false,
+  }: IUseFetchEventsProps) => {
     setIsLoading(true);
     try {
-      if (!cityName) return;
       const response = await EventService.getEvents({ cityName, params });
 
-      if (loadMore) {
+      if (loadMore && data) {
         setData({
           events: [...data.events, ...response.data.cities],
           totalEvents: response.data.totalEvents,
@@ -54,8 +57,8 @@ export const useFetchEvents = ({
   };
 
   useEffect(() => {
-    fetchData({ params, loadMore });
-  }, []);
+    if (cityName) fetchData({ cityName, params, loadMore });
+  }, [cityName]);
 
   return [data, isLoading, error, fetchData];
 };

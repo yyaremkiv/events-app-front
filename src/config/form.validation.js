@@ -30,6 +30,7 @@ export const FormValidation = {
       "Occupation must be no more than 50 characters"
     ),
     showOnHomePage: Yup.boolean(),
+    isHidden: Yup.boolean(),
   }),
   eventSchema: Yup.object().shape({
     title: Yup.string()
@@ -45,6 +46,9 @@ export const FormValidation = {
       .test("is-after-today", "Date cannot be after today", function (value) {
         return dayjs(value).isAfter(dayjs(), "day");
       }),
+    showOnHomePage: Yup.boolean(),
+    isHidden: Yup.boolean(),
+    showInCityHome: Yup.boolean(),
     seats: Yup.string()
       .max(50, "Location must be no more than 50 characters")
       .required("Last name is required."),

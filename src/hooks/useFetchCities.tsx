@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import { EventService } from "../services";
-import { IEventItem, IQueryParams } from "../interfaces";
+import { IQueryParams, ICityItem } from "../interfaces";
 
 interface ICitiesData {
-  cities: IEventItem[];
+  cities: ICityItem[];
   totalCities: number;
 }
 
 interface IUseFetchCitiesProps {
-  params: IQueryParams["params"];
+  params: IQueryParams;
   loadMore?: boolean;
 }
 
 export type TypeFetchCitiesResult = [
-  ICitiesData,
+  ICitiesData | null,
   boolean,
   string | null,
   (props: IUseFetchCitiesProps) => Promise<void>
@@ -23,16 +23,16 @@ export const useFetchCities = ({
   params,
   loadMore = false,
 }: IUseFetchCitiesProps): TypeFetchCitiesResult => {
-  const [data, setData] = useState<ICitiesData>({ cities: [], totalCities: 1 });
+  const [data, setData] = useState<ICitiesData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = async ({ params, loadMore }: IUseFetchCitiesProps) => {
     setIsLoading(true);
     try {
-      const response = await EventService.getCities({ params });
+      const response = await EventService.getCities(params);
 
-      if (loadMore) {
+      if (loadMore && data) {
         setData({
           cities: [...data.cities, ...response.data.cities],
           totalCities: response.data.totalCities,

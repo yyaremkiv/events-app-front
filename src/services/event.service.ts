@@ -1,13 +1,29 @@
 import API from "../config/axios.api.js";
 import { IQueryParams } from "../interfaces/index.js";
+import { AxiosResponse } from "axios";
+
+import { ICityItem } from "../interfaces/index.js";
 
 interface IGetEvents {
   cityName: string;
-  params?: IQueryParams;
+  params: IQueryParams;
+}
+
+interface IGetSingleEvent {
+  cityName: string;
+  eventName: string;
+}
+
+interface IGetCitiesResponse {
+  cities: ICityItem[];
+  searchParams: any;
+  totalCities: number;
 }
 
 export class EventService {
-  static async getCities({ params }: IQueryParams): Promise<any> {
+  static async getCities(
+    params: IQueryParams
+  ): Promise<AxiosResponse<IGetCitiesResponse>> {
     return API.get("/events/cities/list", { params });
   }
 
@@ -31,6 +47,17 @@ export class EventService {
     return API.get(`/events/event/${cityName}`, { params });
   }
 
+  static async getSingleEvent({
+    cityName,
+    eventName,
+  }: IGetSingleEvent): Promise<any> {
+    return API.get(`/events/event/${cityName}/${eventName}`);
+  }
+
+  static async getAllEvents(params: any) {
+    return API.get("/events/events", { params });
+  }
+
   static async addEvent(formData: any) {
     return API.post("/events/event", formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -47,7 +74,7 @@ export class EventService {
     return API.delete(`/events/event/${cityId}/${eventId}`);
   }
 
-  static async getCity({ page = 1, limit = 5 }) {
-    return API.get("/events/city", { params: { page, limit } });
+  static async getCity({ params }: any) {
+    return API.get("/events/city", { params });
   }
 }

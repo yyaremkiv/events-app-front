@@ -10,12 +10,19 @@ import {
   FormikAutocomplete,
   CustomLoadingButton,
   ImageItemCity,
+  FormikCheckbox,
 } from "..";
 import { Box, Typography, useTheme } from "@mui/material";
 import dayjs from "dayjs";
 import { DataConfigInformation } from "../../data";
 import { EventOperations } from "../../redux/event/event.operations";
 import { AppDispatch } from "../../redux/store";
+
+import {
+  Home as HomeIcon,
+  HideSource as HideSourceIcon,
+  AddHome as AddHomeIcon,
+} from "@mui/icons-material";
 
 export const EventModal = ({
   cityId,
@@ -42,6 +49,9 @@ export const EventModal = ({
         seats: singleEvent.seats,
         imagePath: singleEvent.imagePath,
         categories: singleEvent.categories,
+        showOnHomePage: singleEvent.showOnHomePage,
+        isHidden: singleEvent.isHidden,
+        showInCityHome: singleEvent.showInCityHome,
       }
     : null;
 
@@ -49,12 +59,20 @@ export const EventModal = ({
     const formData = new FormData();
     formData.append("cityId", cityId);
     formData.append("eventId", eventId);
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("date", values.date);
-    formData.append("seats", values.seats);
-    formData.append("imagePath", values.imagePath);
-    formData.append("categories", JSON.stringify(values.categories));
+
+    Object.keys(values).forEach((key) => {
+      const value = values[key];
+      if (
+        key === "categories" ||
+        key === "showOnHomePage" ||
+        key === "isHidden" ||
+        key === "showInCityHome"
+      ) {
+        formData.append(key, JSON.stringify(value));
+      } else {
+        formData.append(key, value);
+      }
+    });
 
     if (image) formData.append("picture", image);
 
@@ -157,6 +175,49 @@ export const EventModal = ({
               options={DataConfigInformation.labelEventCategories}
               isLoading={isLoading}
             />
+
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <HomeIcon
+                  sx={{
+                    fontSize: "1.8rem",
+                    color: theme.palette.background.main,
+                  }}
+                />
+                <FormikCheckbox
+                  label="Show This Event On Home Page"
+                  name="showOnHomePage"
+                  addNameChange="isHidden"
+                  formikFunc={{ values, setFieldValue }}
+                  isLoading={isLoading}
+                />
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <AddHomeIcon
+                  sx={{
+                    fontSize: "1.8rem",
+                    color: theme.palette.background.main,
+                  }}
+                />
+                <FormikCheckbox
+                  label="Show This Event On City In Home Page"
+                  name="showInCityHome"
+                  formikFunc={{ values, setFieldValue }}
+                  isLoading={isLoading}
+                />
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <HideSourceIcon sx={{ fontSize: "1.8rem", color: "red" }} />
+                <FormikCheckbox
+                  label="Hide This Event"
+                  name="isHidden"
+                  addNameChange="showOnHomePage"
+                  hideStyle={true}
+                  formikFunc={{ values, setFieldValue }}
+                  isLoading={isLoading}
+                />
+              </Box>
+            </Box>
 
             {values?.imagePath && !image ? (
               <Box

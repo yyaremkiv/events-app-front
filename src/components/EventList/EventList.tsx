@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Box,
+  Grid,
   Chip,
   useTheme,
   Container,
@@ -9,17 +10,23 @@ import {
   Typography,
 } from "@mui/material";
 
-export const EventList = ({ data, cityNameLink, isLoading }: any) => {
+import { CardItem } from "./CardItem";
+
+export const EventList = ({
+  data,
+  cityNameLink,
+  isLoading,
+}: any): JSX.Element => {
   const theme = useTheme();
 
   return (
-    <Container maxWidth="xl">
-      <Box
+    <Container maxWidth="xl" sx={{ border: "1px solid green", width: "100%" }}>
+      <Grid
+        container
         sx={{
           position: "relative",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "1rem",
+          width: "100%",
+          color: theme.palette.text.primary,
         }}
       >
         {data?.map(
@@ -32,59 +39,36 @@ export const EventList = ({ data, cityNameLink, isLoading }: any) => {
             seats,
             categories,
           }: any) => (
-            <Box
-              key={id}
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={4}
               sx={{
+                padding: "1rem",
                 width: "25%",
-                backgroundColor: theme.palette.background.light,
-                border: "1px solid green",
-                overflow: "hidden",
-                borderRadius: "1rem",
               }}
             >
               <Link
                 key={id}
                 href={`/cities/${cityNameLink.toLowerCase()}/${title}`}
-                style={{ border: "1px solid red", textDecoration: "none" }}
+                style={{
+                  border: "1px solid red",
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
               >
-                <Image
-                  src={imagePath}
-                  alt={title}
-                  width={300}
-                  height={300}
-                  priority={true}
-                  style={{ width: "100%", height: "auto", display: "block" }}
+                <CardItem
+                  imagePath={imagePath}
+                  title={title}
+                  description={description}
+                  mainTitle={title}
+                  leftPoint={date}
+                  rightPoint={`Seats: ${seats}`}
                 />
-                <Box sx={{ color: theme.palette.text.primary }}>
-                  <Typography variant="h4">Title: {title}</Typography>
-                  <Typography>Descrition: {description}</Typography>
-                  <Typography>Data: {date}</Typography>
-                  <Typography>Seats: {seats}</Typography>
-                  <Box
-                    sx={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}
-                  >
-                    {categories?.map(
-                      (
-                        { label, color }: { label: string; color: string },
-                        index: number
-                      ) => (
-                        <Chip
-                          key={index}
-                          label={label}
-                          variant="outlined"
-                          style={{
-                            color: "white",
-                            backgroundColor: color,
-                            marginRight: "5px",
-                            border: "none",
-                          }}
-                        />
-                      )
-                    )}
-                  </Box>
-                </Box>
               </Link>
-            </Box>
+            </Grid>
           )
         )}
         {isLoading && (
@@ -92,7 +76,7 @@ export const EventList = ({ data, cityNameLink, isLoading }: any) => {
             <LinearProgress />
           </Box>
         )}
-      </Box>
+      </Grid>
     </Container>
   );
 };

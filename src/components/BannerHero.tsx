@@ -19,7 +19,7 @@ export class BannerHero extends Component {
     };
 
     return (
-      <Box sx={{ border: "1px solid red", width: "100%" }}>
+      <Box sx={{ width: "100%" }}>
         <Slider {...settings}>
           <Box>
             <Image
@@ -27,7 +27,7 @@ export class BannerHero extends Component {
               alt="adfsfd"
               width={1600}
               height={400}
-              style={{ width: "100%" }}
+              style={{ display: "block", width: "100%" }}
             />
           </Box>
           <Box>
@@ -36,7 +36,7 @@ export class BannerHero extends Component {
               alt="adfsfd"
               width={1600}
               height={400}
-              style={{ width: "100%" }}
+              style={{ display: "block", width: "100%" }}
             />
           </Box>
         </Slider>

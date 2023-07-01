@@ -5,7 +5,12 @@ import { EventModal } from "../EventModal/EventModal";
 import { AdminCityList } from "../AdminCityList/AdminCityList";
 import { useCity } from "../../hooks";
 import { Add as AddIcon } from "@mui/icons-material";
-import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import {
+  Home as HomeIcon,
+  HideSource as HideSourceIcon,
+  AddHome as AddHomeIcon,
+} from "@mui/icons-material";
 
 export const AdminEventTab = (): JSX.Element => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -13,7 +18,6 @@ export const AdminEventTab = (): JSX.Element => {
   const [cityId, setCityId] = useState<string | null>(null);
   const [eventId, setEventId] = useState<string | null>(null);
   const [cities, isLoading, error] = useCity();
-  const theme = useTheme();
 
   const handleModalClose = () => {
     setCityId(null);
@@ -51,11 +55,27 @@ export const AdminEventTab = (): JSX.Element => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "right",
+          justifyContent: "space-between",
           alignItems: "center",
           padding: "0.5rem 0",
         }}
       >
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "2rem" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <HomeIcon />
+            <Typography> - Show City Or Event On Home Page</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <HideSourceIcon color="error" />
+            <Typography color="error"> - Hide City Or Event</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <AddHomeIcon />
+            <Typography>
+              - Show Event On City In Home Page (show only 1 event)
+            </Typography>
+          </Box>
+        </Box>
         <Tooltip title="Add New City" placement="top">
           <IconButton
             onClick={() => {

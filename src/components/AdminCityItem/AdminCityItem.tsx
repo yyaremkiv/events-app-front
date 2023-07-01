@@ -46,9 +46,9 @@ export const AdminCityItem = ({
 
       {!eventsList?.length && !isLoading ? "Dont have events!" : null}
 
-      {isLoading ? (
-        <LoaderLinearProgress />
-      ) : (
+      {isLoading && <LoaderLinearProgress />}
+
+      {eventsList.length && (
         <AdminEventList
           cityId={cityId}
           data={eventsList}
