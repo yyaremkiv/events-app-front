@@ -35,6 +35,17 @@ export interface ICity {
   population: number;
 }
 
+export interface ISpeaker {
+  id: string;
+  firstname: string;
+  lastname: string;
+  age: number;
+  about: string;
+  email: string;
+  topic: string;
+  telephone: string;
+}
+
 export interface IEventItem {
   id: string;
   title: string;
@@ -46,6 +57,7 @@ export interface IEventItem {
   isHidden: boolean;
   showInCityHome: boolean;
   categories: ICategoryItem[];
+  speakers: ISpeaker[];
 }
 
 export interface ICityItem {

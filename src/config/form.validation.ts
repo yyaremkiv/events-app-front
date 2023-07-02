@@ -16,6 +16,7 @@ export const FormValidation = {
     seats: 0,
     price: 0,
     categories: [],
+    speakers: [],
   },
   citySchema: Yup.object().shape({
     title: Yup.string()

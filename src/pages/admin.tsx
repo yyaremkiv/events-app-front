@@ -1,8 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useAuth } from "../hooks";
 import { AdminEventTab } from "../components/AdminEventTab/AdminEventTab";
-import { Box, Container, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Container,
+  IconButton,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { Logout } from "@mui/icons-material";
 import { MenuNavigation } from "../components/MenuNavigation";
+import { AppDispatch } from "../redux/store";
+import { AuthOperations } from "../redux/auth/auth.operations";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -17,14 +30,29 @@ const list = [
 
 const Admin = (): JSX.Element => {
   const [value, setValue] = useState<number>(0);
+  const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
 
   const handleChange = (_: any, newValue: number) => setValue(newValue);
 
   return (
     <Container maxWidth="xl">
-      <Box sx={{ padding: "1rem 0" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
+          padding: "1rem 0",
+        }}
+      >
         <MenuNavigation list={list} />
+        <Tooltip title="Logout" placement="top">
+          <IconButton onClick={() => dispatch(AuthOperations.logout())}>
+            <Logout />
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <Box sx={{ width: "100%", color: theme.palette.text.primary }}>

@@ -1,7 +1,6 @@
 import { BannerHero } from "../components/BannerHero";
 import { HomeCityList } from "../components/HomeCityList/HomeCityList";
 import { useFetchCities } from "../hooks";
-import { MenuNavigationLink } from "../components/MenuNavigationLink";
 import { TypeFetchCitiesResult } from "../hooks/useFetchCities";
 import { Box, Typography, useTheme, Divider, Container } from "@mui/material";
 import { HomeEventList } from "../components/HomeEventList/HomeEventList";
@@ -16,10 +15,6 @@ export default function Home(): JSX.Element {
 
   return (
     <>
-      <Container maxWidth="xl">
-        <MenuNavigationLink />
-      </Container>
-
       <BannerHero />
 
       <MainTitle />

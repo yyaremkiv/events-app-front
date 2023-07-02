@@ -11,7 +11,8 @@ export const EventItem = ({
   event,
   isLoading = false,
 }: IEventItemProps): JSX.Element => {
-  const { title, description, imagePath, date, seats, categories } = event;
+  const { title, description, imagePath, date, seats, categories, speakers } =
+    event;
   const theme = useTheme();
 
   return (
@@ -49,6 +50,45 @@ export const EventItem = ({
                 }}
               />
             ))}
+          </Box>
+          <Box>
+            {speakers.map(
+              (
+                {
+                  firstname,
+                  lastname,
+                  about,
+                  age,
+                  email,
+                  telephone,
+                  topic,
+                }: any,
+                index: number
+              ) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    border: "1px solid green",
+                  }}
+                >
+                  <Box sx={{ width: "20%" }}>
+                    <Typography variant="h4" sx={{ textAlign: "center" }}>
+                      {index}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography>Name: {firstname + lastname}</Typography>
+                    <Typography>About: {about}</Typography>
+                    <Typography>Age: {age}</Typography>
+                    <Typography>Email: {email}</Typography>
+                    <Typography>Telephone: {telephone}</Typography>
+                    <Typography>Topic: {topic}</Typography>
+                  </Box>
+                </Box>
+              )
+            )}
           </Box>
         </Box>
       </Box>

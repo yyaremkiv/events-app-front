@@ -14,7 +14,7 @@ export const MenuNavigationLink = () => {
   return (
     <List
       sx={{
-        width: "70%",
+        width: "50%",
         margin: "0 auto",
         display: "flex",
         justifyContent: "space-between",
