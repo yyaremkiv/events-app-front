@@ -1,13 +1,12 @@
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ICityItem } from "@/src/interfaces";
 import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { Event, PeopleAlt, Place, Public } from "@mui/icons-material";
-import { useState } from "react";
-import ScrollHandler from "react-scroll-wheel-handler";
-// import { animateScroll as scroll } from "react-scroll";
 
 interface IHomeCItyItemProps {
-  data: any;
+  data: ICityItem;
   index: number;
 }
 
@@ -15,15 +14,10 @@ export const HomeCItyItem = ({
   data,
   index,
 }: IHomeCItyItemProps): JSX.Element => {
-  const {
-    city,
-    imagePath,
-    title,
-    country,
-    totalEvents,
-    population,
-    description,
-  } = data;
+  const { city, imagePath, country, totalEvents, description } = data;
+
+  console.log("data", data);
+
   const theme = useTheme();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -62,7 +56,7 @@ export const HomeCItyItem = ({
         <Link href={`/cities/${city.label.toLowerCase()}`}>
           <Image
             src={imagePath}
-            alt={title}
+            alt={city.label}
             fill={true}
             priority={true}
             style={{
@@ -124,7 +118,7 @@ export const HomeCItyItem = ({
               color: theme.palette.text.primary,
             }}
           >
-            {title}
+            {city.label}
           </Typography>
 
           <Grid
@@ -198,7 +192,7 @@ export const HomeCItyItem = ({
                     variant="h6"
                     sx={{ color: theme.palette.text.primary }}
                   >
-                    Population: {population}
+                    Population: {city.population}
                   </Typography>
                 </Box>
                 <Box
@@ -237,7 +231,7 @@ export const HomeCItyItem = ({
                 <Link href={`/cities/${city.label.toLowerCase()}`}>
                   <Image
                     src={imagePath}
-                    alt={title}
+                    alt={city.label}
                     fill={true}
                     priority={true}
                     style={{

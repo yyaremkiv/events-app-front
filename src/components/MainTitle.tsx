@@ -1,7 +1,16 @@
 import { Box, Typography, useTheme } from "@mui/material";
 
-export const MainTitle = (): JSX.Element => {
+interface IMainTitleProps {
+  title: string;
+  showArrow?: boolean;
+}
+
+export const MainTitle = ({
+  title,
+  showArrow = true,
+}: IMainTitleProps): JSX.Element => {
   const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -29,7 +38,7 @@ export const MainTitle = (): JSX.Element => {
           },
         }}
       >
-        Join the World of Events
+        {title}
       </Typography>
       <Typography
         variant="subtitle1"
@@ -50,41 +59,43 @@ export const MainTitle = (): JSX.Element => {
         experiences that will leave a lasting impression.
       </Typography>
 
-      <Box
-        sx={{
-          width: "100px",
-          height: "100px",
-          margin: "0 auto",
-          position: "relative",
-          "&::before, &::after": {
-            content: '""',
-            position: "absolute",
-            top: "50%",
-            left: "50%",
+      {showArrow && (
+        <Box
+          sx={{
+            width: "100px",
+            height: "100px",
+            margin: "0 auto",
+            position: "relative",
+            "&::before, &::after": {
+              content: '""',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
 
-            width: "70px",
-            height: "70px",
-            borderBottom: `15px solid ${theme.palette.text.primary}`,
-            borderRight: `15px solid ${theme.palette.text.primary}`,
-            transform: "rotate(45deg) translate(-50%, -50%)",
-            animation: "arrow 2s linear infinite",
+              width: "70px",
+              height: "70px",
+              borderBottom: `15px solid ${theme.palette.text.primary}`,
+              borderRight: `15px solid ${theme.palette.text.primary}`,
+              transform: "rotate(45deg) translate(-50%, -50%)",
+              animation: "arrow 2s linear infinite",
 
-            "@keyframes arrow": {
-              "0%": {
-                top: "10px",
-                opacity: "0",
-              },
-              "50%": {
-                opacity: "1",
-              },
-              "100%": {
-                top: "50px",
-                opacity: "0",
+              "@keyframes arrow": {
+                "0%": {
+                  top: "10px",
+                  opacity: "0",
+                },
+                "50%": {
+                  opacity: "1",
+                },
+                "100%": {
+                  top: "50px",
+                  opacity: "0",
+                },
               },
             },
-          },
-        }}
-      ></Box>
+          }}
+        ></Box>
+      )}
     </Box>
   );
 };

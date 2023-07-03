@@ -3,11 +3,11 @@ import dayjs from "dayjs";
 
 export const FormValidation = {
   initialValuesCity: {
-    title: "",
-    city: null,
     country: null,
-    population: "",
+    city: null,
+    description: "",
     showOnHomePage: false,
+    isHidden: false,
   },
   initialValuesEvent: {
     title: "",
@@ -19,17 +19,6 @@ export const FormValidation = {
     speakers: [],
   },
   citySchema: Yup.object().shape({
-    title: Yup.string()
-      .min(3, "City must be at least 3 characters long.")
-      .max(50, "City cannot be longer than 50 characters.")
-      .required("City is required."),
-    population: Yup.string()
-      .max(50, "Location must be no more than 50 characters")
-      .required("Last name is required."),
-    occupation: Yup.string().max(
-      50,
-      "Occupation must be no more than 50 characters"
-    ),
     showOnHomePage: Yup.boolean(),
     isHidden: Yup.boolean(),
   }),

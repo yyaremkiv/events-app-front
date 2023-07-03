@@ -25,7 +25,7 @@ export const Footer = (): JSX.Element => {
   const theme = useTheme();
 
   return (
-    <footer>
+    <footer style={{ marginTop: "auto" }}>
       <Box
         sx={{
           backgroundColor: "#C49D5E",

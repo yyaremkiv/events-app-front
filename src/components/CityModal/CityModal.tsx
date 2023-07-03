@@ -112,16 +112,8 @@ export const CityModal = ({
             />
 
             <FormikTextField
-              label="Title Event"
-              name="title"
-              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
-              isLoading={isLoading}
-            />
-
-            <FormikNumberField
-              label="Population"
-              name="population"
-              minValue={0}
+              label="Description"
+              name="description"
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />

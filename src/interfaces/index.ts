@@ -64,8 +64,9 @@ export interface ICityItem {
   _id: string;
   country: ICountry;
   city: ICity;
-  title: string;
+  description: string;
   imagePath: string;
+  totalEvents: number;
   showOnHomePage: boolean;
   isHidden: boolean;
   events: IEventItem[] | [];

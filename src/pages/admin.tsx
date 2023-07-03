@@ -36,7 +36,7 @@ const Admin = (): JSX.Element => {
   const handleChange = (_: any, newValue: number) => setValue(newValue);
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ flex: 1 }}>
       <Box
         sx={{
           display: "flex",

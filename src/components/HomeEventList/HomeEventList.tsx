@@ -1,22 +1,23 @@
+import { useEffect } from "react";
 import { Box, Chip, Typography } from "@mui/material";
-import { useFetchAllEvents } from "../../hooks";
 import Image from "next/image";
+import AOS from "aos";
 
-export const HomeEventList = (): JSX.Element => {
-  const [data, isLoading, error, fetchData]: any = useFetchAllEvents({
-    params: { showOnHomePage: true },
-  });
+export const HomeEventList = ({ events }: any): JSX.Element => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   return (
     <Box
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        border: "1px solid tomato",
         flexDirection: "column",
+        paddingBottom: "5rem",
       }}
     >
-      {data?.events?.map(
+      {events?.map(
         (
           {
             country,
@@ -32,6 +33,8 @@ export const HomeEventList = (): JSX.Element => {
         ) => (
           <Box
             key={index}
+            data-aos="fade-up"
+            data-aos-duration="2000"
             sx={{
               border: "1px solid red",
               display: "flex",

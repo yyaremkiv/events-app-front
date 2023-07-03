@@ -8,7 +8,7 @@ interface IEventsData {
 }
 
 interface IUseFetchEventsProps {
-  cityName: string;
+  cityName?: string;
   params: IQueryParams;
   loadMore?: boolean;
 }
@@ -36,7 +36,9 @@ export const useFetchEvents = (): TypeFetchEventsResult => {
   }: IUseFetchEventsProps) => {
     setIsLoading(true);
     try {
-      const response = await EventService.getEvents({ cityName, params });
+      const response = cityName
+        ? await EventService.getEvents({ cityName, params })
+        : await EventService.getAllEvents(params);
 
       if (loadMore && data) {
         setData({
