@@ -16,8 +16,6 @@ export const HomeCItyItem = ({
 }: IHomeCItyItemProps): JSX.Element => {
   const { city, imagePath, country, totalEvents, description } = data;
 
-  console.log("data", data);
-
   const theme = useTheme();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -39,7 +37,6 @@ export const HomeCItyItem = ({
         alignItems: "center",
         justifyContent: "space-between",
         flexWrap: "wrap",
-        // padding: "1rem",
         gap: "1rem",
         background: theme.palette.background.gradientHeaderBg,
       }}
@@ -49,7 +46,6 @@ export const HomeCItyItem = ({
           width: "40%",
           height: "500px",
           overflow: "hidden",
-          // border: "1px solid green",
           position: "relative",
         }}
       >

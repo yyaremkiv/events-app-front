@@ -1,11 +1,11 @@
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
+import { ICountry } from "../../interfaces";
 
 interface IFormikAutocompleteOfCountriesProps {
   label: string;
   changeFieldName: string;
-  options: Array<any>;
-  changeFieldFunction: (changeFieldName: string, selectedValues: any) => void;
-  value: any;
+  options: ICountry[];
+  formikFunc: any;
   isLoading?: boolean;
 }
 
@@ -13,23 +13,28 @@ export const FormikAutocompleteOfCountries = ({
   label,
   changeFieldName,
   options,
-  changeFieldFunction,
-  value,
+  formikFunc: { values, errors, touched, setFieldValue },
   isLoading = false,
 }: IFormikAutocompleteOfCountriesProps): JSX.Element => {
   return (
     <Autocomplete
       fullWidth
-      value={value}
+      value={values[changeFieldName]}
       options={options}
       disabled={isLoading}
       getOptionLabel={(option) => option.label}
       isOptionEqualToValue={(option, value) => option.label === value.label}
-      onChange={(_, selectedValues) => {
-        // @ts-ignore
-        changeFieldFunction(changeFieldName, selectedValues);
+      onChange={(_: any, selectedValues) => {
+        setFieldValue(changeFieldName, selectedValues);
       }}
-      renderInput={(params) => <TextField {...params} label={label} />}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          error={Boolean(touched[changeFieldName] && errors[changeFieldName])}
+          helperText={touched[changeFieldName] && errors[changeFieldName]}
+        />
+      )}
       renderOption={(props, option) => (
         <Box
           component="li"
@@ -47,19 +52,18 @@ export const FormikAutocompleteOfCountries = ({
         </Box>
       )}
       renderTags={(value, getTagProps) =>
-        value.map((option, index) => (
+        value.map((option: ICountry, index: number) => (
           <Chip
-            //@ts-ignore
+            // @ts-ignore
             key={index}
             label={option.label}
             style={{
               color: "white",
-              backgroundColor: option.color,
               marginRight: "5px",
             }}
             {...getTagProps({ index })}
             onDelete={() => {
-              changeFieldFunction(changeFieldName, null);
+              setFieldValue(changeFieldName, null);
             }}
           />
         ))

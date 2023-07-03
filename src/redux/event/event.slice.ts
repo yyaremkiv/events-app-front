@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EventOperations } from "./event.operations";
+import { ICityItem } from "../../interfaces";
 
 export interface IEventState {
-  cities: any;
-  isLoading: boolean;
+  cities: ICityItem[];
+  totalCities: number | null;
   error: string | null;
+  isLoading: boolean;
 }
 
 const initialState: IEventState = {
   cities: [],
-  isLoading: false,
+  totalCities: null,
   error: null,
+  isLoading: false,
 };
 
 export const eventSlice = createSlice({
@@ -20,16 +23,19 @@ export const eventSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(EventOperations.getCity.pending, (state) => {
       state.isLoading = true;
+      state.totalCities = null;
       state.error = null;
     });
     builder.addCase(EventOperations.getCity.fulfilled, (state, action) => {
       state.cities = action.payload.cities;
+      state.totalCities = action.payload.totalCities;
       state.isLoading = false;
     });
     builder.addCase(
       EventOperations.getCity.rejected,
       (state, action: PayloadAction<any>) => {
         state.error = action.payload;
+        state.totalCities = null;
         state.isLoading = false;
       }
     );

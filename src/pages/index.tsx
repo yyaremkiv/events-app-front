@@ -32,9 +32,11 @@ export default function Home(): JSX.Element {
       <Container maxWidth="xl">
         <MainTitle title="Join the World of Events" showArrow={true} />
 
-        {citiesResult && !citiesIsLoading && citiesResult.cities.length > 0 ? (
+        {citiesResult && !citiesIsLoading && !!citiesResult.cities.length && (
           <HomeCityList cities={citiesResult.cities} />
-        ) : (
+        )}
+
+        {!citiesIsLoading && citiesResult?.cities.length === 0 && (
           <MessageError
             text={
               citiesError
@@ -45,17 +47,19 @@ export default function Home(): JSX.Element {
           />
         )}
 
-        {eventsResult && !eventsIsLoading && eventsResult.events.length > 0 ? (
+        {eventsResult && !eventsIsLoading && eventsResult.events.length > 0 && (
           <>
             <MainTitle title="This Es Best Events" showArrow={false} />
             <HomeEventList events={eventsResult.events} />
           </>
-        ) : (
+        )}
+
+        {!eventsIsLoading && eventsResult?.events.length === 0 && (
           <MessageError
             text={
               eventsError
                 ? eventsError
-                : "Sorry, There Are Currently No Events!"
+                : "Sorry, There Are Currently No Cities With Events!"
             }
             errorMessage={!!eventsError}
           />

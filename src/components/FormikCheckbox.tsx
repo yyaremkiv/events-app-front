@@ -1,8 +1,9 @@
-import { Checkbox, FormControlLabel, useTheme } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, useTheme } from "@mui/material";
 
 interface IFormikCheckboxProps {
   label: string;
   name: string;
+  children?: any;
   addNameChange?: string;
   formikFunc: {
     values: { [key: string]: string | number | boolean };
@@ -15,7 +16,7 @@ interface IFormikCheckboxProps {
 export const FormikCheckbox = ({
   label,
   name,
-  addNameChange,
+  children,
   formikFunc: { values, setFieldValue },
   hideStyle,
   isLoading = false,
@@ -23,26 +24,29 @@ export const FormikCheckbox = ({
   const theme = useTheme();
 
   return (
-    <FormControlLabel
-      control={
-        <Checkbox
-          name={name}
-          checked={Boolean(values[name])}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setFieldValue(name, e.target.checked);
-            if (name === "isHidden") {
-              setFieldValue("showOnHomePage", false);
-              setFieldValue("showInCityHome", false);
-            } else {
-              setFieldValue("isHidden", false);
-            }
-          }}
-          style={{ color: hideStyle ? "red" : theme.palette.primary.main }}
-        />
-      }
-      label={label}
-      disabled={isLoading}
-      sx={{ color: hideStyle ? "red" : theme.palette.text.primary }}
-    />
+    <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      {children}
+      <FormControlLabel
+        control={
+          <Checkbox
+            name={name}
+            checked={Boolean(values[name])}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setFieldValue(name, e.target.checked);
+              if (name === "isHidden") {
+                setFieldValue("showOnHomePage", false);
+                setFieldValue("showInCityHome", false);
+              } else {
+                setFieldValue("isHidden", false);
+              }
+            }}
+            style={{ color: hideStyle ? "red" : theme.palette.primary.main }}
+          />
+        }
+        label={label}
+        disabled={isLoading}
+        sx={{ color: hideStyle ? "red" : theme.palette.text.primary }}
+      />
+    </Box>
   );
 };

@@ -22,7 +22,7 @@ export const DataConfigInformation = {
     { code: "AD", label: "Andorra", phone: "376" },
     { code: "AE", label: "United Arab Emirates", phone: "84" },
     { code: "AF", label: "Afghanistan", phone: "93" },
-    { code: "AG", label: "Antigua and Barbuda" },
+    { code: "AG", label: "Antigua and Barbuda", phone: "84" },
     { code: "AI", label: "Anguilla", phone: "1-264" },
     { code: "AL", label: "Albania", phone: "355" },
     { code: "AM", label: "Armenia", phone: "374" },

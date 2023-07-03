@@ -19,6 +19,12 @@ export const FormValidation = {
     speakers: [],
   },
   citySchema: Yup.object().shape({
+    country: Yup.object().required("Country is required."),
+    city: Yup.object().required("City is required."),
+    description: Yup.string()
+      .min(6, "Description must be at least 6 characters long.")
+      .max(300, "Description cannot be longer than 300 characters.")
+      .required("Description is required."),
     showOnHomePage: Yup.boolean(),
     isHidden: Yup.boolean(),
   }),
