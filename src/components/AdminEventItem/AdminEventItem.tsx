@@ -1,6 +1,8 @@
+import { IEventItem } from "../../interfaces";
 import {
   Box,
   IconButton,
+  Typography,
   Tooltip,
   useTheme,
   ListItem,
@@ -13,7 +15,6 @@ import {
   HideSource as HideSourceIcon,
   AddHome as AddHomeIcon,
 } from "@mui/icons-material";
-import { IEventItem } from "@/src/interfaces";
 
 interface IAdminEventItemProps {
   cityId: string;
@@ -25,7 +26,7 @@ interface IAdminEventItemProps {
 
 export const AdminEventItem = ({
   cityId,
-  data: { id: eventId, title, showOnHomePage, isHidden, showInCityHome },
+  data: { id: eventId, title, showOnHomePage, isHidden, showInCityHome, date },
   index,
   handleEditEvent,
   handleDeleteEvent,
@@ -49,22 +50,32 @@ export const AdminEventItem = ({
         </Box>
       }
     >
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <ListItemText
           primary={index + 1}
           sx={{ color: theme.palette.text.dark }}
         />
-        <ListItemText primary={title} sx={{ color: theme.palette.text.dark }} />
+        <ListItemText
+          primary={title}
+          sx={{
+            color: theme.palette.text.dark,
+            textDecoration:
+              new Date() > new Date(date) ? "line-through" : "none",
+          }}
+        />
+
         {showOnHomePage && (
           <Tooltip title="This Event Is Shown On The Main Page" placement="top">
             <HomeIcon sx={{ color: theme.palette.text.dark }} />
           </Tooltip>
         )}
+
         {isHidden && (
           <Tooltip title="Not Displayed On The Site" placement="top">
             <HideSourceIcon color="error" />
           </Tooltip>
         )}
+
         {showInCityHome && (
           <Tooltip
             title="This Event Is Shown In City On Home Page"
@@ -72,6 +83,10 @@ export const AdminEventItem = ({
           >
             <AddHomeIcon sx={{ color: theme.palette.text.dark }} />
           </Tooltip>
+        )}
+
+        {new Date() > new Date(date) && (
+          <Typography color="error">Stale Event!</Typography>
         )}
       </Box>
     </ListItem>

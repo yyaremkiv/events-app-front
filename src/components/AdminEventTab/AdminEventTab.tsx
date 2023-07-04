@@ -16,8 +16,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Pagination,
 } from "@mui/material";
-import { Pagination } from "@mui/lab";
 import {
   Home as HomeIcon,
   HideSource as HideSourceIcon,
@@ -26,8 +26,7 @@ import {
 
 export const AdminEventTab = (): JSX.Element => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-
+  const [limit, setLimit] = useState(10);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [typeModal, setTypeModal] = useState<string | null>(null);
   const [cityId, setCityId] = useState<string | null>(null);
@@ -79,12 +78,10 @@ export const AdminEventTab = (): JSX.Element => {
   const handleChangeLimit = (newLimit: number) => {
     setPage(1);
     setLimit(newLimit);
-    // fetchData({ params: { ...params, page: 1, limit: newLimit } });
   };
 
   const handleChangePage = (_: any, newPageValue: number) => {
     setPage(newPageValue);
-    // fetchData({ params: { ...params, page: newPageValue } });
   };
 
   return (
@@ -97,22 +94,31 @@ export const AdminEventTab = (): JSX.Element => {
           padding: "0.5rem 0",
         }}
       >
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "2rem" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
             <HomeIcon />
             <Typography> - Show City Or Event On Home Page</Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <AddHomeIcon />
+            <Typography>- Show Event On City In Home Page</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
             <HideSourceIcon color="error" />
             <Typography color="error"> - Hide City Or Event</Typography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-            <AddHomeIcon />
-            <Typography>
-              - Show Event On City In Home Page (show only 1 event)
-            </Typography>
-          </Box>
         </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "2rem",
+          padding: "0.5rem 0",
+        }}
+      >
         <Tooltip title="Add New City" placement="top">
           <IconButton
             onClick={() => {
@@ -123,53 +129,54 @@ export const AdminEventTab = (): JSX.Element => {
             <AddIcon />
           </IconButton>
         </Tooltip>
-      </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "center",
-          gap: "2rem",
-          padding: "10px 0",
-        }}
-      >
-        {data.length > 0 ? (
-          <Typography
-            sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
-          >
-            Number of displayed cities: {data.length}
-          </Typography>
-        ) : null}
-
-        {totalCities ? (
-          <Typography
-            sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
-          >
-            All city: {totalCities}
-          </Typography>
-        ) : null}
-
-        <FormControl
-          size="small"
-          sx={{ m: 1, minWidth: 80, color: theme.palette.text.primary }}
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: "2rem",
+          }}
         >
-          <InputLabel>Count</InputLabel>
-          <Select
-            label="Count"
-            value={limit}
-            onChange={(e) => handleChangeLimit(Number(e.target.value))}
+          {data.length > 0 ? (
+            <Typography
+              sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
+            >
+              Number of displayed cities: {data.length}
+            </Typography>
+          ) : null}
+
+          {totalCities ? (
+            <Typography
+              sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
+            >
+              All city: {totalCities}
+            </Typography>
+          ) : null}
+
+          <FormControl
+            size="small"
+            sx={{ m: 1, minWidth: 80, color: theme.palette.text.primary }}
           >
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-          </Select>
-        </FormControl>
+            <InputLabel>Count</InputLabel>
+            <Select
+              label="Count"
+              value={limit}
+              onChange={(e) => handleChangeLimit(Number(e.target.value))}
+            >
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={20}>20</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
 
       {data.length > 0 && (
         <AdminCityList
+          page={page}
+          limit={limit}
           data={data}
           handleUpdateCity={handleUpdateCity}
           handleAddEvent={handleAddEvent}
@@ -178,26 +185,30 @@ export const AdminEventTab = (): JSX.Element => {
         />
       )}
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: "auto",
-          padding: "1rem",
-        }}
-      >
-        <Pagination
-          count={Math.ceil(totalCities / limit)}
-          page={page}
-          onChange={handleChangePage}
-          disabled={isLoading}
-        />
-      </Box>
+      {totalCities && data.length < totalCities && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "auto",
+            padding: "1rem",
+          }}
+        >
+          <Pagination
+            count={Math.ceil(totalCities / limit)}
+            page={page}
+            onChange={handleChangePage}
+            disabled={isLoading}
+          />
+        </Box>
+      )}
 
       <ModalWindow open={openModal} onCloseFunc={handleModalClose}>
         {typeModal === "city" && (
           <CityModal
+            page={page}
+            limit={limit}
             cityId={cityId}
             handleCloseModal={handleModalClose}
             error={error}

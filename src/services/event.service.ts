@@ -27,20 +27,21 @@ export class EventService {
     return API.get("/events/cities/list", { params });
   }
 
-  static async addCity(formData: any) {
+  static async addCity({ formData, params }: any) {
     return API.post("/events/city", formData, {
+      params,
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
-  static async updateCity(formData: any) {
+  static async updateCity({ formData }: any) {
     return API.patch("/events/city", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
-  static async deleteCity(cityId: string) {
-    return API.delete(`/events/city/${cityId}`);
+  static async deleteCity({ cityId, params }: any) {
+    return API.delete(`/events/city/${cityId}`, { params });
   }
 
   static async getEvents({ cityName, params }: IGetEvents): Promise<any> {

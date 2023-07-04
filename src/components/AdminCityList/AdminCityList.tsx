@@ -22,14 +22,18 @@ import { EventOperations } from "../../redux/event/event.operations";
 import { ICityItem } from "../../interfaces";
 
 interface IAdminCityListProps {
+  page: number;
+  limit: number;
   data: ICityItem[];
-  handleUpdateCity: any;
-  handleAddEvent: any;
-  handleEditEvent: any;
+  handleUpdateCity: (value: string) => void;
+  handleAddEvent: (value: string) => void;
+  handleEditEvent: (obj: { cityId: string; eventId: string }) => void;
   isLoading?: boolean;
 }
 
 export const AdminCityList = ({
+  page,
+  limit,
   data,
   handleUpdateCity,
   handleAddEvent,
@@ -45,7 +49,7 @@ export const AdminCityList = ({
     };
 
   const handleDeleteCity = (cityId: string) =>
-    dispatch(EventOperations.deleteCity(cityId));
+    dispatch(EventOperations.deleteCity({ cityId, params: { page, limit } }));
 
   return (
     <Box>
@@ -69,7 +73,6 @@ export const AdminCityList = ({
                 <Typography sx={{ fontWeight: 500 }}>
                   {CityItem.city.label}
                 </Typography>
-
                 <Box>
                   {CityItem.showOnHomePage && (
                     <Tooltip
@@ -86,7 +89,8 @@ export const AdminCityList = ({
                   )}
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", gap: "0.5rem" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <Typography>(events: {CityItem.totalEvents})</Typography>
                 <Tooltip title="Update City" placement="top">
                   <IconButton
                     onClick={(e) => {

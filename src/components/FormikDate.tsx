@@ -2,6 +2,7 @@ import { Box, FormHelperText } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import "dayjs/locale/de";
 
 interface IFormikDateProps {
   label: string;
@@ -18,12 +19,13 @@ export const FormikDate = ({
 }: IFormikDateProps): JSX.Element => {
   return (
     <Box sx={{ width: "100%" }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
         <DateTimePicker
           label={label}
           value={values[name] || null}
-          onChange={(date) => setFieldValue(name, date)}
+          onChange={(date) => setFieldValue(name, date.$d)}
           sx={{ width: "100%" }}
+          onError={() => null}
           disabled={isLoading}
         />
         <FormHelperText

@@ -50,14 +50,15 @@ export interface IEventItem {
   id: string;
   title: string;
   description: string;
-  imagePath: string;
   date: string;
   seats: number;
-  showOnHomePage: boolean;
-  isHidden: boolean;
-  showInCityHome: boolean;
+  price: number;
+  imagePath: string;
   categories: ICategoryItem[];
   speakers: ISpeaker[];
+  showOnHomePage: boolean;
+  showInCityHome: boolean;
+  isHidden: boolean;
 }
 
 export interface ICityItem {

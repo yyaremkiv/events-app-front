@@ -36,12 +36,10 @@ export const EventModal = ({
   isLoading = false,
 }: any) => {
   const [image, setImage] = useState(null);
-  const dispatch: AppDispatch = useDispatch();
-
   const [showAddPerson, setShowAddPerson] = useState(false);
-
   const [currentSpeaker, setCurrentSpeaker] = useState(null);
 
+  const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
 
   const city = useSelector((state: any) => state.events.cities).find(
@@ -49,45 +47,13 @@ export const EventModal = ({
   );
   const singleEvent = city.events.find((event: any) => event.id === eventId);
 
-  const speakers = [
-    {
-      id: "adfsfdf",
-      firstname: "имя1",
-      lastname: "фамилия1",
-      age: 1,
-      about: "описание1",
-      email: "speaker1@example.com",
-      topic: "Тема презентации 1",
-      telephone: "dfdsfd",
-    },
-    {
-      id: "adsfsdf",
-      firstname: "имя2",
-      lastname: "фамилия2",
-      age: 2,
-      about: "описание2",
-      email: "speaker2@example.com",
-      topic: "Тема презентации 2",
-      telephone: "sdfsdf",
-    },
-    {
-      id: "dsfsdf",
-      firstname: "имя3",
-      lastname: "фамилия3",
-      age: 3,
-      about: "описание3",
-      email: "speaker3@example.com",
-      topic: "Тема презентации 3",
-      telephone: "sdfsdfs",
-    },
-  ];
-
   const dataEvent = eventId
     ? {
         title: singleEvent.title,
         description: singleEvent.description,
         date: dayjs(singleEvent.date),
         seats: singleEvent.seats,
+        price: singleEvent.price,
         imagePath: singleEvent.imagePath,
         categories: singleEvent.categories,
         showOnHomePage: singleEvent.showOnHomePage,
@@ -98,36 +64,25 @@ export const EventModal = ({
     : null;
 
   const handleSubmitEvent = async (values: any, { resetForm }: any) => {
-    console.log("Values", values);
-
     const formData = new FormData();
+
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("date", values.date);
+    formData.append("seats", values.seats);
+    formData.append("price", values.price);
+
+    formData.append("categories", JSON.stringify(values.categories));
+    formData.append("speakers", JSON.stringify(values.speakers));
+    formData.append("showOnHomePage", JSON.stringify(values.showOnHomePage));
+    formData.append("showInCityHome", JSON.stringify(values.showInCityHome));
+    formData.append("isHidden", JSON.stringify(values.isHidden));
+
     formData.append("cityId", cityId);
     formData.append("eventId", eventId);
-    Object.keys(values).forEach((key) => {
-      const value = values[key];
-      if (
-        key === "firstname" ||
-        key === "lastname" ||
-        key === "age" ||
-        key === "about" ||
-        key === "email" ||
-        key === "topic" ||
-        key === "telephone"
-      )
-        return;
-      if (
-        key === "categories" ||
-        key === "showOnHomePage" ||
-        key === "isHidden" ||
-        key === "showInCityHome" ||
-        key === "speakers"
-      ) {
-        formData.append(key, JSON.stringify(value));
-      } else {
-        formData.append(key, value);
-      }
-    });
+
     if (image) formData.append("picture", image);
+
     let response: any;
     if (eventId) {
       response = await dispatch(EventOperations.updateEvent(formData));
@@ -205,6 +160,7 @@ export const EventModal = ({
             <FormikTextField
               label="Description"
               name="description"
+              minRows={2}
               formikFunc={{ values, errors, touched, handleBlur, handleChange }}
               isLoading={isLoading}
             />

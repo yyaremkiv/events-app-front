@@ -67,11 +67,3 @@ export const FormikAutocomplete = ({
     />
   );
 };
-
-// changeFieldFunction(
-//   changeFieldName,
-//   selectedValues.reduce((acc: any, cat) => {
-//     acc.push(cat.label);
-//     return acc;
-//   }, [])
-// );

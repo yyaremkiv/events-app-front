@@ -23,8 +23,10 @@
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "formik": "^2.2.9",
+    "lodash": "^4.17.21",
     "next": "13.3.1",
     "next-auth": "^4.22.1",
+    "notiflix": "^3.2.6",
     "polished": "^4.2.2",
     "postcss": "8.4.23",
     "react": "^18.2.0",
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.4",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.12",
     "@types/react-redux": "^7.1.25",

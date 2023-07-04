@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, FormikHelpers } from "formik";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
+import { isEqual } from "lodash";
 import {
   FormikTextField,
   FormikCheckbox,
@@ -24,6 +26,8 @@ import {
 } from "@mui/icons-material";
 
 interface ICityModalProps {
+  page: number;
+  limit: number;
   cityId: string | null;
   isLoading?: boolean;
   error: string | null;
@@ -39,6 +43,8 @@ interface IFormValues {
 }
 
 export const CityModal = ({
+  page,
+  limit,
   cityId,
   isLoading = false,
   error,
@@ -54,6 +60,7 @@ export const CityModal = ({
         (city: ICityItem) => city._id === cityId
       )
     : null;
+
   const currentCity = city
     ? {
         country: city.country,
@@ -68,6 +75,13 @@ export const CityModal = ({
     values: IFormValues,
     { resetForm }: FormikHelpers<IFormValues>
   ) => {
+    const areEqual = isEqual(values, currentCity);
+
+    if (areEqual) {
+      Notify.warning("Make changes to update the data");
+      return;
+    }
+
     const formData: any = new FormData();
     if (cityId) formData.append("_id", cityId);
     if (image) formData.append("picture", image);
@@ -83,8 +97,13 @@ export const CityModal = ({
       let res: any;
       setLocalError(null);
 
-      if (cityId) res = await dispatch(EventOperations.updateCity(formData));
-      if (!cityId) res = await dispatch(EventOperations.addCity(formData));
+      if (cityId)
+        res = await dispatch(EventOperations.updateCity({ formData }));
+      if (!cityId) {
+        res = await dispatch(
+          EventOperations.addCity({ formData, params: { page, limit } })
+        );
+      }
 
       if (!res.error && !isLoading) {
         handleCloseModal();
@@ -96,12 +115,11 @@ export const CityModal = ({
     }
   };
 
-  console.log("city", city);
-
   return (
     <Box sx={{ color: theme.palette.text.primary }}>
       <Formik
         onSubmit={handleSubmitCity}
+        // @ts-ignore
         initialValues={
           currentCity ? currentCity : FormValidation.initialValuesCity
         }
