@@ -37,7 +37,7 @@ export const EventModal = ({
 }: any) => {
   const [image, setImage] = useState(null);
   const [showAddPerson, setShowAddPerson] = useState(false);
-  const [currentSpeaker, setCurrentSpeaker] = useState(null);
+  const [currentSpeaker, setCurrentSpeaker] = useState<any>(null);
 
   const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
@@ -66,6 +66,8 @@ export const EventModal = ({
   const handleSubmitEvent = async (values: any, { resetForm }: any) => {
     const formData = new FormData();
 
+    console.log("values", values);
+
     formData.append("title", values.title);
     formData.append("description", values.description);
     formData.append("date", values.date);
@@ -85,6 +87,7 @@ export const EventModal = ({
 
     let response: any;
     if (eventId) {
+      console.log("work");
       response = await dispatch(EventOperations.updateEvent(formData));
     } else {
       response = await dispatch(EventOperations.addEvent(formData));
@@ -97,6 +100,7 @@ export const EventModal = ({
   };
 
   const handleModalClose = () => {
+    setCurrentSpeaker(null);
     setShowAddPerson(false);
   };
 
@@ -107,20 +111,12 @@ export const EventModal = ({
     setFieldValue("speakers", updatedSpeakers);
   };
 
-  const handleEditSpeaker = ({ values, speakerId, setFieldValue }: any) => {
+  const handleEditSpeaker = ({ values, speakerId }: any) => {
     const currentSpeaker = values.speakers.find(
       (speaker: any) => speaker.id === speakerId
     );
 
-    setFieldValue("firstname", currentSpeaker.firstname);
-    setFieldValue("lastname", currentSpeaker.lastname);
-    setFieldValue("age", currentSpeaker.age);
-    setFieldValue("about", currentSpeaker.about);
-    setFieldValue("email", currentSpeaker.email);
-    setFieldValue("topic", currentSpeaker.topic);
-    setFieldValue("telephone", currentSpeaker.telephone);
-
-    setCurrentSpeaker(currentSpeaker);
+    setCurrentSpeaker({ ...currentSpeaker });
     setShowAddPerson(true);
   };
 
@@ -141,6 +137,8 @@ export const EventModal = ({
           handleChange,
           handleSubmit,
           setFieldValue,
+          setFieldError,
+          setFieldTouched,
         }: any) => (
           <form
             onSubmit={handleSubmit}
@@ -204,54 +202,52 @@ export const EventModal = ({
 
             <FormikAutocomplete
               label="Set category"
-              value={values.categories}
               changeFieldName="categories"
-              changeFieldFunction={setFieldValue}
               options={DataConfigInformation.labelEventCategories}
+              formikFunc={{ values, errors, touched, setFieldValue }}
               isLoading={isLoading}
             />
 
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <Box>
+              <FormikCheckbox
+                label="Show This Event On Home Page"
+                name="showOnHomePage"
+                addNameChange="isHidden"
+                formikFunc={{ values, setFieldValue }}
+                isLoading={isLoading}
+              >
                 <HomeIcon
                   sx={{
                     fontSize: "1.8rem",
                     color: theme.palette.background.main,
                   }}
                 />
-                <FormikCheckbox
-                  label="Show This Event On Home Page"
-                  name="showOnHomePage"
-                  addNameChange="isHidden"
-                  formikFunc={{ values, setFieldValue }}
-                  isLoading={isLoading}
-                />
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              </FormikCheckbox>
+
+              <FormikCheckbox
+                label="Show This Event On City In Home Page"
+                name="showInCityHome"
+                formikFunc={{ values, setFieldValue }}
+                isLoading={isLoading}
+              >
                 <AddHomeIcon
                   sx={{
                     fontSize: "1.8rem",
                     color: theme.palette.background.main,
                   }}
                 />
-                <FormikCheckbox
-                  label="Show This Event On City In Home Page"
-                  name="showInCityHome"
-                  formikFunc={{ values, setFieldValue }}
-                  isLoading={isLoading}
-                />
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              </FormikCheckbox>
+
+              <FormikCheckbox
+                label="Hide This Event"
+                name="isHidden"
+                addNameChange="showOnHomePage"
+                hideStyle={true}
+                formikFunc={{ values, setFieldValue }}
+                isLoading={isLoading}
+              >
                 <HideSourceIcon sx={{ fontSize: "1.8rem", color: "red" }} />
-                <FormikCheckbox
-                  label="Hide This Event"
-                  name="isHidden"
-                  addNameChange="showOnHomePage"
-                  hideStyle={true}
-                  formikFunc={{ values, setFieldValue }}
-                  isLoading={isLoading}
-                />
-              </Box>
+              </FormikCheckbox>
             </Box>
 
             {values?.imagePath && !image ? (
@@ -275,8 +271,6 @@ export const EventModal = ({
 
             <DropzoneUploadImage image={image} setImage={setImage} />
 
-            {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
-
             <Box sx={{ display: "flex", justifyContent: "right" }}>
               <Tooltip title="Add New Speaker" placement="top">
                 <IconButton onClick={() => setShowAddPerson(true)}>
@@ -284,13 +278,6 @@ export const EventModal = ({
                 </IconButton>
               </Tooltip>
             </Box>
-
-            <Typography
-              variant="h5"
-              sx={{ textAlign: "center", color: theme.palette.text.primary }}
-            >
-              List Speakers For Event:
-            </Typography>
 
             <SpeakerModal
               openModal={showAddPerson}
@@ -304,70 +291,88 @@ export const EventModal = ({
                 handleBlur,
                 handleChange,
                 setFieldValue,
+                setFieldError,
+                setFieldTouched,
               }}
             />
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                color: theme.palette.text.primary,
-              }}
-            >
-              {values?.speakers?.map(
-                ({ id, firstname, lastname }: any, index: number) => (
-                  <Box
-                    key={id}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: "1rem",
-                      padding: "0.1rem 0",
-                    }}
-                  >
+            {values?.speakers?.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  color: theme.palette.text.primary,
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{
+                    textAlign: "center",
+                    color: theme.palette.text.primary,
+                  }}
+                >
+                  List Speakers For Event:
+                </Typography>
+                {values.speakers.map(
+                  (
+                    {
+                      id,
+                      firstname,
+                      lastname,
+                    }: { id: string; firstname: string; lastname: string },
+                    index: number
+                  ) => (
                     <Box
+                      key={id}
                       sx={{
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between",
                         gap: "1rem",
+                        padding: "0.1rem 0",
                       }}
                     >
-                      <Typography sx={{ color: theme.palette.text.light }}>
-                        {index + 1}
-                      </Typography>
-                      <Typography>Speaker: </Typography>
-                      <Typography>{`${firstname} ${lastname}`}</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", gap: "1rem" }}>
-                      <IconButton
-                        onClick={() =>
-                          handleEditSpeaker({
-                            values,
-                            speakerId: id,
-                            setFieldValue,
-                          })
-                        }
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "1rem",
+                        }}
                       >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() =>
-                          handleDeleteSpeaker({
-                            values,
-                            speakerId: id,
-                            setFieldValue,
-                          })
-                        }
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                        <Typography sx={{ color: theme.palette.text.light }}>
+                          {index + 1}
+                        </Typography>
+                        <Typography>{`${firstname} ${lastname}`}</Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", gap: "1rem" }}>
+                        <IconButton
+                          onClick={() =>
+                            handleEditSpeaker({
+                              values,
+                              speakerId: id,
+                              setFieldValue,
+                            })
+                          }
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() =>
+                            handleDeleteSpeaker({
+                              values,
+                              speakerId: id,
+                              setFieldValue,
+                            })
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
                     </Box>
-                  </Box>
-                )
-              )}
-            </Box>
-            {/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
+                  )
+                )}
+              </Box>
+            )}
 
             <Box
               sx={{

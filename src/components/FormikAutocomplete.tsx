@@ -2,26 +2,24 @@ import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 
 interface IFormikAutocompleteProps {
   label: string;
-  options: Array<any>;
   changeFieldName: string;
-  changeFieldFunction: (changeFieldName: string, selectedValues: any) => void;
-  value: any;
+  options: Array<any>;
+  formikFunc: any;
   isLoading?: boolean;
 }
 
 export const FormikAutocomplete = ({
   label,
-  value,
   changeFieldName,
-  changeFieldFunction,
   options,
+  formikFunc: { values, errors, touched, setFieldValue },
   isLoading = false,
 }: IFormikAutocompleteProps): JSX.Element => {
   return (
     <Autocomplete
       fullWidth
       multiple
-      value={value}
+      value={values[changeFieldName]}
       options={options}
       disabled={isLoading}
       getOptionLabel={(option) => option.label}
@@ -29,9 +27,16 @@ export const FormikAutocomplete = ({
         option.label === value.label && option.color === value.color
       }
       onChange={(_, selectedValues) => {
-        changeFieldFunction(changeFieldName, selectedValues);
+        setFieldValue(changeFieldName, selectedValues);
       }}
-      renderInput={(params) => <TextField {...params} label={label} />}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          error={Boolean(touched[changeFieldName] && errors[changeFieldName])}
+          helperText={touched[changeFieldName] && errors[changeFieldName]}
+        />
+      )}
       renderOption={(props, option) => (
         // @ts-ignore
         <Box

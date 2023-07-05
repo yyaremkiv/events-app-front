@@ -25,6 +25,7 @@ export const FormValidation = {
     country: Yup.object().required("Country is required."),
     city: Yup.object().required("City is required."),
     description: Yup.string()
+      .matches(/^[^\s]+$/, "Enter a value without spaces")
       .min(6, "Description must be at least 6 characters long.")
       .max(300, "Description cannot be longer than 300 characters.")
       .required("Description is required."),
@@ -37,6 +38,7 @@ export const FormValidation = {
       .max(50, "Title cannot be longer than 50 characters.")
       .required("Title is required."),
     description: Yup.string()
+      .matches(/^[^\s]+$/, "Enter a value without spaces")
       .min(6, "Description must be at least 6 characters long.")
       .max(300, "Description cannot be longer than 300 characters.")
       .required("Description is required."),
@@ -51,8 +53,10 @@ export const FormValidation = {
     price: Yup.number()
       .min(1, "Price must be greater than 0.")
       .max(1000000, "Price cannot be greater than 1000000."),
-    categories: Yup.object().required("Category is required."),
-    speakers: Yup.object().required("Speakers is required."),
+    categories: Yup.array()
+      .min(1, "Select At Least One Category.")
+      .required("Category is required."),
+    // speakers: Yup.object().required("Speakers is required."),
     showOnHomePage: Yup.boolean(),
     showInCityHome: Yup.boolean(),
     isHidden: Yup.boolean(),
