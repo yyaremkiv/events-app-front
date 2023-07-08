@@ -50,6 +50,10 @@ export const CityModal = ({
   error,
   handleCloseModal,
 }: ICityModalProps): JSX.Element => {
+  const [listCountries, setListCountris] = useState<ICountry[]>(
+    DataConfigInformation.listCountries
+  );
+  const [listCities, setListCities] = useState<ICity[] | []>([]);
   const [image, setImage] = useState<File | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
   const dispatch: AppDispatch = useDispatch();
@@ -60,6 +64,8 @@ export const CityModal = ({
         (city: ICityItem) => city._id === cityId
       )
     : null;
+
+  console.log("listCities", listCities);
 
   const currentCity = city
     ? {
@@ -82,12 +88,17 @@ export const CityModal = ({
       return;
     }
 
-    const formData: any = new FormData();
+    const formData = new FormData();
     if (cityId) formData.append("_id", cityId);
     if (image) formData.append("picture", image);
 
-    formData.append("country", JSON.stringify(values.country));
-    formData.append("city", JSON.stringify(values.city));
+    const { cities, ...countryWithoutCities }: any = values.country;
+    formData.append("country", JSON.stringify(countryWithoutCities));
+
+    formData.append(
+      "city",
+      JSON.stringify({ ...values.city, country: values.country.label })
+    );
     formData.append("showOnHomePage", JSON.stringify(values.showOnHomePage));
     formData.append("isHidden", JSON.stringify(values.isHidden));
 
@@ -145,15 +156,16 @@ export const CityModal = ({
             <FormikAutocompleteOfCountries
               label="Set Country"
               changeFieldName="country"
-              options={DataConfigInformation.listCountries}
+              options={listCountries}
               formikFunc={{ values, errors, touched, setFieldValue }}
               isLoading={isLoading}
+              setCitiesFunc={setListCities}
             />
 
             <FormikAutocompleteOfCities
               label="Set City"
               changeFieldName="city"
-              options={DataConfigInformation.listCities}
+              options={listCities}
               formikFunc={{ values, errors, touched, setFieldValue }}
               isLoading={isLoading}
             />

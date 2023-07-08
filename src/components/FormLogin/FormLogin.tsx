@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
-import { FormConfig } from "../../config/form.login";
+import { FormValidation } from "../../config";
+import { AuthOperations } from "../../redux/auth/auth.operations";
+import { RootState, AppDispatch } from "../../redux/store";
 import {
   Box,
   Typography,
@@ -15,8 +17,6 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { AuthOperations } from "../../redux/auth/auth.operations";
-import { RootState, AppDispatch } from "../../redux/store";
 
 export const FormLogin = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -35,8 +35,8 @@ export const FormLogin = () => {
             })
           )
         }
-        initialValues={FormConfig.initialValuesLogin}
-        validationSchema={FormConfig.loginSchema}
+        initialValues={FormValidation.initialValuesLogin}
+        validationSchema={FormValidation.loginSchema}
       >
         {({
           values,

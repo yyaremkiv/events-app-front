@@ -5,6 +5,7 @@ import { IQueryParams, ICityItem } from "../interfaces";
 interface ICitiesData {
   cities: ICityItem[];
   totalCities: number;
+  searchParams?: any;
 }
 
 interface IUseFetchCitiesProps {
@@ -36,11 +37,13 @@ export const useFetchCities = ({
         setData({
           cities: [...data.cities, ...response.data.cities],
           totalCities: response.data.totalCities,
+          searchParams: response.data.searchParams,
         });
       } else {
         setData({
           cities: response.data.cities,
           totalCities: response.data.totalCities,
+          searchParams: response.data.searchParams,
         });
       }
     } catch (error: any) {

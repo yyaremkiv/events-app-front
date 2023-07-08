@@ -15,9 +15,14 @@ export const HomeCityList = ({ cities }: IHomeCityListProps): JSX.Element => {
   }, []);
 
   return (
-    <Grid container rowSpacing={1} sx={{ paddingBottom: "5rem" }}>
+    <Grid container rowSpacing={1} gap={6} sx={{ paddingBottom: "5rem" }}>
       {cities.map((city: ICityItem, index: number) => (
-        <Box key={index} data-aos="fade-up" data-aos-duration="2000">
+        <Box
+          key={index}
+          data-aos="fade-up"
+          data-aos-duration="2000"
+          sx={{ width: "100%", border: "1px solid green" }}
+        >
           <HomeCItyItem data={city} index={index} />
         </Box>
       ))}

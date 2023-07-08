@@ -31,7 +31,7 @@ export const useCityFromRedux = ({
 
   const fetchData = (page: number, limit: number) => {
     dispatch(
-      EventOperations.getCity({ params: { isHidden: true, page, limit } })
+      EventOperations.getCities({ params: { isHidden: true, page, limit } })
     );
   };
 

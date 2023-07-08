@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 import { ICityItem } from "../interfaces/index.js";
 
 interface IGetEvents {
-  cityName: string;
+  cityName?: string;
   params: IQueryParams;
 }
 
@@ -24,58 +24,50 @@ export class EventService {
   static async getCities(
     params: IQueryParams
   ): Promise<AxiosResponse<IGetCitiesResponse>> {
-    return API.get("/events/cities/list", { params });
+    return API.get("/city", { params });
   }
 
   static async addCity({ formData, params }: any) {
-    return API.post("/events/city", formData, {
+    return API.post("/city", formData, {
       params,
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
   static async updateCity({ formData }: any) {
-    return API.patch("/events/city", formData, {
+    return API.patch("/city", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
   static async deleteCity({ cityId, params }: any) {
-    return API.delete(`/events/city/${cityId}`, { params });
+    return API.delete(`/city/${cityId}`, { params });
   }
 
   static async getEvents({ cityName, params }: IGetEvents): Promise<any> {
-    return API.get(`/events/event/${cityName}`, { params });
+    return API.get(cityName ? `/event/${cityName}` : "/event", { params });
   }
 
   static async getSingleEvent({
     cityName,
     eventName,
   }: IGetSingleEvent): Promise<any> {
-    return API.get(`/events/event/${cityName}/${eventName}`);
-  }
-
-  static async getAllEvents(params: any) {
-    return API.get("/events/events", { params });
+    return API.get(`/event/${cityName}/${eventName}`);
   }
 
   static async addEvent(formData: any) {
-    return API.post("/events/event", formData, {
+    return API.post("/event", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
   static async updateEvent(formData: any) {
-    return API.patch("/events/event", formData, {
+    return API.patch("/event", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
 
   static async deleteEvent({ cityId, eventId }: any) {
-    return API.delete(`/events/event/${cityId}/${eventId}`);
-  }
-
-  static async getCity({ params }: any) {
-    return API.get("/events/city", { params });
+    return API.delete(`/event/${cityId}/${eventId}`);
   }
 }

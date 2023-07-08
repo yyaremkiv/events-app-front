@@ -18,7 +18,7 @@ export const AdminEventList = ({
     <List sx={{ width: "100%", backgroundColor: "background.paper" }}>
       {data?.map((data: any, index: number) => (
         <AdminEventItem
-          key={data.id}
+          key={index}
           cityId={cityId}
           data={data}
           index={index}

@@ -4,7 +4,7 @@ import { ICity } from "../../interfaces";
 interface IFormikAutocompleteOfCitiesProps {
   label: string;
   changeFieldName: string;
-  options: ICity[];
+  options: ICity[] | [];
   formikFunc: any;
   isLoading?: boolean;
 }

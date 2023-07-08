@@ -1,41 +1,27 @@
 import Image from "next/image";
-import { Box, Grid, Typography, useTheme } from "@mui/material";
+import { IEventItem } from "../../interfaces";
+import { Box, Typography, useTheme } from "@mui/material";
 import { Place, Celebration as CelebrationIcon } from "@mui/icons-material";
-import { useState } from "react";
-import { blue } from "@mui/material/colors";
+import { formatDateString } from "@/src/config";
 
-export const CardItem = ({
-  imagePath,
-  title,
-  leftPoint,
-  rightPoint,
-  mainTitle,
-  description,
-}: any): JSX.Element => {
+interface IEventCardItemProps {
+  data: IEventItem;
+}
+
+export const EventCardItem = ({ data }: IEventCardItemProps): JSX.Element => {
+  const { title, imagePath, description, date, seats } = data;
   const theme = useTheme();
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
 
   return (
     <Box
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       sx={{
-        borderRadius: "10px",
+        borderRadius: "1rem",
         overflow: "hidden",
         background: theme.palette.background.gradientCard,
+        color: theme.palette.text.primary,
         transition: "transform 300ms linear",
-        "&:hover": {
-          transform: "scale(1.03)",
-          boxShadow: " 0px 1px 7px 0px rgba(36,188,196,0.75)",
-        },
+        "&:hover": { transform: "scale(1.02)" },
+        "&:hover h6": { color: "white", opacity: 1 },
       }}
     >
       <Box
@@ -102,7 +88,7 @@ export const CardItem = ({
               >
                 <Place fontSize="medium" />
                 <Typography variant="h5" sx={{ fontSize: "inherit" }}>
-                  {leftPoint}
+                  {formatDateString(date)}
                 </Typography>
               </Box>
 
@@ -115,7 +101,7 @@ export const CardItem = ({
               >
                 <CelebrationIcon fontSize="medium" />
                 <Typography variant="h5" sx={{ fontSize: "inherit" }}>
-                  {rightPoint}
+                  {`Seats: ${seats}`}
                 </Typography>
               </Box>
             </Box>
@@ -128,7 +114,7 @@ export const CardItem = ({
                 fontWeight: "600",
               }}
             >
-              {mainTitle}
+              {title}
             </Typography>
           </Box>
         </Box>
@@ -142,11 +128,10 @@ export const CardItem = ({
               right: "0",
               zIndex: 10,
               padding: "7px",
-              color: isHovered ? "white" : "",
-              transition: "opacity 200ms linear, color 200ms linear",
-              opacity: isHovered ? 1 : 0,
-              backgroundColor: "#00000050",
               textAlign: "center",
+              transition: "opacity 200ms linear, color 200ms linear",
+              opacity: 0,
+              backgroundColor: "#00000050",
             }}
           >
             {description}

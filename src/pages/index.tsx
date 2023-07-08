@@ -36,7 +36,7 @@ export default function Home(): JSX.Element {
           <HomeCityList cities={citiesResult.cities} />
         )}
 
-        {!citiesIsLoading && citiesResult?.cities.length === 0 && (
+        {!citiesIsLoading && citiesResult?.cities?.length === 0 && (
           <MessageError
             text={
               citiesError
@@ -47,14 +47,16 @@ export default function Home(): JSX.Element {
           />
         )}
 
-        {eventsResult && !eventsIsLoading && eventsResult.events.length > 0 && (
-          <>
-            <MainTitle title="This Es Best Events" showArrow={false} />
-            <HomeEventList events={eventsResult.events} />
-          </>
-        )}
+        {eventsResult &&
+          !eventsIsLoading &&
+          eventsResult.events?.length > 0 && (
+            <>
+              <MainTitle title="These Are The Best Events" showArrow={false} />
+              <HomeEventList events={eventsResult.events} />
+            </>
+          )}
 
-        {!eventsIsLoading && eventsResult?.events.length === 0 && (
+        {!eventsIsLoading && eventsResult?.events?.length === 0 && (
           <MessageError
             text={
               eventsError

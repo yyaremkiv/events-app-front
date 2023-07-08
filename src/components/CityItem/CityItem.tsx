@@ -1,32 +1,18 @@
 import Image from "next/image";
-import { Box, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { Place, Celebration as CelebrationIcon } from "@mui/icons-material";
-import { useState } from "react";
-import { blue } from "@mui/material/colors";
+import { ICityItem } from "@/src/interfaces";
 
-export const CityItem = ({
-  imagePath,
-  title,
-  leftPoint,
-  rightPoint,
-  mainTitle,
-  description,
-}: any): JSX.Element => {
+interface ICityItemProps {
+  data: ICityItem;
+}
+
+export const CityItem = ({ data }: ICityItemProps): JSX.Element => {
+  const { country, city, imagePath, totalEvents } = data;
   const theme = useTheme();
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
 
   return (
     <Box
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       sx={{
         borderRadius: "10px",
         overflow: "hidden",
@@ -48,7 +34,7 @@ export const CityItem = ({
       >
         <Image
           src={imagePath}
-          alt={title}
+          alt={city.label}
           fill={true}
           priority={true}
           style={{
@@ -102,7 +88,7 @@ export const CityItem = ({
               >
                 <Place fontSize="medium" />
                 <Typography variant="h5" sx={{ fontSize: "inherit" }}>
-                  {leftPoint}
+                  {country.label}
                 </Typography>
               </Box>
 
@@ -115,7 +101,7 @@ export const CityItem = ({
               >
                 <CelebrationIcon fontSize="medium" />
                 <Typography variant="h5" sx={{ fontSize: "inherit" }}>
-                  {rightPoint}
+                  Events: {totalEvents}
                 </Typography>
               </Box>
             </Box>
@@ -128,11 +114,11 @@ export const CityItem = ({
                 fontWeight: "600",
               }}
             >
-              {mainTitle}
+              {city.label}
             </Typography>
           </Box>
         </Box>
-        {description ? (
+        {/* {description ? (
           <Typography
             variant="h6"
             sx={{
@@ -151,7 +137,7 @@ export const CityItem = ({
           >
             {description}
           </Typography>
-        ) : null}
+        ) : null} */}
       </Box>
     </Box>
   );

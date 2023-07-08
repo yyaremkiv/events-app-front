@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EventOperations } from "./event.operations";
-import { ICityItem } from "../../interfaces";
+import { ICityItem, IEventItem } from "../../interfaces";
 
 export interface IEventState {
   cities: ICityItem[];
@@ -21,18 +21,18 @@ export const eventSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(EventOperations.getCity.pending, (state) => {
+    builder.addCase(EventOperations.getCities.pending, (state) => {
       state.isLoading = true;
       state.totalCities = null;
       state.error = null;
     });
-    builder.addCase(EventOperations.getCity.fulfilled, (state, action) => {
+    builder.addCase(EventOperations.getCities.fulfilled, (state, action) => {
       state.cities = action.payload.cities;
       state.totalCities = action.payload.totalCities;
       state.isLoading = false;
     });
     builder.addCase(
-      EventOperations.getCity.rejected,
+      EventOperations.getCities.rejected,
       (state, action: PayloadAction<any>) => {
         state.error = action.payload;
         state.totalCities = null;
@@ -123,12 +123,13 @@ export const eventSlice = createSlice({
     });
     builder.addCase(EventOperations.addEvent.fulfilled, (state, action) => {
       const { cityId, events } = action.payload;
-      const cityIndex = state.cities.findIndex(
-        (city: any) => city._id === cityId
-      );
-      if (cityIndex !== -1) {
-        state.cities[cityIndex].events = events;
+
+      const city = state.cities.find((city: ICityItem) => city._id === cityId);
+
+      if (city) {
+        city.events = events;
       }
+
       state.isLoading = false;
     });
     builder.addCase(
@@ -145,20 +146,15 @@ export const eventSlice = createSlice({
     builder.addCase(EventOperations.updateEvent.fulfilled, (state, action) => {
       const { cityId, updatedEvent } = action.payload;
 
-      const cityIndex = state.cities.findIndex(
-        (city: any) => city._id === cityId
-      );
+      const city = state.cities.find((city: ICityItem) => city._id === cityId);
 
-      if (cityIndex !== -1) {
-        const events = state.cities[cityIndex].events;
-
-        const eventIndex = events.findIndex(
-          (event: any) => event.id === updatedEvent.id
-        );
-
-        if (eventIndex !== -1) {
-          events[eventIndex] = updatedEvent;
-        }
+      if (city) {
+        city.events = city.events.map((event: IEventItem) => {
+          if (event.id === updatedEvent.id) {
+            return updatedEvent;
+          }
+          return event;
+        });
       }
 
       state.isLoading = false;

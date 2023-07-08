@@ -12,21 +12,29 @@ import {
   ImageItemCity,
   FormikCheckbox,
 } from "..";
-import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
-import dayjs from "dayjs";
+import { SpeakerModal } from "../SpeakerModal/SpeakerModal";
 import { DataConfigInformation } from "../../data";
 import { EventOperations } from "../../redux/event/event.operations";
 import { AppDispatch } from "../../redux/store";
-
+import { ISpeaker } from "../../interfaces";
+import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import {
   Home as HomeIcon,
   HideSource as HideSourceIcon,
   AddHome as AddHomeIcon,
+  PersonAdd as PersonAddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
 } from "@mui/icons-material";
-import { SpeakerModal } from "../SpeakerModal/SpeakerModal";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import dayjs from "dayjs";
+
+interface IEventModalProps {
+  cityId: string | null;
+  eventId: string | null;
+  handleCloseModal: () => void;
+  error: any;
+  isLoading?: boolean;
+}
 
 export const EventModal = ({
   cityId,
@@ -34,10 +42,10 @@ export const EventModal = ({
   handleCloseModal,
   error,
   isLoading = false,
-}: any) => {
-  const [image, setImage] = useState(null);
-  const [showAddPerson, setShowAddPerson] = useState(false);
-  const [currentSpeaker, setCurrentSpeaker] = useState<any>(null);
+}: IEventModalProps): JSX.Element => {
+  const [image, setImage] = useState<File | null>(null);
+  const [showAddPerson, setShowAddPerson] = useState<boolean>(false);
+  const [currentSpeaker, setCurrentSpeaker] = useState<ISpeaker | null>(null);
 
   const dispatch: AppDispatch = useDispatch();
   const theme = useTheme();
@@ -56,17 +64,15 @@ export const EventModal = ({
         price: singleEvent.price,
         imagePath: singleEvent.imagePath,
         categories: singleEvent.categories,
-        showOnHomePage: singleEvent.showOnHomePage,
-        isHidden: singleEvent.isHidden,
-        showInCityHome: singleEvent.showInCityHome,
-        speakers: singleEvent.speakers,
+        showOnHomePage: singleEvent.showOnHomePage || false,
+        isHidden: singleEvent.isHidden || false,
+        showInCityHome: singleEvent.showInCityHome || false,
+        speakers: singleEvent.speakers || [],
       }
     : null;
 
   const handleSubmitEvent = async (values: any, { resetForm }: any) => {
     const formData = new FormData();
-
-    console.log("values", values);
 
     formData.append("title", values.title);
     formData.append("description", values.description);
@@ -80,14 +86,12 @@ export const EventModal = ({
     formData.append("showInCityHome", JSON.stringify(values.showInCityHome));
     formData.append("isHidden", JSON.stringify(values.isHidden));
 
-    formData.append("cityId", cityId);
-    formData.append("eventId", eventId);
-
+    if (cityId) formData.append("cityId", cityId);
+    if (eventId) formData.append("eventId", eventId);
     if (image) formData.append("picture", image);
 
     let response: any;
     if (eventId) {
-      console.log("work");
       response = await dispatch(EventOperations.updateEvent(formData));
     } else {
       response = await dispatch(EventOperations.addEvent(formData));
@@ -95,6 +99,7 @@ export const EventModal = ({
     if (!response.error && !isLoading) {
       handleCloseModal();
       setImage(null);
+      setCurrentSpeaker(null);
       resetForm();
     }
   };
@@ -106,17 +111,24 @@ export const EventModal = ({
 
   const handleDeleteSpeaker = ({ values, speakerId, setFieldValue }: any) => {
     const updatedSpeakers = values.speakers.filter(
-      (speaker: any) => speaker.id !== speakerId
+      (speaker: ISpeaker) => speaker.id !== speakerId
     );
     setFieldValue("speakers", updatedSpeakers);
   };
 
-  const handleEditSpeaker = ({ values, speakerId }: any) => {
+  const handleEditSpeaker = ({
+    values,
+    speakerId,
+  }: {
+    values: any;
+    speakerId: string;
+  }) => {
     const currentSpeaker = values.speakers.find(
-      (speaker: any) => speaker.id === speakerId
+      (speaker: ISpeaker) => speaker.id === speakerId
     );
 
     setCurrentSpeaker({ ...currentSpeaker });
+    setTimeout(() => setShowAddPerson(true), 1000);
     setShowAddPerson(true);
   };
 
@@ -350,7 +362,6 @@ export const EventModal = ({
                             handleEditSpeaker({
                               values,
                               speakerId: id,
-                              setFieldValue,
                             })
                           }
                         >

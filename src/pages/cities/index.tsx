@@ -17,22 +17,20 @@ import { LoadingButton } from "@mui/lab";
 import { MenuNavigation } from "@/src/components/MenuNavigation";
 import { Refresh as RefreshIcon } from "@mui/icons-material";
 import { CustomAutocompleteOfCities } from "@/src/components/CustomAutocompleteOfCities";
-import { DataConfigInformation as Data } from "../../data";
 import { CustomAutocompleteOfCountries } from "@/src/components/CustomAutocompleteOfCountries";
 import { IQueryParams, ICountry, ICity } from "../../interfaces";
-import { LoaderLinearProgress } from "@/src/components";
 
 const arrToStr = (items: ICountry[] | ICity[]) => {
   return items.map(({ label }) => label).join(",");
 };
 
-const EvantsPage = (): JSX.Element => {
-  const [allCities, setAllCities] = useState<ICity[]>(Data.listCities);
-  const [countriesFilter, setCountriesFilter] = useState<ICountry[] | []>([]);
-  const [citiesFilter, setCitiesFilter] = useState<ICity[] | []>([]);
+const CitiesPage = (): JSX.Element => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
-  const allCountries = Data.listCountries;
+  const [allCountries, setAllCountries] = useState<any>([]);
+  const [allCities, setAllCities] = useState<any>([]);
+  const [countriesFilter, setCountriesFilter] = useState<any>([]);
+  const [citiesFilter, setCitiesFilter] = useState<any>([]);
   const theme = useTheme();
 
   const params: IQueryParams = { page, limit };
@@ -41,6 +39,35 @@ const EvantsPage = (): JSX.Element => {
 
   const [data, isLoading, error, fetchData]: TypeFetchCitiesResult =
     useFetchCities({ params });
+
+  useEffect(() => {
+    if (countriesFilter.length === 0) {
+      setAllCities(data?.searchParams.cities || []);
+      setCitiesFilter([]);
+      return;
+    }
+
+    const allFilteredCountries = countriesFilter.map(
+      (country: ICountry) => country.label
+    );
+
+    const availableCities = data?.searchParams.cities.filter((city: ICity) => {
+      if (allFilteredCountries.includes(city.country)) return true;
+      return false;
+    });
+
+    setCitiesFilter([]);
+    setAllCities(availableCities);
+  }, [countriesFilter]);
+
+  useEffect(() => {
+    fetchData({ params });
+  }, [countriesFilter, citiesFilter]);
+
+  if (allCountries.length === 0 && data?.searchParams) {
+    setAllCountries(data.searchParams.countries);
+    setAllCities(data.searchParams.cities);
+  }
 
   const handleChangeLimit = (newLimit: number) => {
     setPage(1);
@@ -59,32 +86,9 @@ const EvantsPage = (): JSX.Element => {
     fetchData({ params: { ...params, page: newPageValue }, loadMore: true });
   };
 
-  useEffect(() => {
-    const countries = countriesFilter.map(({ label }) => label);
-
-    const updatedCitiesList =
-      countries.length > 0
-        ? Data.listCities.filter((city) => countries.includes(city.country))
-        : Data.listCities;
-
-    setCitiesFilter([]);
-    setAllCities(updatedCitiesList);
-
-    if (countries.length > 0) {
-      setPage(1);
-      fetchData({ params: { ...params, page: 1 } });
-    }
-    fetchData({ params });
-  }, [countriesFilter]);
-
   return (
     <Box>
       <Container maxWidth="xl">
-        {isLoading && (
-          <Box>
-            <LoaderLinearProgress />
-          </Box>
-        )}
         <Box
           sx={{
             display: "flex",
@@ -171,7 +175,7 @@ const EvantsPage = (): JSX.Element => {
       </Box>
       {data && data.cities?.length > 0 && (
         <Container maxWidth="xl">
-          <CityList data={data.cities} totalCities={Number(data.totalCities)} />
+          <CityList cities={data.cities} />
         </Container>
       )}
       {data && data.cities?.length < data.totalCities && (
@@ -218,4 +222,4 @@ const EvantsPage = (): JSX.Element => {
   );
 };
 
-export default EvantsPage;
+export default CitiesPage;

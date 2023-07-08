@@ -24,6 +24,7 @@ export const CustomLoadingButton = ({
         fontSize: "0.9rem",
         color: "#fff",
         textTransform: "none",
+        whiteSpace: "nowrap",
         backgroundColor: theme.palette.background.main,
         "&:hover": {
           backgroundColor: theme.palette.background.mainHover,

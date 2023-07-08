@@ -1,74 +1,21 @@
 import { useState } from "react";
-import {
-  Box,
-  IconButton,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
 import { ModalWindow } from "../ModalWindows";
 import { FormikTextField, FormikNumberField } from "../";
-import CloseIcon from "@mui/icons-material/Close";
-import DoneIcon from "@mui/icons-material/Done";
+import { FormValidation } from "../../config";
 import { v4 as uuidv4 } from "uuid";
 import { ISpeaker } from "../../interfaces";
-
-import { useFormikContext } from "formik";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Close as CloseIcon, Done as DoneIcon } from "@mui/icons-material";
 import * as Yup from "yup";
 
 interface ISpeakerModalProps {
   openModal: boolean;
   handleModalClose: () => void;
   currentSpeaker: ISpeaker | null;
-  setCurrentSpeaker: any;
+  setCurrentSpeaker: (value: ISpeaker | null) => void;
   formikFunc: any;
   isLoading?: boolean;
 }
-
-const validationSchema = Yup.object().shape({
-  firstname: Yup.string()
-    .matches(/^[^\s]+$/, "Enter a value without spaces")
-    .min(2, "First Name must be at least 2 characters long.")
-    .max(50, "First Name cannot be longer than 50 characters.")
-    .required("First Name is required."),
-  lastname: Yup.string()
-    .matches(/^[^\s]+$/, "Enter a value without spaces")
-    .min(2, "Last Name must be at least 2 characters long.")
-    .max(50, "Last Name cannot be longer than 50 characters.")
-    .required("Last Name is required."),
-  age: Yup.number()
-    .required("Age is required")
-    .min(1, "Age must be at least 1")
-    .max(100, "Age cannot exceed 100"),
-  about: Yup.string()
-    .min(6, "About must be at least 6 characters long.")
-    .max(200, "About cannot be longer than 200 characters.")
-    .required("About is required."),
-  email: Yup.string()
-    .matches(/^[^\s]+$/, "Enter a value without spaces")
-    .email("Please enter a valid email address.")
-    .min(4, "Email must be at least 3 characters long.")
-    .max(50, "Email cannot be longer than 50 characters.")
-    .required("Email is required."),
-  topic: Yup.string()
-    .min(6, "Topic must be at least 6 characters long.")
-    .max(200, "Topic cannot be longer than 200 characters.")
-    .required("Topic is required."),
-  telephone: Yup.string()
-    .min(4, "Email must be at least 3 characters long.")
-    .max(50, "Email cannot be longer than 50 characters.")
-    .required("Telephone is required"),
-});
-
-const obj = {
-  firstname: "",
-  lastname: "",
-  age: 1,
-  about: "",
-  email: "",
-  topic: "",
-  telephone: "",
-};
 
 export const SpeakerModal = ({
   openModal,
@@ -78,33 +25,35 @@ export const SpeakerModal = ({
   formikFunc: { values, setFieldValue },
   isLoading = false,
 }: ISpeakerModalProps): JSX.Element => {
-  const theme = useTheme();
-
-  const currentValue = currentSpeaker ? { ...currentSpeaker } : { ...obj };
-
-  const [formValues, setFormValues] = useState<any>(currentValue);
+  const [formValues, setFormValues] = useState<any>(
+    FormValidation.initialValuesSpeaker
+  );
   const [formErrors, setFormErrors] = useState<any>({});
   const [formTouched, setFormTouched] = useState<any>({});
+  const theme = useTheme();
 
-  const handleChange = (e: any) => {
+  if (formValues === FormValidation.initialValuesSpeaker && currentSpeaker?.id)
+    setFormValues(currentSpeaker);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
 
-    setFormValues((prevValues: any) => ({
+    setFormValues((prevValues: Record<string, string | number>) => ({
       ...prevValues,
       [name]: value,
     }));
   };
 
-  const handleBlur = (e: any) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
     const { name } = e.target;
-    setFormTouched((prevTouched: any) => ({
+    setFormTouched((prevTouched: Record<string, string | number>) => ({
       ...prevTouched,
       [name]: true,
     }));
   };
 
   const handleAddPerson = () => {
-    validationSchema
+    FormValidation.speakerSchema
       .validate(formValues, { abortEarly: false })
       .then(() => {
         const newPerson = {
@@ -132,21 +81,21 @@ export const SpeakerModal = ({
           setFieldValue("speakers", updatedListOfSpeakers);
           setCurrentSpeaker(null);
         } else {
-          if (values.speakers.length > 0) {
+          if (values?.speakers?.length > 0) {
             setFieldValue("speakers", [...values.speakers, newPerson]);
           } else {
             setFieldValue("speakers", [newPerson]);
           }
         }
 
-        setFormValues(obj);
-        // setFormErrors({});
-        // formTouched({});
+        setFormValues(FormValidation.initialValuesSpeaker);
         handleModalClose();
       })
-      .catch((validationErrors) => {
-        const newErrors: any = {};
-        const newTouched: any = {};
+      .catch((validationErrors: Yup.ValidationError) => {
+        const newErrors: Record<string, string> = {};
+        const newTouched: Record<string, boolean> = {};
+
+        console.log("validationErrors", validationErrors);
 
         validationErrors.inner.forEach((error: any) => {
           newErrors[error.path] = error.message;
@@ -211,6 +160,7 @@ export const SpeakerModal = ({
         <FormikTextField
           label="About"
           name="about"
+          minRows={2}
           formikFunc={{
             values: formValues,
             errors: formErrors,
@@ -268,46 +218,3 @@ export const SpeakerModal = ({
     </ModalWindow>
   );
 };
-
-// const handleAddPerson = () => {
-//   const newPerson = {
-//     id: uuidv4(),
-//     firstname: values.firstname,
-//     lastname: values.lastname,
-//     age: values.age,
-//     about: values.about,
-//     email: values.email,
-//     topic: values.topic,
-//     telephone: values.telephone,
-//   };
-
-//   if (currentSpeaker) {
-//     const updatedListOfSpeakers = values.speakers.map((speaker: ISpeaker) => {
-//       if (speaker.id === currentSpeaker.id) {
-//         speaker = { ...speaker, ...newPerson };
-//       }
-
-//       return speaker;
-//     });
-
-//     setFieldValue("speakers", updatedListOfSpeakers);
-//     setCurrentSpeaker(null);
-//   } else {
-//     if (values.speakers) {
-//       setFieldValue("speakers", [...values.speakers, newPerson]);
-//     } else {
-//       setFieldValue("speakers", [newPerson]);
-//     }
-//   }
-
-//   setFieldValue("firstname", "");
-//   setFieldValue("lastname", "");
-//   setFieldValue("age", 1);
-//   setFieldValue("about", "");
-//   setFieldValue("email", "");
-//   setFieldValue("topic", "");
-//   setFieldValue("telephone", "");
-
-//   handleModalClose();
-//   console.log("handleAddPerson", values);
-// };

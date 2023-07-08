@@ -10,6 +10,7 @@ import {
   Pagination,
   Select,
   useTheme,
+  Container,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Refresh as RefreshIcon } from "@mui/icons-material";
@@ -27,7 +28,7 @@ const EventsCatPage = (): JSX.Element => {
   const { cat } = query;
   const theme = useTheme();
 
-  const cityName = cat ? String(cat).toLowerCase() : null;
+  const cityName = cat ? String(cat).toLowerCase() : "";
 
   const params: IQueryParams = { page, limit };
   const [data, isLoading, error, fetchData]: TypeFetchEventsResult =
@@ -71,6 +72,7 @@ const EventsCatPage = (): JSX.Element => {
   };
 
   const handleFetchByFilter = (queryParams: any) => {
+    console.log("queryParams", queryParams);
     // fetchDataEvents({ page, isLoadingMore: false, queryParams });
   };
 
@@ -92,7 +94,15 @@ const EventsCatPage = (): JSX.Element => {
     : null;
 
   return (
-    <Box>
+    <Container
+      maxWidth="xl"
+      sx={{
+        color: theme.palette.text.primary,
+        border: "1px solid green",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Box>
         <Box
           sx={{
@@ -132,10 +142,11 @@ const EventsCatPage = (): JSX.Element => {
           )}
         </Box>
       </Box>
-      <Box sx={{ display: "flex" }}>
+
+      <Box sx={{ display: "flex", height: "100%" }}>
         {params && data && (
           <FilterEvent
-            data={params}
+            data={data.searchParams}
             handleFetchByFilter={handleFetchByFilter}
             handleClearFilter={handleClearFilter}
             isLoading={isLoading}
@@ -147,29 +158,40 @@ const EventsCatPage = (): JSX.Element => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            border: "1px solid red",
+            paddingBottom: "1rem",
             width: "100%",
+            border: "1px solid blue",
+            flex: 1,
           }}
         >
           {data && data.events?.length > 0 && (
-            <EventList
-              data={data.events}
-              cityNameLink={cat}
-              isLoading={isLoading}
-            />
+            <EventList events={data.events} cityName={cityName} />
           )}
 
           {data && data.events?.length < data.totalEvents && (
-            <LoadingButton
-              variant="text"
-              loadingPosition="start"
-              startIcon={<RefreshIcon />}
-              loading={isLoading}
-              onClick={handleLoadMore}
-              sx={{ p: "0.75rem 2rem", fontSize: "0.8rem", color: "inherit" }}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "1rem",
+              }}
             >
-              <span>Load more cities!</span>
-            </LoadingButton>
+              <LoadingButton
+                variant="text"
+                loadingPosition="start"
+                startIcon={<RefreshIcon />}
+                loading={isLoading}
+                onClick={handleLoadMore}
+                sx={{
+                  p: "0.75rem 2rem",
+                  fontSize: "1rem",
+                  color: "inherit",
+                  textTransform: "none",
+                }}
+              >
+                <span>Load more cities!</span>
+              </LoadingButton>
+            </Box>
           )}
 
           {data && data.events?.length < data.totalEvents && (
@@ -178,7 +200,7 @@ const EventsCatPage = (): JSX.Element => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                padding: "1rem",
+                marginTop: "auto",
               }}
             >
               <Pagination
@@ -192,7 +214,7 @@ const EventsCatPage = (): JSX.Element => {
         </Box>
       </Box>
       {error && <Typography color="error">{error}</Typography>}
-    </Box>
+    </Container>
   );
 };
 

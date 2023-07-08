@@ -2,6 +2,7 @@ export { MainTitle } from "./MainTitle";
 export { FormikDate } from "./FormikDate";
 export { ThemeToggle } from "./ThemeToggle";
 export { ModalWindow } from "./ModalWindows";
+export { FormikSlider } from "./FormikSlider";
 export { CustomButton } from "./CustomButton";
 export { MessageError } from "./MessageError";
 export { ImageItemCity } from "./ImageItemCity";

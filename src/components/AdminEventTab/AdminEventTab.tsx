@@ -25,8 +25,8 @@ import {
 } from "@mui/icons-material";
 
 export const AdminEventTab = (): JSX.Element => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [typeModal, setTypeModal] = useState<string | null>(null);
   const [cityId, setCityId] = useState<string | null>(null);
@@ -220,7 +220,6 @@ export const AdminEventTab = (): JSX.Element => {
           <EventModal
             cityId={cityId}
             eventId={eventId}
-            handleAddEvent={handleAddEvent}
             handleCloseModal={handleModalClose}
             error={error}
             isLoading={isLoading}

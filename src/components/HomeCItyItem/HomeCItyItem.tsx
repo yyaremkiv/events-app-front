@@ -2,8 +2,26 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ICityItem } from "@/src/interfaces";
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { Event, PeopleAlt, Place, Public } from "@mui/icons-material";
+import { EventSlider } from "../EventSlider/EventSlider";
+
+function formatPopulation(population: number): string {
+  const suffixes = ["", "K", "M", "B", "T"];
+  let suffixIndex = Math.floor(Math.log10(population) / 3);
+
+  return (
+    (population / Math.pow(1000, suffixIndex)).toFixed(2) +
+    suffixes[suffixIndex]
+  );
+}
 
 interface IHomeCItyItemProps {
   data: ICityItem;
@@ -14,39 +32,35 @@ export const HomeCItyItem = ({
   data,
   index,
 }: IHomeCItyItemProps): JSX.Element => {
-  const { city, imagePath, country, totalEvents, description } = data;
-
-  const theme = useTheme();
+  const { country, city, events, imagePath, totalEvents, description } = data;
   const [isHovered, setIsHovered] = useState(false);
+  const theme = useTheme();
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
 
   return (
     <Box
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       sx={{
-        display: "flex",
+        display: isMobile ? "block" : "flex",
         flexDirection: index % 2 === 0 ? "row" : "row-reverse",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: "1rem",
-        background: theme.palette.background.gradientHeaderBg,
+        gap: "2rem",
+        padding: "2rem",
+        background: theme.palette.background.gradientBg1,
+        borderRadius: "1rem",
       }}
     >
       <Box
         sx={{
-          width: "40%",
-          height: "500px",
-          overflow: "hidden",
           position: "relative",
+          marginBottom: isMobile ? "2rem" : 0,
+          width: isMobile ? "100%" : "50%",
+          minHeight: "25rem",
+          overflow: "hidden",
         }}
       >
         <Link href={`/cities/${city.label.toLowerCase()}`}>
@@ -86,7 +100,6 @@ export const HomeCItyItem = ({
               opacity: "0.5",
             }}
           >
-            {/* {city.label} */}
             {index < 10 ? `0${index + 1}` : `${index + 1}`}
           </Typography>
         </Link>
@@ -94,183 +107,130 @@ export const HomeCItyItem = ({
 
       <Box
         sx={{
-          width: "50%",
-          // border: "1px solid green",
-          // padding: "50px",
+          width: isMobile ? "100%" : "50%",
         }}
       >
         <Box
           sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: index % 2 === 0 ? "row-reverse" : "row",
+            alignItems: "start",
+            justifyContent: "space-between",
             padding: "30px",
-            background: theme.palette.background.gradientCard,
-            // borderRadius: "10px",
+            background: theme.palette.background.blueGrey100,
+            borderRadius: "1.5rem",
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: "700",
-              textAlign: "center",
-              color: theme.palette.text.primary,
-            }}
-          >
-            {city.label}
-          </Typography>
-
-          <Grid
-            container
-            sx={{
-              display: "flex",
-              flexDirection: index % 2 === 0 ? "row" : "row-reverse",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              textAlign: "left",
-              // border: "1px solid blue",
-            }}
-          >
-            <Grid
-              item
+          <Box sx={{ width: "50%" }}>
+            <Typography
+              variant="h4"
               sx={{
+                fontWeight: "700",
+                fontSize: "42px",
+                textAlign: "center",
+                color: theme.palette.text.primary,
+                borderBottom: `2px solid ${theme.palette.text.primary}`,
                 padding: "20px 10px",
-              }}
-              lg={6}
-              sm={12}
-            >
-              <Box
-                sx={{
-                  background: theme.palette.background.glassBg,
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  borderRadius: "10px",
-                  padding: "20px",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "1rem",
-                  }}
-                >
-                  <Public
-                    sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{ color: theme.palette.text.primary }}
-                  >
-                    {city.country}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
-                >
-                  <Event
-                    sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{ color: theme.palette.text.primary }}
-                  >
-                    All events: {totalEvents}
-                  </Typography>
-                </Box>
-
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
-                >
-                  <Place
-                    sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{ color: theme.palette.text.primary }}
-                  >
-                    Population: {city.population}
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
-                >
-                  <PeopleAlt
-                    sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{ color: theme.palette.text.primary }}
-                  >
-                    Location: {country.label}
-                  </Typography>
-                </Box>
-              </Box>
-            </Grid>
-
-            <Grid item lg={5} sm={12}>
-              <Typography
-                variant="h6"
-                sx={{ color: theme.palette.text.primary, textAlign: "center" }}
-              >
-                Soon: Festival Music
-              </Typography>
-
-              <Box
-                sx={{
-                  width: "100%",
-                  height: "200px",
-                  overflow: "hidden",
-                  border: "1px solid green",
-                  position: "relative",
-                }}
-              >
-                <Link href={`/cities/${city.label.toLowerCase()}`}>
-                  <Image
-                    src={imagePath}
-                    alt={city.label}
-                    fill={true}
-                    priority={true}
-                    style={{
-                      objectFit: "contain",
-                      display: "block",
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  />
-                </Link>
-              </Box>
-            </Grid>
-
-            <Grid item lg={12} sm={12}>
-              <Typography
-                variant="h6"
-                sx={{
-                  textAlign: "justify",
-                  color: theme.palette.text.primary,
-                }}
-              >
-                {description} Lorem ipsum dolor sit amet, consectetur
-                adipisicing elit. Aperiam amet, exercitationem dolorem iure,
-                corrupti maxime magni voluptatem fugit perspiciatis quis ut modi
-                consectetur, esse eveniet consequatur. Eum neque eius soluta.
-              </Typography>
-            </Grid>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "0.5rem 0",
-                width: "100%",
+                marginBottom: "30px",
               }}
             >
-              <Button sx={{ padding: "0.5rem 2rem", textDecoration: "none" }}>
-                Read More
-              </Button>
+              {city.label}
+            </Typography>
+
+            {/* ---------------------------------------------------------------------------------------- */}
+
+            <Box>
+              <EventSlider events={events} cityName={city.label} />
             </Box>
-          </Grid>
+
+            {/* ---------------------------------------------------------------------------------------- */}
+          </Box>
+
+          <Box sx={{ width: "50%", color: theme.palette.text.primary }}>
+            <Box sx={{ padding: "1rem" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                }}
+              >
+                <Public
+                  sx={{
+                    fontSize: "2rem",
+                    color: theme.palette.text.primary,
+                  }}
+                />
+                <Typography variant="h6" sx={{ color: "inherit" }}>
+                  {country.label}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                }}
+              >
+                <Event
+                  sx={{
+                    fontSize: "2rem",
+                    color: theme.palette.text.primary,
+                  }}
+                />
+                <Typography variant="h6" sx={{ color: "inherit" }}>
+                  All events: {totalEvents}
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <Place
+                  sx={{
+                    fontSize: "2rem",
+                    color: theme.palette.text.primary,
+                  }}
+                />
+                <Typography variant="h6" sx={{ color: "inherit" }}>
+                  Population: {formatPopulation(city.population)}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <PeopleAlt
+                  sx={{
+                    fontSize: "2rem",
+                    color: theme.palette.text.primary,
+                  }}
+                />
+                <Typography variant="h6" sx={{ color: "inherit" }}>
+                  Location: {city.label}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: "justify",
+                color: theme.palette.text.light,
+                padding: "1rem",
+              }}
+            >
+              {description}
+            </Typography>
+          </Box>
+
+          <Button
+            sx={{
+              padding: "0.5rem 2rem",
+              textDecoration: "none",
+              borderRadius: "20px",
+            }}
+            variant="outlined"
+          >
+            Read More
+          </Button>
         </Box>
       </Box>
     </Box>

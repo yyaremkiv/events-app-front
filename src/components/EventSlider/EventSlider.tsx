@@ -1,40 +1,75 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import Slider from "react-slick";
+import { IEventItem } from "../../interfaces";
+import { Box, Typography, useTheme } from "@mui/material";
 
-export const EventSlider = ({ events, cityName }: any) => {
-  const settings = {
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 3000,
-    autoplaySpeed: 2000,
-    arrows: false,
-  };
+const settings = {
+  infinite: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  speed: 3000,
+  autoplaySpeed: 2000,
+  arrows: false,
+};
+
+interface IEventSliderProps {
+  events: IEventItem[];
+  cityName: string;
+}
+
+export const EventSlider = ({
+  events,
+  cityName,
+}: IEventSliderProps): JSX.Element => {
+  const theme = useTheme();
 
   return (
-    <Box sx={{ width: "20rem" }}>
-      <Slider {...settings}>
-        {events.map(({ title, imagePath }: any) => (
-          <Box key={title}>
+    <Slider {...settings}>
+      {events.map(({ title, imagePath }: IEventItem, index: number) => (
+        <Box key={index}>
+          <Typography
+            style={{
+              fontWeight: 600,
+              fontSize: "1.5rem",
+              textAlign: "center",
+              color: theme.palette.text.primary,
+            }}
+          >
+            {title}
+          </Typography>
+          <Box
+            key={title}
+            sx={{
+              position: "relative",
+              height: "15rem",
+              width: "100%",
+            }}
+          >
             <Link
               href={`/cities/${cityName.toLowerCase()}/${title.toLowerCase()}`}
+              style={{ textDecoration: "none" }}
             >
               <Image
                 src={imagePath}
                 alt={title}
-                width={600}
-                height={200}
+                fill={true}
                 priority={true}
-                style={{ width: "100%", objectFit: "cover" }}
+                style={{
+                  objectFit: "cover",
+                  display: "block",
+                  position: "absolute",
+                  width: "100%",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
               />
-              <Typography>Title: {title}</Typography>
             </Link>
           </Box>
-        ))}
-      </Slider>
-    </Box>
+        </Box>
+      ))}
+    </Slider>
   );
 };

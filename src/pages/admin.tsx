@@ -16,6 +16,7 @@ import { Logout } from "@mui/icons-material";
 import { MenuNavigation } from "../components/MenuNavigation";
 import { AppDispatch } from "../redux/store";
 import { AuthOperations } from "../redux/auth/auth.operations";
+import { AdminListCountries } from "../components/AdminComponent";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -71,7 +72,7 @@ const Admin = (): JSX.Element => {
           <AdminEventTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Typography>List of countries in development</Typography>
+          <AdminListCountries />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Typography>List of cities in development</Typography>

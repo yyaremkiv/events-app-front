@@ -6,6 +6,7 @@ interface IFormikAutocompleteOfCountriesProps {
   changeFieldName: string;
   options: ICountry[];
   formikFunc: any;
+  setCitiesFunc: any;
   isLoading?: boolean;
 }
 
@@ -14,6 +15,7 @@ export const FormikAutocompleteOfCountries = ({
   changeFieldName,
   options,
   formikFunc: { values, errors, touched, setFieldValue },
+  setCitiesFunc,
   isLoading = false,
 }: IFormikAutocompleteOfCountriesProps): JSX.Element => {
   return (
@@ -25,6 +27,9 @@ export const FormikAutocompleteOfCountries = ({
       getOptionLabel={(option) => option.label}
       isOptionEqualToValue={(option, value) => option.label === value.label}
       onChange={(_: any, selectedValues) => {
+        setFieldValue("city", null);
+
+        setCitiesFunc(selectedValues?.cities || []);
         setFieldValue(changeFieldName, selectedValues);
       }}
       renderInput={(params) => (

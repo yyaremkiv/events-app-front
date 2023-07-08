@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { EventService } from "../../services";
 
 export class EventOperations {
-  static getCity = createAsyncThunk(
-    "city/getCity",
+  static getCities = createAsyncThunk(
+    "city/getCities",
     async ({ params }: any, { rejectWithValue }) => {
       try {
-        const { data } = await EventService.getCity({ params });
+        const { data } = await EventService.getCities(params);
         return data;
       } catch (err: any) {
         return rejectWithValue(err.message);
