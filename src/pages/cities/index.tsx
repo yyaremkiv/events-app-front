@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
-import { CityList } from "@/src/components/CityList/CityList";
 import { useFetchCities } from "../../hooks";
 import { TypeFetchCitiesResult } from "../../hooks/useFetchCities";
+import { CityList } from "../../components/CityList/CityList";
+import { Box, Typography, useTheme, Container } from "@mui/material";
 import {
-  Box,
-  Pagination,
-  Typography,
-  Select,
-  FormControl,
-  MenuItem,
-  InputLabel,
-  useTheme,
-  Container,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { MenuNavigation } from "@/src/components/MenuNavigation";
-import { Refresh as RefreshIcon } from "@mui/icons-material";
-import { CustomAutocompleteOfCities } from "@/src/components/CustomAutocompleteOfCities";
-import { CustomAutocompleteOfCountries } from "@/src/components/CustomAutocompleteOfCountries";
+  DataDisplay,
+  ButtonLoadMore,
+  MenuNavigation,
+  PaginationPage,
+  CustomAutocompleteOfCities,
+  CustomAutocompleteOfCountries,
+} from "../../components";
 import { IQueryParams, ICountry, ICity } from "../../interfaces";
 
 const arrToStr = (items: ICountry[] | ICity[]) => {
@@ -87,7 +80,7 @@ const CitiesPage = (): JSX.Element => {
   };
 
   return (
-    <Box>
+    <Box sx={{ paddingBottom: "2rem" }}>
       <Container maxWidth="xl">
         <Box
           sx={{
@@ -98,45 +91,6 @@ const CitiesPage = (): JSX.Element => {
             padding: "10px 0",
           }}
         >
-          {data && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "start",
-                alignItems: "center",
-                gap: "2rem",
-                padding: "10px 0",
-              }}
-            >
-              <FormControl
-                size="small"
-                sx={{ m: 1, minWidth: 80, color: theme.palette.text.primary }}
-              >
-                <InputLabel>Count</InputLabel>
-                <Select
-                  label="Count"
-                  value={limit}
-                  onChange={(e) => handleChangeLimit(Number(e.target.value))}
-                >
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={20}>20</MenuItem>
-                </Select>
-              </FormControl>
-              <Typography
-                sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
-              >
-                All city: {data.totalCities}
-              </Typography>
-              <Typography
-                sx={{ color: theme.palette.text.primary, whiteSpace: "nowrap" }}
-              >
-                Display: {data?.cities.length}
-              </Typography>
-            </Box>
-          )}
-
           <Box
             sx={{
               display: "flex",
@@ -164,59 +118,59 @@ const CitiesPage = (): JSX.Element => {
       </Container>
 
       <Box>
-        <Container maxWidth="xl">
+        <Container
+          maxWidth="xl"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <MenuNavigation
             list={[
               { title: "Home", path: "/", iconName: "home" },
               { title: "Cities", path: "", iconName: "city" },
             ]}
           />
+
+          {data && data?.totalCities && (
+            <DataDisplay
+              values={[
+                { name: "All city", value: data.totalCities },
+                { name: "Display", value: data?.cities.length },
+              ]}
+              valuesCount={[3, 5, 15]}
+              limit={limit}
+              limitChangeFunc={handleChangeLimit}
+            />
+          )}
         </Container>
       </Box>
+
       {data && data.cities?.length > 0 && (
         <Container maxWidth="xl">
           <CityList cities={data.cities} />
         </Container>
       )}
+
       {data && data.cities?.length < data.totalCities && (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              p: "0.75rem",
-              color: theme.palette.text.primary,
-            }}
-          >
-            <LoadingButton
-              variant="text"
-              loadingPosition="start"
-              onClick={handleLoadMore}
-              loading={isLoading}
-              startIcon={<RefreshIcon />}
-              sx={{ p: "0.75rem 2rem", fontSize: "0.8rem", color: "inherit" }}
-            >
-              <span>Load more cities!</span>
-            </LoadingButton>
-          </Box>
-          <Box
-            sx={{
-              border: "1px solid gray",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "1rem",
-            }}
-          >
-            <Pagination
-              count={Math.ceil(data.totalCities / limit)}
-              page={page}
-              onChange={handleChangePage}
-              disabled={isLoading}
-            />
-          </Box>
+          <ButtonLoadMore
+            text="Load more cities!"
+            handleLoadMore={handleLoadMore}
+            isLoading={isLoading}
+          />
+
+          <PaginationPage
+            page={page}
+            limit={limit}
+            totalCount={data.totalCities}
+            handleChangePage={handleChangePage}
+            isLoading={isLoading}
+          />
         </>
       )}
+
       {!error && <Typography color="error">{error}</Typography>}
     </Box>
   );

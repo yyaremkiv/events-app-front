@@ -15,7 +15,7 @@ export const EventList = ({
   return (
     <Grid container spacing={3}>
       {events.map((event: IEventItem) => (
-        <Grid key={event.id} item xs={12} md={6} lg={4}>
+        <Grid key={event.id} item xs={12} md={6} lg={4} xl={3}>
           <Link
             href={`/cities/${cityName.toLowerCase()}/${event.title.toLowerCase()}`}
           >

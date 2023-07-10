@@ -76,8 +76,8 @@ export const themeSettings = (mode: PaletteMode) => {
       values: {
         xs: 0,
         sm: 480,
-        md: 600,
-        lg: 1024,
+        md: 900,
+        lg: 1200,
         xl: 1680,
       },
     },

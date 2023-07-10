@@ -25,6 +25,13 @@ export const FormValidation = {
     showInCityHome: false,
     isHidden: false,
   },
+  initialValuesFilter: {
+    query: "",
+    dateStart: null,
+    dateEnd: null,
+    categories: [],
+    hasFreePlaces: false,
+  },
   initialValuesSpeaker: {
     firstname: "",
     lastname: "",

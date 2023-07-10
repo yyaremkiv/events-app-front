@@ -11,7 +11,7 @@ export const useFetchAllEvents = ({ params }: any) => {
   const fetchData = async ({ params, loadMore = false }: any) => {
     setIsLoading(true);
     try {
-      const response = await EventService.getAllEvents(params);
+      const response = await EventService.getEvents(params);
 
       if (loadMore && data) {
         setData({

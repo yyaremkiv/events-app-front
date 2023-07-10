@@ -16,6 +16,11 @@ import {
   useTheme,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { isEqual } from "lodash";
+
+const arrToStr = (items: ICategoryItem[]) => {
+  return items.map(({ label }) => label).join(",");
+};
 
 interface IFormikValues {
   query: string;
@@ -46,15 +51,35 @@ export const FilterEvent = ({
 
   const initialValuesFilter = {
     ...data,
-    query: "",
-    dateStart: null,
-    dateEnd: null,
-    categories: [],
-    hasFreePlaces: false,
+    ...FormValidation.initialValuesFilter,
   };
 
   const handleSubmitEvent = (values: IFormikValues): void => {
-    const queryParams = { ...values };
+    const areEqual = isEqual(values, initialValuesFilter);
+    if (areEqual) return;
+
+    const {
+      query,
+      dateStart,
+      dateEnd,
+      priceMin,
+      priceMax,
+      seatsMin,
+      seatsMax,
+      categories,
+      hasFreePlaces,
+    } = values;
+
+    const queryParams: any = { hasFreePlaces };
+    if (query) queryParams.query = query;
+    if (dateStart) queryParams.dateStart = dateStart;
+    if (dateEnd) queryParams.dateEnd = dateEnd;
+    if (priceMin) queryParams.priceMin = priceMin;
+    if (priceMax) queryParams.priceMax = priceMax;
+    if (seatsMin) queryParams.seatsMin = seatsMin;
+    if (seatsMax) queryParams.seatsMax = seatsMax;
+    if (categories.length > 0) queryParams.categories = arrToStr(categories);
+
     handleFetchByFilter(queryParams);
   };
 
@@ -65,7 +90,7 @@ export const FilterEvent = ({
   };
 
   return (
-    <Box sx={{ padding: "0 2rem 2rem 0", color: theme.palette.text.primary }}>
+    <Box sx={{ color: theme.palette.text.primary }}>
       <Formik
         onSubmit={handleSubmitEvent}
         initialValues={initialValuesFilter}
