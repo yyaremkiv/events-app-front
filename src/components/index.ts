@@ -1,4 +1,5 @@
 export { MainTitle } from "./MainTitle";
+export { BannerHero } from "./BannerHero";
 export { FormikDate } from "./FormikDate";
 export { FilterEvent } from "./FilterEvent";
 export { DataDisplay } from "./DataDisplay";

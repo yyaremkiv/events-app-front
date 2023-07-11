@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { useFetchCities } from "../../hooks";
 import { TypeFetchCitiesResult } from "../../hooks/useFetchCities";
 import { CityList } from "../../components/CityList/CityList";
-import { Box, Typography, useTheme, Container } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  Container,
+  useMediaQuery,
+} from "@mui/material";
 import {
   DataDisplay,
   ButtonLoadMore,
@@ -11,7 +17,7 @@ import {
   CustomAutocompleteOfCities,
   CustomAutocompleteOfCountries,
 } from "../../components";
-import { IQueryParams, ICountry, ICity } from "../../interfaces";
+import { IQueryCityParams, ICountry, ICity } from "../../interfaces";
 
 const arrToStr = (items: ICountry[] | ICity[]) => {
   return items.map(({ label }) => label).join(",");
@@ -26,7 +32,10 @@ const CitiesPage = (): JSX.Element => {
   const [citiesFilter, setCitiesFilter] = useState<any>([]);
   const theme = useTheme();
 
-  const params: IQueryParams = { page, limit };
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTabletScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const params: IQueryCityParams = { page, limit };
   if (countriesFilter.length > 0) params.countries = arrToStr(countriesFilter);
   if (citiesFilter.length > 0) params.cities = arrToStr(citiesFilter);
 
@@ -35,7 +44,7 @@ const CitiesPage = (): JSX.Element => {
 
   useEffect(() => {
     if (countriesFilter.length === 0) {
-      setAllCities(data?.searchParams.cities || []);
+      setAllCities(data.searchParams || []);
       setCitiesFilter([]);
       return;
     }
@@ -80,40 +89,33 @@ const CitiesPage = (): JSX.Element => {
   };
 
   return (
-    <Box sx={{ paddingBottom: "2rem" }}>
+    <Box sx={{ padding: "1rem 0", color: theme.palette.text.primary }}>
       <Container maxWidth="xl">
         <Box
           sx={{
             display: "flex",
-            justifyContent: "start",
-            alignItems: "center",
-            gap: "2rem",
-            padding: "10px 0",
+            justifyContent: "center",
+            flexDirection: isMobileScreen ? "column" : "row",
+            gap: isMobileScreen ? "1rem" : "2rem",
+            width: isTabletScreen ? "100%" : "75%",
+            margin: "0 auto",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              gap: "2rem",
-              width: "100%",
-            }}
-          >
-            <CustomAutocompleteOfCountries
-              label="Set Country"
-              value={countriesFilter}
-              options={allCountries}
-              onChangeFunc={setCountriesFilter}
-              isLoading={isLoading}
-            />
+          <CustomAutocompleteOfCountries
+            label="Set Country"
+            value={countriesFilter}
+            options={allCountries}
+            onChangeFunc={setCountriesFilter}
+            isLoading={isLoading}
+          />
 
-            <CustomAutocompleteOfCities
-              label="Set Cities"
-              value={citiesFilter}
-              options={allCities}
-              onChangeFunc={setCitiesFilter}
-              isLoading={isLoading}
-            />
-          </Box>
+          <CustomAutocompleteOfCities
+            label="Set Cities"
+            value={citiesFilter}
+            options={allCities}
+            onChangeFunc={setCitiesFilter}
+            isLoading={isLoading}
+          />
         </Box>
       </Container>
 
@@ -147,13 +149,13 @@ const CitiesPage = (): JSX.Element => {
         </Container>
       </Box>
 
-      {data && data.cities?.length > 0 && (
+      {data.cities.length > 0 && (
         <Container maxWidth="xl">
           <CityList cities={data.cities} />
         </Container>
       )}
 
-      {data && data.cities?.length < data.totalCities && (
+      {data && data.totalCities && data.cities?.length < data.totalCities && (
         <>
           <ButtonLoadMore
             text="Load more cities!"

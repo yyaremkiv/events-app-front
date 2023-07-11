@@ -100,8 +100,7 @@ export const eventSlice = createSlice({
       });
     });
     builder.addCase(EventOperations.getEvent.fulfilled, (state, action) => {
-      const { events, eventsParams } = action.payload;
-      const cityId = eventsParams.cityId;
+      const { events, cityId } = action.payload;
       const cityIndex = state.cities.findIndex(
         (city: any) => city._id === cityId
       );
@@ -144,6 +143,7 @@ export const eventSlice = createSlice({
       state.error = null;
     });
     builder.addCase(EventOperations.updateEvent.fulfilled, (state, action) => {
+      //@ts-ignore
       const { cityId, updatedEvent } = action.payload;
 
       const city = state.cities.find((city: ICityItem) => city._id === cityId);

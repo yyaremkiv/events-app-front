@@ -17,6 +17,7 @@ export const CustomAutocompleteOfCountries = ({
 }: ICustomAutocompleteOfCountriesProps): JSX.Element => {
   return (
     <Autocomplete
+      size="small"
       fullWidth
       multiple
       value={value}
@@ -80,6 +81,7 @@ export const CustomAutocompleteOfCountries = ({
           />
         ))
       }
+      sx={{ maxWidth: "450px" }}
     />
   );
 };

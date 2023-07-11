@@ -8,25 +8,29 @@ interface ICityItemProps {
 }
 
 export const CityItem = ({ data }: ICityItemProps): JSX.Element => {
-  const { country, city, imagePath, totalEvents } = data;
+  const { country, city, imagePath, totalEvents, description } = data;
   const theme = useTheme();
 
   return (
     <Box
       sx={{
-        borderRadius: "10px",
+        width: "100%",
+        borderRadius: "1rem",
         overflow: "hidden",
         background: theme.palette.background.gradientCard,
         transition: "transform 300ms linear",
         "&:hover": {
           transform: "scale(1.03)",
-          boxShadow: " 0px 1px 7px 0px rgba(36,188,196,0.75)",
+        },
+        "&:hover h6": {
+          color: "white",
+          opacity: 1,
         },
       }}
     >
       <Box
         sx={{
-          width: "100%",
+          // width: "100%",
           height: "500px",
           overflow: "hidden",
           position: "relative",
@@ -118,7 +122,7 @@ export const CityItem = ({ data }: ICityItemProps): JSX.Element => {
             </Typography>
           </Box>
         </Box>
-        {/* {description ? (
+        {description ? (
           <Typography
             variant="h6"
             sx={{
@@ -128,16 +132,16 @@ export const CityItem = ({ data }: ICityItemProps): JSX.Element => {
               right: "0",
               zIndex: 10,
               padding: "7px",
-              color: isHovered ? "white" : "",
+              color: "",
               transition: "opacity 200ms linear, color 200ms linear",
-              opacity: isHovered ? 1 : 0,
+              opacity: 0,
               backgroundColor: "#00000050",
               textAlign: "center",
             }}
           >
             {description}
           </Typography>
-        ) : null} */}
+        ) : null}
       </Box>
     </Box>
   );

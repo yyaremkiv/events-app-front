@@ -1,47 +1,74 @@
 import { useState, useEffect } from "react";
-import { IEventItem, IQueryParams } from "../interfaces";
+import { AxiosError } from "axios";
 import { EventService } from "../services";
-
-interface IEventsData {
-  events: IEventItem[];
-  totalEvents: number;
-  searchParams: any;
-}
+import { IQueryEventParams, IEventDataResponse } from "../interfaces";
 
 interface IUseFetchEventsProps {
   cityName?: string;
-  params: IQueryParams;
+  eventName?: string;
+  params: IQueryEventParams;
   loadMore?: boolean;
 }
 
+interface IInitialData {
+  events: [];
+  totalEvents: null;
+  searchParams: null;
+}
+
+const initialDataValues: IInitialData = {
+  events: [],
+  totalEvents: null,
+  searchParams: null,
+};
+
 export type TypeFetchEventsResult = [
-  IEventsData | null,
+  IEventDataResponse | IInitialData,
   boolean,
   string | null,
   (props: IUseFetchEventsProps) => Promise<void>
 ];
-
 export const useFetchEvents = (): TypeFetchEventsResult => {
-  const [data, setData] = useState<IEventsData | null>(null);
+  const [data, setData] = useState<IEventDataResponse | IInitialData>(
+    initialDataValues
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   let cityName = "";
+  let eventName = "";
   let loadMore = false;
-  const params = { page: 1, limit: 5 };
+  const params: IQueryEventParams = { page: 1, limit: 5 };
 
   const fetchData = async ({
     cityName,
+    eventName,
     params,
     loadMore = false,
   }: IUseFetchEventsProps) => {
     setIsLoading(true);
     try {
-      const response = cityName
-        ? await EventService.getEvents({ cityName, params })
-        : await EventService.getEvents({ params });
+      let response = null;
 
-      if (loadMore && data) {
+      if (params && !cityName) {
+        response = await EventService.getEvents({ params });
+      }
+
+      if (params && cityName && !eventName) {
+        response = await EventService.getEvents({ cityName, params });
+      }
+
+      if (cityName && eventName) {
+        response = await EventService.getEvents({
+          cityName,
+          eventName,
+          params,
+        });
+      }
+
+      if (!response) return;
+
+      if (loadMore) {
         setData({
           events: [...data.events, ...response.data.events],
           totalEvents: response.data.totalEvents,
@@ -54,83 +81,17 @@ export const useFetchEvents = (): TypeFetchEventsResult => {
           searchParams: response.data.searchParams,
         });
       }
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      const err = error as AxiosError;
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (cityName) fetchData({ cityName, params, loadMore });
-  }, [cityName]);
+    if (cityName) fetchData({ cityName, eventName, params, loadMore });
+  }, [cityName, eventName]);
 
   return [data, isLoading, error, fetchData];
 };
-
-// import { useState, useEffect } from "react";
-// import { IEventItem, IQueryParams } from "../interfaces";
-// import { EventService } from "../services";
-
-// interface IEventsData {
-//   events: IEventItem[];
-//   totalEvents: number;
-// }
-
-// interface IUseFetchEventsProps {
-//   cityName?: string;
-//   params: IQueryParams;
-//   loadMore?: boolean;
-// }
-
-// export type TypeFetchEventsResult = [
-//   IEventsData | null,
-//   boolean,
-//   string | null,
-//   (props: IUseFetchEventsProps) => Promise<void>
-// ];
-
-// export const useFetchEvents = (): TypeFetchEventsResult => {
-//   const [data, setData] = useState<IEventsData | null>(null);
-//   const [isLoading, setIsLoading] = useState<boolean>(false);
-//   const [error, setError] = useState<string | null>(null);
-
-//   let cityName = "";
-//   let loadMore = false;
-//   const params = { page: 1, limit: 5 };
-
-//   const fetchData = async ({
-//     cityName,
-//     params,
-//     loadMore = false,
-//   }: IUseFetchEventsProps) => {
-//     setIsLoading(true);
-//     try {
-//       const response = cityName
-//         ? await EventService.getEvents({ cityName, params })
-//         : await EventService.getAllEvents(params);
-
-//       if (loadMore && data) {
-//         setData({
-//           events: [...data.events, ...response.data.cities],
-//           totalEvents: response.data.totalEvents,
-//         });
-//       } else {
-//         setData({
-//           events: response.data.events,
-//           totalEvents: response.data.totalEvents,
-//         });
-//       }
-//     } catch (error: any) {
-//       setError(error.message);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (cityName) fetchData({ cityName, params, loadMore });
-//   }, [cityName]);
-
-//   return [data, isLoading, error, fetchData];
-// };

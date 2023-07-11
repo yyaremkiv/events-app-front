@@ -1,8 +1,11 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { FormikTextField } from "../FormikTextField";
 import { CustomLoadingButton } from "../CustomLoadingButton";
+import clip from "../../image/clip.svg";
+import waves from "../../image/waves.svg";
+import bubles from "../../image/bubles.svg";
 
 const initialValuesUser = {
   firstname: "",
@@ -31,14 +34,24 @@ export const FormSend = () => {
   return (
     <Box
       sx={{
-        padding: "1rem",
+        padding: "3rem 2rem",
         borderRadius: "1rem",
         minWidth: "40%",
         maxWidth: "50%",
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.background.light,
+        backgroundImage: `url(${waves.src})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "0 0",
       }}
     >
+      <Typography
+        variant="h5"
+        sx={{ padding: "0.2rem", marginBottom: "2rem", textAlign: "center" }}
+      >
+        Form Registraton
+      </Typography>
       <Formik
         onSubmit={handleSubmitEvent}
         initialValues={initialValuesUser}

@@ -108,8 +108,7 @@ export const CityModal = ({
       let res: any;
       setLocalError(null);
 
-      if (cityId)
-        res = await dispatch(EventOperations.updateCity({ formData }));
+      if (cityId) res = await dispatch(EventOperations.updateCity(formData));
       if (!cityId) {
         res = await dispatch(
           EventOperations.addCity({ formData, params: { page, limit } })

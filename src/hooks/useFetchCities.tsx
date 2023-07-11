@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
+import { AxiosError } from "axios";
 import { EventService } from "../services";
-import { IQueryParams, ICityItem } from "../interfaces";
-
-interface ICitiesData {
-  cities: ICityItem[];
-  totalCities: number;
-  searchParams?: any;
-}
+import { IQueryCityParams, ICityDataResponse } from "../interfaces";
 
 interface IUseFetchCitiesProps {
-  params: IQueryParams;
+  params: IQueryCityParams;
   loadMore?: boolean;
 }
 
+interface IInitialData {
+  cities: [];
+  totalCities: null;
+  searchParams: null;
+}
+
+const initialDataValues: IInitialData = {
+  cities: [],
+  totalCities: null,
+  searchParams: null,
+};
+
 export type TypeFetchCitiesResult = [
-  ICitiesData | null,
+  ICityDataResponse | IInitialData,
   boolean,
   string | null,
   (props: IUseFetchCitiesProps) => Promise<void>
@@ -24,7 +31,9 @@ export const useFetchCities = ({
   params,
   loadMore = false,
 }: IUseFetchCitiesProps): TypeFetchCitiesResult => {
-  const [data, setData] = useState<ICitiesData | null>(null);
+  const [data, setData] = useState<ICityDataResponse | IInitialData>(
+    initialDataValues
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,8 +55,9 @@ export const useFetchCities = ({
           searchParams: response.data.searchParams,
         });
       }
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      const err = error as AxiosError;
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }

@@ -1,3 +1,34 @@
+export interface IQueryCityParams {
+  page?: number;
+  limit?: number;
+  countries?: string;
+  cities?: string;
+  showOnHomePage?: boolean;
+  showInCityHome?: boolean;
+  isHidden?: boolean;
+}
+
+export interface IQueryEventParams {
+  page?: number;
+  limit?: number;
+  showOnHomePage?: boolean;
+}
+
+export interface ICityDataResponse {
+  cities: ICityItem[];
+  totalCities: number;
+  searchParams: any;
+}
+
+export interface IEventDataResponse {
+  events: IEventItem[];
+  totalEvents: number;
+  searchParams: any;
+  cityId?: string;
+}
+
+//-----------------------------------
+
 export interface ISignupArg {
   username: string;
   email: string;
@@ -70,5 +101,5 @@ export interface ICityItem {
   totalEvents: number;
   showOnHomePage: boolean;
   isHidden: boolean;
-  events: IEventItem[] | [];
+  events: IEventItem[];
 }

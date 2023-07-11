@@ -1,34 +1,33 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
+import textBackground from "../image/bg2.jpg";
 
 interface IMainTitleProps {
   title: string;
+  subtitle?: string;
   showArrow?: boolean;
 }
 
 export const MainTitle = ({
   title,
+  subtitle,
   showArrow = true,
 }: IMainTitleProps): JSX.Element => {
   const theme = useTheme();
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box
-      sx={{
-        padding: "20px 0",
-      }}
-    >
+    <Box>
       <Typography
         variant="h1"
         sx={{
           fontWeight: "800",
           textAlign: "center",
-          fontSize: "120px",
-          marginBottom: "46px",
+          fontSize: isMobileScreen ? "80px" : "120px",
+          marginBottom: "1rem",
           textTransform: "uppercase",
           color: "transparent",
           WebkitTextStroke: `1px ${theme.palette.text.primary}`,
-          backgroundImage:
-            "url('https://www.fonstola.ru/images/201202/fonstola.ru_74847.jpg')",
+          backgroundImage: `url(${textBackground.src})`,
           WebkitBackgroundClip: "text",
           backgroundPosition: "0 0",
           animation: "back 30s linear infinite",
@@ -40,28 +39,25 @@ export const MainTitle = ({
       >
         {title}
       </Typography>
-      <Typography
-        variant="subtitle1"
-        sx={{
-          textAlign: "center",
-          padding: "0 50px",
-          color: theme.palette.text.primary,
-          marginBottom: "50px",
-        }}
-      >
-        Welcome to our website, where you can find information about various
-        exciting events happening around the world. Here, you can explore a
-        diverse range of events, from concerts and exhibitions to sports
-        competitions and cultural festivals. On our website, you will discover
-        an up-to-date event calendar featuring detailed descriptions, dates,
-        venues, and other valuable information. Browse through our event
-        listings, choose what interests you, and join in on the thrilling
-        experiences that will leave a lasting impression.
-      </Typography>
+
+      {!!subtitle && (
+        <Typography
+          variant="subtitle1"
+          sx={{
+            textAlign: "center",
+            padding: "0 50px",
+            color: theme.palette.text.primary,
+            marginBottom: "50px",
+          }}
+        >
+          {subtitle}
+        </Typography>
+      )}
 
       {showArrow && (
         <Box
           sx={{
+            paddingBottom: "1rem",
             width: "100px",
             height: "100px",
             margin: "0 auto",
@@ -71,7 +67,6 @@ export const MainTitle = ({
               position: "absolute",
               top: "50%",
               left: "50%",
-
               width: "70px",
               height: "70px",
               borderBottom: `15px solid ${theme.palette.text.primary}`,
@@ -80,17 +75,9 @@ export const MainTitle = ({
               animation: "arrow 2s linear infinite",
 
               "@keyframes arrow": {
-                "0%": {
-                  top: "10px",
-                  opacity: "0",
-                },
-                "50%": {
-                  opacity: "1",
-                },
-                "100%": {
-                  top: "50px",
-                  opacity: "0",
-                },
+                "0%": { top: "10px", opacity: "0" },
+                "50%": { opacity: "1" },
+                "100%": { top: "50px", opacity: "0" },
               },
             },
           }}

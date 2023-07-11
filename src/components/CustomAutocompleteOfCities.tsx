@@ -17,6 +17,7 @@ export const CustomAutocompleteOfCities = ({
 }: ICustomAutocompleteOfCitiesProps): JSX.Element => {
   return (
     <Autocomplete
+      size="small"
       fullWidth
       multiple
       value={value}
@@ -55,6 +56,7 @@ export const CustomAutocompleteOfCities = ({
           />
         ))
       }
+      sx={{ maxWidth: "450px" }}
     />
   );
 };
