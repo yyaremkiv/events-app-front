@@ -7,7 +7,6 @@ export class EventOperations {
   static getCities = createAsyncThunk(
     "city/getCities",
     async ({ params }: { params: IQueryCityParams }, { rejectWithValue }) => {
-      console.log("try");
       try {
         const { data } = await EventService.getCities(params);
         return data;

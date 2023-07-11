@@ -163,22 +163,26 @@ const EventsCatPage = (): JSX.Element => {
             <EventList cityName={cityName} events={data.events} />
           )}
 
-          {data && data.events?.length < data.totalEvents && (
-            <ButtonLoadMore
-              handleLoadMore={handleLoadMore}
-              isLoading={isLoading}
-            />
-          )}
+          {data &&
+            data.totalEvents &&
+            data.events?.length < data.totalEvents && (
+              <ButtonLoadMore
+                handleLoadMore={handleLoadMore}
+                isLoading={isLoading}
+              />
+            )}
 
-          {data && data.events?.length < data.totalEvents && (
-            <PaginationPage
-              page={page}
-              limit={limit}
-              totalCount={data.totalEvents}
-              handleChangePage={handleChangePage}
-              isLoading={isLoading}
-            />
-          )}
+          {data &&
+            data.totalEvents &&
+            data.events?.length < data.totalEvents && (
+              <PaginationPage
+                page={page}
+                limit={limit}
+                totalCount={data.totalEvents}
+                handleChangePage={handleChangePage}
+                isLoading={isLoading}
+              />
+            )}
         </Box>
       </Box>
       {error && <Typography color="error">{error}</Typography>}
