@@ -1,31 +1,22 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import { FormValidation } from "../../config";
 import { AuthOperations } from "../../redux/auth/auth.operations";
 import { RootState, AppDispatch } from "../../redux/store";
 import {
-  Box,
-  Typography,
-  TextField,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { VisibilityOff, Visibility } from "@mui/icons-material";
+  FormikTextField,
+  FormikTextFieldPassword,
+  CustomLoadingButton,
+} from "../";
+import { Box, Typography } from "@mui/material";
 
-export const FormLogin = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+export const FormLogin = (): JSX.Element => {
   const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   const isErrorAuth = useSelector((state: RootState) => state.auth.error);
   const dispatch: AppDispatch = useDispatch();
 
   return (
-    <Box>
+    <>
       <Formik
         onSubmit={(values) =>
           dispatch(
@@ -48,89 +39,54 @@ export const FormLogin = () => {
         }) => (
           <form
             onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.75rem",
+              width: "100%",
+            }}
           >
-            <TextField
+            <FormikTextField
               label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
               name="email"
-              error={Boolean(touched.email && errors.email)}
-              helperText={touched.email && errors.email}
-              disabled={isLoading}
-              style={{ height: "60px" }}
+              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
+              isLoading={isLoading}
             />
 
-            <FormControl variant="outlined">
-              <InputLabel
-                htmlFor="outlined-adornment-password"
-                error={Boolean(touched.password && errors.password)}
-              >
-                Password
-              </InputLabel>
-              <OutlinedInput
-                label="Password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                value={values.password}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(touched.password && errors.password)}
-                disabled={isLoading}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword((show) => !show)}
-                      onMouseDown={(e) => e.preventDefault()}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-              <FormHelperText
-                error={Boolean(touched.password && errors.password)}
-                sx={{
-                  visibility:
-                    touched.password && errors.password ? "visible" : "hidden",
-                  height: "12px",
-                }}
-              >
-                {errors.password}
-              </FormHelperText>
-            </FormControl>
+            <FormikTextFieldPassword
+              label="Password"
+              name="password"
+              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
+              isLoading={isLoading}
+            />
 
-            <LoadingButton
-              variant="outlined"
-              loading={isLoading}
-              disabled={isLoading}
-              loadingPosition="center"
-              type="submit"
+            <Box
               sx={{
-                margin: "0 auto 1rem auto",
-                padding: "0.25rem 4rem",
-                fontSize: "0.9rem",
+                display: "flex",
+                justifyContent: "center",
+                paddingBottom: "1rem",
               }}
             >
-              <span>LOGIN</span>
-            </LoadingButton>
+              <CustomLoadingButton text="Login" />
+            </Box>
           </form>
         )}
       </Formik>
 
-      <Box>
+      <Box sx={{ width: "100%" }}>
         {isErrorAuth && (
-          <Typography sx={{ textAlign: "right", color: "red" }}>
+          <Typography color="error" sx={{ textAlign: "right" }}>
             {isErrorAuth}
           </Typography>
         )}
-        <Typography mt="1rem">User to test:</Typography>
-        <Typography>email: user-test@mail.com</Typography>
-        <Typography>password: eiYo9eeMu</Typography>
+        <Typography>User to test:</Typography>
+        <Typography>
+          email: <span style={{ fontWeight: "bold" }}>user-test@mail.com</span>
+        </Typography>
+        <Typography>
+          password: <span style={{ fontWeight: "bold" }}>eiYo9eeMu</span>
+        </Typography>
       </Box>
-    </Box>
+    </>
   );
 };

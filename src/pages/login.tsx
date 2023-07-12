@@ -1,45 +1,45 @@
-import { useDispatch } from "react-redux";
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { FormLogin } from "../components/FormLogin/FormLogin";
 import { useAuth } from "../hooks/useAuth";
-import { ThemeToggle } from "../components";
 
-const Login = () => {
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const dispatch = useDispatch();
+const Login = (): JSX.Element => {
   const theme = useTheme();
+  const isMobileScreens = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Box>
+    <Container
+      maxWidth="xl"
+      sx={{
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        padding: "2rem 0",
+      }}
+    >
       <Box
         sx={{
-          width: isNonMobileScreens ? "50%" : "93%",
-          p: "2rem",
-          m: "2rem auto",
+          padding: "2rem",
+          width: isMobileScreens ? "100%" : "75%",
+          maxWidth: "600px",
+          border: isMobileScreens ? "none" : "1px solid gray",
           borderRadius: "1.5rem",
-          border: "1px solid gray",
-          color: theme.palette.text.primary,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: "0.5rem",
-          }}
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", paddingBottom: "1rem" }}
         >
-          <Typography
-            fontWeight="500"
-            variant="h5"
-            sx={{ width: "100%", textAlign: "center" }}
-          >
-            Welcome to EventApp!
-          </Typography>
-        </Box>
+          Welcome to EventApp!
+        </Typography>
         <FormLogin />
       </Box>
-    </Box>
+    </Container>
   );
 };
 

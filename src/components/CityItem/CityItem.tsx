@@ -30,7 +30,6 @@ export const CityItem = ({ data }: ICityItemProps): JSX.Element => {
     >
       <Box
         sx={{
-          // width: "100%",
           height: "500px",
           overflow: "hidden",
           position: "relative",

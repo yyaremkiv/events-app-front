@@ -29,25 +29,16 @@ export interface IEventDataResponse {
 
 //-----------------------------------
 
-export interface ISignupArg {
-  username: string;
+export interface ISigninProps {
   email: string;
   password: string;
 }
 
-export interface ISigninArg {
-  email: string;
-  password: string;
+export interface IAuthDataResponse {
+  accessToken: string;
 }
 
-export interface IQueryParams {
-  page?: number;
-  limit?: number;
-  countries?: string;
-  cities?: string;
-  showOnHomePage?: boolean;
-  showInCityHome?: boolean;
-}
+//-----------------------------------
 
 export interface ICategoryItem {
   label: string;

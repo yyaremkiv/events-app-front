@@ -23,30 +23,12 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(AuthOperations.signup.pending, (state) => {
-      state.error = null;
-      state.isLoading = true;
-    });
-    builder.addCase(AuthOperations.signup.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
-      state.isLogged = true;
-      state.isLoading = false;
-    });
-    builder.addCase(
-      AuthOperations.signup.rejected,
-      (state, action: PayloadAction<any>) => {
-        state.error = action.payload;
-        state.isLogged = false;
-        state.isLoading = false;
-      }
-    );
     builder.addCase(AuthOperations.signin.pending, (state) => {
       state.error = null;
       state.isLoading = true;
     });
     builder.addCase(AuthOperations.signin.fulfilled, (state, action) => {
-      state.user = action.payload.user;
+      state.user = action.payload;
       state.accessToken = action.payload.accessToken;
       state.isLogged = true;
       state.isLoading = false;
@@ -82,7 +64,7 @@ export const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(AuthOperations.refresh.fulfilled, (state, action) => {
-      state.user = action.payload.user;
+      state.user = action.payload;
       state.accessToken = action.payload.accessToken;
       state.refreshAttempts = 0;
       state.isLogged = true;

@@ -19,5 +19,6 @@ export { FormikAutocomplete } from "./FormikAutocomplete";
 export { CustomLoadingButton } from "./CustomLoadingButton";
 export { DropzoneUploadImage } from "./DropzoneUploadImage";
 export { LoaderLinearProgress } from "./LoaderLinearProgress";
+export { FormikTextFieldPassword } from "./FormikTextFieldPassword";
 export { CustomAutocompleteOfCities } from "./CustomAutocompleteOfCities";
 export { CustomAutocompleteOfCountries } from "./CustomAutocompleteOfCountries";

@@ -22,6 +22,7 @@ export const Layout = ({ children }: ILayoutProps): JSX.Element => {
           flexDirection: "column",
           minHeight: "100vh",
           backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
         }}
       >
         <Header />

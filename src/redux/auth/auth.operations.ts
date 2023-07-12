@@ -1,33 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { AuthService } from "../../services";
-import { ISignupArg, ISigninArg } from "../../interfaces";
+import { ISigninProps } from "../../interfaces";
 
 export class AuthOperations {
   static signin = createAsyncThunk(
     "auth/signin",
-    async ({ email, password }: ISigninArg, { rejectWithValue }) => {
+    async ({ email, password }: ISigninProps, { rejectWithValue }) => {
       try {
         const { data } = await AuthService.signin({ email, password });
-        return data;
-      } catch (error) {
-        const err = error as AxiosError;
-        return rejectWithValue(
-          err.message || "An error occurred with the network"
-        );
-      }
-    }
-  );
-
-  static signup = createAsyncThunk(
-    "auth/signup",
-    async ({ username, email, password }: ISignupArg, { rejectWithValue }) => {
-      try {
-        const { data } = await AuthService.signup({
-          username,
-          email,
-          password,
-        });
         return data;
       } catch (error) {
         const err = error as AxiosError;
@@ -41,7 +22,6 @@ export class AuthOperations {
   static logout = createAsyncThunk(
     "auth/logout",
     async (_, { rejectWithValue }) => {
-      console.log("this is login");
       try {
         const { data } = await AuthService.logout();
         return data;
