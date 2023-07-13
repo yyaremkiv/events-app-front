@@ -140,7 +140,7 @@ const EventsCatPage = (): JSX.Element => {
             width: isMobileScreen ? "100%" : isDesktopScreen ? "45%" : "25%",
           }}
         >
-          {data && (
+          {data && false && (
             <FilterEvent
               data={data.searchParams}
               handleFetchByFilter={handleFetchByFilter}

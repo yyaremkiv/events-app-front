@@ -19,6 +19,8 @@ export const FormValidation = {
     date: dayjs(),
     seats: 1,
     price: 1,
+    language: "",
+    minAge: 1,
     categories: [],
     speakers: [],
     showOnHomePage: false,
@@ -84,11 +86,18 @@ export const FormValidation = {
         return dayjs(value).isAfter(dayjs(), "day");
       }),
     seats: Yup.number()
-      .min(1, "Seats must be greater than 0.")
+      .min(1, "Seats must be greater than 1.")
       .max(1000000, "Seats cannot be greater than 1000000."),
     price: Yup.number()
-      .min(1, "Price must be greater than 0.")
+      .min(1, "Price must be greater than 1.")
       .max(1000000, "Price cannot be greater than 1000000."),
+    minAge: Yup.number()
+      .min(1, "Min age must be greater than 1.")
+      .max(100, "Min age cannot be greater than 100."),
+    language: Yup.string()
+      .min(6, "Languages must be at least 6 characters long.")
+      .max(100, "Languages cannot be longer than 300 characters.")
+      .required("Languages is required."),
     categories: Yup.array()
       .min(1, "Select At Least One Category.")
       .required("Category is required."),

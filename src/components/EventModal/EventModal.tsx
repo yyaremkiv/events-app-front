@@ -62,6 +62,8 @@ export const EventModal = ({
         date: dayjs(singleEvent.date),
         seats: singleEvent.seats,
         price: singleEvent.price,
+        minAge: singleEvent.minAge,
+        language: singleEvent.language,
         imagePath: singleEvent.imagePath,
         categories: singleEvent.categories,
         showOnHomePage: singleEvent.showOnHomePage || false,
@@ -79,6 +81,8 @@ export const EventModal = ({
     formData.append("date", values.date);
     formData.append("seats", values.seats);
     formData.append("price", values.price);
+    formData.append("minAge", values.minAge);
+    formData.append("language", values.language);
 
     formData.append("categories", JSON.stringify(values.categories));
     formData.append("speakers", JSON.stringify(values.speakers));
@@ -210,7 +214,27 @@ export const EventModal = ({
                 minValue={0}
                 isLoading={isLoading}
               />
+              <FormikNumberField
+                label="Min age"
+                name="minAge"
+                formikFunc={{
+                  values,
+                  errors,
+                  touched,
+                  handleBlur,
+                  handleChange,
+                }}
+                minValue={0}
+                isLoading={isLoading}
+              />
             </Box>
+
+            <FormikTextField
+              label="Languages for Event"
+              name="language"
+              formikFunc={{ values, errors, touched, handleBlur, handleChange }}
+              isLoading={isLoading}
+            />
 
             <FormikAutocomplete
               label="Set category"
